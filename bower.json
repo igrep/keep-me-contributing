@@ -1,0 +1,24 @@
+{
+  "name": "keep-me-contributing",
+  "version": "0.1.0",
+  "homepage": "https://github.com/igrep/keep-me-contributing",
+  "authors": [
+    "Yuji Yamamoto <whosekiteneverfly@gmail.com>"
+  ],
+  "description": "Web page to check if I did something that greens the contribution map on https://github.com/igrep.",
+  "main": "",
+  "keywords": [
+    "github"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "github": "~0.10.6"
+  }
+}

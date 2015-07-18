@@ -1,0 +1,43 @@
+{
+  "//": [
+    "Intentionally include grunt-cli and bower as the dependencies.",
+    "Because the only (system global) requirement is npm by doing this.",
+    "Inspired by http://qiita.com/Jxck_/items/efaff21b977ddc782971 (Japanese)."
+  ],
+  "name": "keep-me-contributing",
+  "version": "0.1.0",
+  "description": "Web page to check if I did something that greens the contribution map on https://github.com/igrep.",
+  "main": "index.js",
+  "scripts": {
+    "build": "grunt default",
+    "test": "grunt shell:test",
+    "lint": "grunt shell:lint",
+    "bower": "grunt bower"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igrep/keep-me-contributing.git"
+  },
+  "author": "Yuji Yamamoto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/igrep/keep-me-contributing/issues"
+  },
+  "homepage": "https://github.com/igrep/keep-me-contributing#readme",
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "eslint": "^0.24.1",
+    "espower-loader": "^0.11.0",
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-shell": "^1.1.2",
+    "intelli-espower-loader": "^0.7.0",
+    "load-grunt-tasks": "^3.2.0",
+    "mocha": "^2.2.5",
+    "power-assert": "^0.11.0"
+  }
+}

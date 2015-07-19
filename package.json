@@ -12,7 +12,7 @@
     "build": "grunt default",
     "test": "grunt shell:test",
     "lint": "grunt shell:lint",
-    "bower": "grunt bower"
+    "install": "grunt install"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "grunt": "^0.4.5",
     "grunt-bower-task": "^0.4.0",
     "grunt-cli": "^0.1.13",
+    "grunt-contrib-copy": "^0.8.0",
     "grunt-shell": "^1.1.2",
     "intelli-espower-loader": "^0.7.0",
     "load-grunt-tasks": "^3.2.0",

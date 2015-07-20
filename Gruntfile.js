@@ -26,7 +26,7 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      test: { command: 'mocha --require intelli-espower-loader' },
+      test: { command: 'mocha --require espower-babel/guess test/js/' },
       lint: { command: 'eslint Gruntfile.js app/js/ test' }
     }
   });

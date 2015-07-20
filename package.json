@@ -7,7 +7,7 @@
   "name": "keep-me-contributing",
   "version": "0.1.0",
   "description": "Web page to check if I did something that greens the contribution map on https://github.com/igrep.",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "build": "grunt default",
     "test": "grunt shell:test",

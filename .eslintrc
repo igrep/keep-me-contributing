@@ -17,6 +17,10 @@
             "always"
         ]
     },
+    "ecmaFeatures": {
+        "modules": true
+    },
+    "sourceType": "module",
     "env": {
         "es6": true,
         "node": true,

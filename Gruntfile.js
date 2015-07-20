@@ -19,7 +19,7 @@ module.exports = function (grunt) {
             cwd: 'node_modules/',
             src: [
               'google-closure-library/closure/goog/**/*.js',
-              'google-closure-library/third_party/closure/goog/**/*.js',
+              'google-closure-library/third_party/closure/goog/**/*.js'
             ],
             dest: 'app/lib/'
           }

@@ -13,7 +13,9 @@ describe('ContributionStatus', () => {
       );
 
       it('has recentlyContributedAt as recorded in JSON', () => {
-        assert(contributionStatus.recentlyContributedAt === new Date('2015-07-19T16:08:53Z'));
+        assert(
+          contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-19T16:08:53Z').valueOf()
+        );
       });
     });
   });

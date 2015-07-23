@@ -7,8 +7,22 @@ if (typeof module !== 'undefined' && module.exports) {
 goog.require('goog.array');
 
 class ContributionStatus {
+
+  /**
+   * TODO: Create type GithubApi.EventsApiResponse
+   * @param {Array<Object>}
+   */
   constructor(eventsApiResponse){
-    this._recentlyContributedAt = new Date('2015-07-19T16:08:53Z');
+    // Assume Events API's response is in recent-first order.
+    let latestEvent = goog.array.find(eventsApiResponse, (event) => {
+      return event.type === 'PushEvent' ||
+        (event.type === 'CreateEvent' && event.payload.ref_type === 'repository');
+    });
+
+    /**
+     * @private {Date}
+     */
+    this._recentlyContributedAt = new Date(latestEvent.created_at);
   }
   get recentlyContributedAt(){
     return this._recentlyContributedAt;

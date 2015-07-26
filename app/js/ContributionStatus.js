@@ -23,9 +23,12 @@ class ContributionStatus {
    */
   constructor(eventsApiResponse){
     let latestEvent = goog.array.find(eventsApiResponse, (event) => {
-      return event.type === 'PushEvent' ||
-        (event.type === 'CreateEvent' && event.payload.ref_type === 'repository') ||
-        (event.type === 'PullRequestEvent' && event.payload.action === 'opened')
+
+      let type    = event.type;
+      let payload = event.payload;
+      return type === 'PushEvent' ||
+        (type === 'CreateEvent' && payload.ref_type === 'repository') ||
+        ((type === 'IssuesEvent' || type === 'PullRequestEvent') && payload.action === 'opened')
       ;
     });
 

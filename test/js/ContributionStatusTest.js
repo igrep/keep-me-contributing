@@ -42,6 +42,16 @@ describe('ContributionStatus', () => {
         });
       });
 
+      context('the latest contribution event is a IssuesEvent when opened', () => {
+        let contributionStatus = fromJsonFile('test/fixtures/api.github.com/events/IssuesEvent.json');
+
+        it('has recentlyContributedAt same as the latest PullRequestEvent when opened', () => {
+          assert(
+            contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-26T04:39:34Z').valueOf()
+          );
+        });
+      });
+
     });
   });
 });

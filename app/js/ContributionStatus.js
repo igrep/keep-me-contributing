@@ -16,7 +16,9 @@ class ContributionStatus {
     // Assume Events API's response is in recent-first order.
     let latestEvent = goog.array.find(eventsApiResponse, (event) => {
       return event.type === 'PushEvent' ||
-        (event.type === 'CreateEvent' && event.payload.ref_type === 'repository');
+        (event.type === 'CreateEvent' && event.payload.ref_type === 'repository') ||
+        (event.type === 'PullRequestEvent' && event.payload.action === 'opened')
+      ;
     });
 
     /**

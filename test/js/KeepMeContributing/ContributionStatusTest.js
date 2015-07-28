@@ -3,7 +3,7 @@
 import assert from 'power-assert';
 import fs from 'fs';
 
-import ContributionStatus from '../../app/js';
+import ContributionStatus from '../../../app/js/KeepMeContributing';
 
 describe('ContributionStatus', () => {
   describe('#recentlyContributedAt', () => {

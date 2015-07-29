@@ -1,3 +1,5 @@
+/*global goog:false*/
+
 goog.require('goog.net.XhrIo');
 goog.require('goog.Promise');
 

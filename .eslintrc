@@ -1,6 +1,7 @@
 {
     "rules": {
         "no-multi-spaces": 0,
+        "no-unused-expressions": 0,
         "no-underscore-dangle": 0,
         "indent": [
             2,

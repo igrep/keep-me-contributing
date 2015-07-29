@@ -28,10 +28,26 @@ class Github {
 Github.Contributions;
 
 /**
- * @typedef {Object<string, Contributions>}
- * Its key represents the date of contribution as a string formatted as 'YYYY-MM-DD'.
+ * Key-value store representing a contribution calendar in GitHub profile page.
+ * Its key is the date of contribution.
  * And the value contains a set of contribution of the day.
  */
-Github.ContributionsCalendar;
+class ContributionsCalendar {
+  /**
+   * @param {string} svg Response data from github.com/users/<username>/contributions
+   */
+  constructor(svg){
+  }
+
+  /**
+   * Retrieve Contributions set by Date
+   * @param {Date} date
+   * @returns {Github.Contributions}
+   */
+  contributionsAt(date){
+  }
+}
+
+Github.ContributionsCalendar = ContributionsCalendar;
 
 export default Github;

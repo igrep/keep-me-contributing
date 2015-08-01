@@ -2,53 +2,75 @@
 
 import assert from 'power-assert';
 import fs from 'fs';
+import path from 'path';
+import * as nws from 'node-web-server';
+
+import jsdom from 'mocha-jsdom';
+jsdom();
 
 import ContributionStatus from '../../../app/js/KeepMeContributing';
 
-describe('ContributionStatus', () => {
-  describe('#recentlyContributedAt', () => {
-    context('given a response of https://api.github.com/users/igrep/events', () => {
-      let fromJsonFile = (path) => {
-        return new ContributionStatus(JSON.parse(fs.readFileSync(path)));
+describe('ContributionStatus', function(){
+  before(function(){
+    /**
+     * @type {ContributionStatus}
+     */
+    this.describedInstance = new ContributionStatus({
+      username: 'igrep',
+      apiUrl: 'http://localhost:8999'
+    });
+  });
+
+  after(() => { nws.stop(); });
+
+  describe('#queryHasContributedAt', function(){
+    before(function(){
+      /**
+       * @type {function(Date): boolean}
+       */
+      this.subjectFunction = function(date){
+        return this.describedInstance.queryHasContributedAt(date);
       };
+    });
 
-      context('the latest contribution event is a PushEvent', () => {
-        let contributionStatus = fromJsonFile('test/fixtures/api.github.com/events/PushEvent.json');
+    context('given a response of https://github.com/users/igrep/contributions', function(){
+      before(() => {
+        /**
+         * serve fixtures because sinon.js didn't work maybe because
+         * fakeServer can't modify XMLHttpRequest correctly.
+         */
+        nws.run(
+          {
+            host: 'localhost',
+            port: 8999,
+            docRoot: 'github.com',
+            MIME: { '': 'text/html; charset=utf-8' }
+          },
+          path.normalize(path.join(__dirname, '../../fixtures/'))
+        );
+      });
 
-        it('has recentlyContributedAt same as the latest PushEvent', () => {
-          assert(
-            contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-19T16:08:53Z').valueOf()
-          );
+      context("the argument date's contribution count is 0", function(){
+        it('returns false', function(){
+          return this.subjectFunction(new Date('2015-07-31')).then((result) => { assert(result === false); });
         });
       });
 
-      context('the latest contribution event is a CreateEvent of a repository', () => {
-        let contributionStatus = fromJsonFile('test/fixtures/api.github.com/events/CreateEvent.json');
-
-        it('has recentlyContributedAt same as the latest CreateEvent of a repository', () => {
-          assert(
-            contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-18T04:36:51Z').valueOf()
-          );
+      context("the argument date's contribution count is 2", function(){
+        it('returns true', function(){
+          return this.subjectFunction(new Date('2015-07-23')).then((result) => { assert(result === true); });
         });
       });
 
-      context('the latest contribution event is a PullRequestEvent when opened', () => {
-        let contributionStatus = fromJsonFile('test/fixtures/api.github.com/events/PullRequestEvent.json');
-
-        it('has recentlyContributedAt same as the latest PullRequestEvent when opened', () => {
-          assert(
-            contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-16T15:46:11Z').valueOf()
-          );
+      context("the argument date's contribution count is 1", function(){
+        it('returns true', function(){
+          return this.subjectFunction(new Date('2015-07-29')).then((result) => { assert(result === true); });
         });
       });
 
-      context('the latest contribution event is a IssuesEvent when opened', () => {
-        let contributionStatus = fromJsonFile('test/fixtures/api.github.com/events/IssuesEvent.json');
-
-        it('has recentlyContributedAt same as the latest PullRequestEvent when opened', () => {
-          assert(
-            contributionStatus.recentlyContributedAt.valueOf() === new Date('2015-07-26T04:39:34Z').valueOf()
-          );
+      context("the argument date's contribution count is present", function(){
+        it('returns false', function(){
+          return this.subjectFunction(new Date('2015-08-01')).then((result) => { assert(result === false); });
         });
       });
 

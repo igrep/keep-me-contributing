@@ -3,48 +3,49 @@
 /*
  * @fileoverview
  * Represents the latest contribution status (e.g. when a user push commit recently)
- * Based on GitHub Events API.
- * @see <a href="https://developer.github.com/v3/activity/events/">GitHub Events API Document</a>
- * @see <a href="https://developer.github.com/v3/activity/events/types/">GitHub Event Types Document</a>
- * @see <a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/">Why are my contributions not showing up on my profile? - User Documentation</a>
+ * Based on GitHub's private endpoint https://github.com/users/:username/contributions so far.
  */
+
+import Github from './Github';
 
 if (typeof module !== 'undefined' && module.exports) {
   require('google-closure-library/closure/goog/bootstrap/nodejs');
 }
 
-goog.require('goog.array');
+goog.require('goog.Promise');
 
 class ContributionStatus {
 
   /**
-   * TODO: Create type GithubApi.EventsApiResponse
-   * @param {Array<Object>}
+   * @constructor
+   * @nosideeffects
+   * @param {{username: string, apiUrl: string}} config
    */
-  constructor(eventsApiResponse){
-    let latestEvent = goog.array.find(eventsApiResponse, (event) => {
-
-      let type    = event.type;
-      let payload = event.payload;
-      return type === 'PushEvent' ||
-        (type === 'CreateEvent' && payload.ref_type === 'repository') ||
-        ((type === 'IssuesEvent' || type === 'PullRequestEvent') && payload.action === 'opened')
-      ;
-    });
-
+  constructor(config){
     /**
-     * @private {Date}
+     * @type {Github}
+     * @private
      */
-    this._recentlyContributedAt = new Date(latestEvent.created_at);
+    this.github_ = new Github(config);
   }
+
   /**
    * The date of the lastest public contribution of a user.
-   * Assumes Events API's response is in recent-first order.
-   * @nosideeffects
-   * @return {Date}
+   * @param {Date} date
+   * @return {goog.Promise<boolean, ?>}
    */
-  get recentlyContributedAt(){
-    return this._recentlyContributedAt;
+  queryHasContributedAt(date){
+    return this.github_
+      .fetchContributionsCalendar()
+      .then((/** Github.ContributionsCalendar */ calendar) => {
+        let /** ?Github.Contributions */ contributions = calendar.contributionsAt(date);
+        if(contributions){
+          goog.Promise.resolve(contributions.length > 0);
+        } else {
+          goog.Promise.resolve(false);
+        }
+      })
+    ;
   }
 }
 

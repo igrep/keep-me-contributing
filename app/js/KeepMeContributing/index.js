@@ -1,3 +1,10 @@
-import ContributionStatus from './ContributionStatus';
+/*global goog:false*/
 
-export default ContributionStatus;
+goog.provide('KeepMeContributing');
+
+import ContributionStatus from './ContributionStatus';
+import Github from './Github';
+
+let KeepMeContributing = { ContributionStatus, Github };
+
+export default { KeepMeContributing };

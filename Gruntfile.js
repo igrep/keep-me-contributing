@@ -43,13 +43,9 @@ module.exports = function (grunt) {
         command: (
           [
             'java -jar node_modules/google-closure-compiler/compiler.jar',
-            '--logging_level=INFO',
 
-            '--process_common_js_modules',
-            '--common_js_entry_module=app/js/KeepMeContributing/index.js',
-
-            '--manage_closure_dependencies',
-            '--new_type_inf',
+            '--only_closure_dependencies',
+            '--closure_entry_point=KeepMeContributing',
 
             '--create_source_map=test/js/sourceMap.json',
 
@@ -57,16 +53,18 @@ module.exports = function (grunt) {
             '--language_in=ECMASCRIPT6',
             '--language_out=ECMASCRIPT5_STRICT',
 
-            '--jscomp_error=checkTypes',
             '--jscomp_error=constantProperty',
             '--jscomp_error=const',
             '--jscomp_error=visibility',
             '--jscomp_error=checkRegExp',
-            '--jscomp_error=invalidCasts',
             '--warning_level=VERBOSE',
             '--jscomp_warning=checkDebuggerStatement',
 
-            '--js=app/js/**.js',
+            '--js=app/lib/google-closure-library/closure/goog/**.js',
+            '--js=!app/lib/google-closure-library/closure/goog/**test.js',
+            '--js=app/lib/google-closure-library/third_party/closure/goog/**.js',
+            '--js=!app/lib/google-closure-library/third_party/closure/goog/**test.js',
+            '--js=app/js/KeepMeContributing/**.js',
             '--js_output_file=test/js/app.js'
           ].join(' ')
         )

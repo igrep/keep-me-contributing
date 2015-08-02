@@ -11,6 +11,19 @@ module.exports = function (grunt) {
       }
     },
     copy: {
+      bowerForTest: {
+        files: [
+          {
+            expand: true,
+            cwd: 'app/',
+            src: [
+              'lib/**/*.js',
+              'lib/**/*.css'
+            ],
+            dest: 'test/lib/'
+          }
+        ]
+      },
       closureLibrary: {
         files: [
           {

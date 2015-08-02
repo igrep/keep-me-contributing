@@ -1,6 +1,6 @@
 /*global goog:false*/
 
-/*
+/**
  * @fileoverview
  * Represents the latest contribution status (e.g. when a user push commit recently)
  * Based on GitHub's private endpoint https://github.com/users/:username/contributions so far.

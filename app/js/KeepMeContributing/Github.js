@@ -1,15 +1,11 @@
-/*global goog:false*/
+/*global goog:false KeepMeContributing:false*/
 
 /**
  * @fileoverview Wrapper of github.js or implements some API endpoints
  * which are not supported by github.js.
  */
 
-if (typeof module !== 'undefined' && module.exports) {
-  require('google-closure-library/closure/goog/bootstrap/nodejs');
-  global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-  global.DOMParser = require('xmldom').DOMParser;
-}
+goog.provide('KeepMeContributing.Github');
 
 goog.require('goog.net.XhrIo');
 goog.require('goog.Promise');
@@ -27,7 +23,7 @@ class ContributionsCalendar {
   /**
    * @nosideeffects
    * @constructor
-   * @param {Object<string, Github.Contributions>} contributionCountByDateString
+   * @param {Object<string, KeepMeContributing.Github.Contributions>} contributionCountByDateString
    */
   constructor(contributionCountByDateString){
     this.contributionCountByDateString_ = contributionCountByDateString;
@@ -37,7 +33,7 @@ class ContributionsCalendar {
    * Retrieve Contributions set by Date
    * @nosideeffects
    * @param {Date} date
-   * @returns {?Github.Contributions}
+   * @returns {?KeepMeContributing.Github.Contributions}
    */
   contributionsAt(date){
     let /** number */ month = date.getMonth() + 1;
@@ -55,7 +51,7 @@ class ContributionsCalendar {
   /**
    * @nosideeffects
    * @param {string} svgData Response SVG Document from github.com/users/<username>/contributions
-   * @returns {?Github.ContributionsCalendar}
+   * @returns {?KeepMeContributing.Github.ContributionsCalendar}
    */
   static parse(svgData){
     let /** goog.array.ArrayLike */ elements =
@@ -65,10 +61,13 @@ class ContributionsCalendar {
       return null;
     }
 
-    let /** Object<string, Github.Contributions> */ result = {};
+    let /** Object<string, KeepMeContributing.Github.Contributions> */ result = {};
     goog.array.forEach(elements, (/** Element */ element) => {
-      let /** string */ dateString = goog.dom.dataset.get(element, 'date');
+      let /** ?string */ dateString = goog.dom.dataset.get(element, 'date');
       let /** number */ count = parseInt(goog.dom.dataset.get(element, 'count'), 10);
+      if(!dateString || isNaN(count)){
+        return;
+      }
       result[dateString] = { length: count };
     });
     return new this(result);
@@ -114,11 +113,17 @@ class Github {
 }
 
 /**
+ * @typedef {Github}
+ */
+KeepMeContributing.Github = Github;
+
+/**
  * @typedef {{length: number}}
  * Currently it represents only count of the contributions of the day.
  */
-Github.Contributions;
+KeepMeContributing.Github.Contributions;
 
-Github.ContributionsCalendar = ContributionsCalendar;
-
-export default Github;
+/**
+ * @typedef {ContributionsCalendar}
+ */
+KeepMeContributing.Github.ContributionsCalendar = ContributionsCalendar;

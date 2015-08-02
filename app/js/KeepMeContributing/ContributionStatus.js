@@ -1,4 +1,4 @@
-/*global goog:false*/
+/*global goog:false KeepMeContributing:false*/
 
 /**
  * @fileoverview
@@ -6,11 +6,8 @@
  * Based on GitHub's private endpoint https://github.com/users/:username/contributions so far.
  */
 
-import Github from './Github';
-
-if (typeof module !== 'undefined' && module.exports) {
-  require('google-closure-library/closure/goog/bootstrap/nodejs');
-}
+goog.provide('KeepMeContributing.ContributionStatus');
+goog.require('KeepMeContributing.Github');
 
 goog.require('goog.Promise');
 
@@ -23,10 +20,10 @@ class ContributionStatus {
    */
   constructor(config){
     /**
-     * @type {Github}
+     * @type {KeepMeContributing.Github}
      * @private
      */
-    this.github_ = new Github(config);
+    this.github_ = new KeepMeContributing.Github(config);
   }
 
   /**
@@ -37,16 +34,16 @@ class ContributionStatus {
   queryHasContributedAt(date){
     return this.github_
       .fetchContributionsCalendar()
-      .then((/** Github.ContributionsCalendar */ calendar) => {
-        let /** ?Github.Contributions */ contributions = calendar.contributionsAt(date);
+      .then((/** KeepMeContributing.Github.ContributionsCalendar */ calendar) => {
+        let /** ?KeepMeContributing.Github.Contributions */ contributions = calendar.contributionsAt(date);
         if(contributions){
-          goog.Promise.resolve(contributions.length > 0);
+          return goog.Promise.resolve(contributions.length > 0);
         } else {
-          goog.Promise.resolve(false);
+          return goog.Promise.resolve(false);
         }
       })
     ;
   }
 }
 
-export default ContributionStatus;
+KeepMeContributing.ContributionStatus = ContributionStatus;

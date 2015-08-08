@@ -16,14 +16,14 @@ class ContributionStatus {
   /**
    * @constructor
    * @nosideeffects
-   * @param {{username: string, apiUrl: string}} config
+   * @param {KeepMeContributing.Github} github
    */
-  constructor(config){
+  constructor(github){
     /**
      * @type {KeepMeContributing.Github}
      * @private
      */
-    this.github_ = new KeepMeContributing.Github(config);
+    this.github_ = github;
   }
 
   /**

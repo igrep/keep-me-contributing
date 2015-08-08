@@ -16,8 +16,8 @@ describe('ContributionStatus', function(){
         return this.describedInstance.queryHasContributedAt(date);
       };
 
-      this.expectTheResultToBe = function(date, result) {
-        return this.subjectFunction(date).then(function(result){ expect(result).to.be(false); });
+      this.expectTheResultToBe = function(date, expected) {
+        return this.subjectFunction(date).then(function(actual){ expect(actual).to.be(expected); });
       };
     });
 

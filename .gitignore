@@ -32,3 +32,4 @@ bower_components
 /app/lib/
 
 /app/test/js/app.js
+/app/test/js/output.js.map

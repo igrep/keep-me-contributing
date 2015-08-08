@@ -34,7 +34,9 @@ module.exports = function (grunt) {
             '--only_closure_dependencies',
             '--closure_entry_point=KeepMeContributing',
 
-            '--create_source_map=test/js/sourceMap.json',
+            '--create_source_map=app/test/js/output.js.map',
+            '--source_map_location_mapping=app\\|',
+            '--output_wrapper "%output%\n//# sourceMappingURL=/test/js/output.js.map"',
 
             '--allow_es6_out',
             '--language_in=ECMASCRIPT6',

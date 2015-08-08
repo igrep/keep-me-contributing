@@ -15,9 +15,6 @@ describe('ContributionStatus', function(){
 
   describe('#queryHasContributedAt', function(){
     before(function(){
-      /**
-       * @type {function(Date): boolean}
-       */
       this.subjectFunction = function(date){
         return this.describedInstance.queryHasContributedAt(date);
       };

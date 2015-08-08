@@ -1,7 +1,6 @@
 'use strict';
 
 import assert from 'power-assert';
-import fs from 'fs';
 import path from 'path';
 import * as nws from 'node-web-server';
 

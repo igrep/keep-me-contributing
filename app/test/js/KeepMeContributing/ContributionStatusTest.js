@@ -2,10 +2,7 @@
 
 describe('ContributionStatus', function(){
   before(function(){
-    /**
-     * @type {ContributionStatus}
-     */
-    this.describedInstance = new ContributionStatus({
+    this.describedInstance = new KeepMeContributing.ContributionStatus({
       username: 'igrep',
       // access to js-dev-server on test
       // FIXME: use sinon.js fakeServer

@@ -11,19 +11,6 @@ module.exports = function (grunt) {
       }
     },
     copy: {
-      bowerForTest: {
-        files: [
-          {
-            expand: true,
-            cwd: 'app/',
-            src: [
-              'lib/**/*.js',
-              'lib/**/*.css'
-            ],
-            dest: 'test/lib/'
-          }
-        ]
-      },
       closureLibrary: {
         files: [
           {
@@ -65,12 +52,12 @@ module.exports = function (grunt) {
             '--js=app/lib/google-closure-library/third_party/closure/goog/**.js',
             '--js=!app/lib/google-closure-library/third_party/closure/goog/**test.js',
             '--js=app/js/KeepMeContributing/**.js',
-            '--js_output_file=test/js/app.js'
+            '--js_output_file=app/test/js/app.js'
           ].join(' ')
         )
       },
-      testServer: { command: 'js-dev-server -S test/ -W test/ --port 9876' },
-      lint: { command: 'eslint Gruntfile.js app/js/ test/js/' }
+      testServer: { command: 'js-dev-server -S app/ -W app/ --port 9876' },
+      lint: { command: 'eslint Gruntfile.js app/js/' }
     }
   });
 
@@ -79,7 +66,6 @@ module.exports = function (grunt) {
     'copy:closureLibrary'
   ]);
   grunt.registerTask('test', [
-    'copy:bowerForTest',
     'shell:buildTest',
     'shell:testServer'
   ]);

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Unit test of module KeepMeContributing, powered by Mocha</title>
+<link href="/lib/mocha/mocha.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="mocha"></div>
+<script type="text/javascript" src="/test/js/app.js"></script>
+<script type="text/javascript" src="/lib/mocha/mocha.js"></script>
+<script type="text/javascript">
+  mocha.setup('bdd');
+</script>
+<script type="text/javascript" src="/test/js/KeepMeContributing/ContributionStatusTest.js"></script>
+<script type="text/javascript">
+  mocha.checkLeaks();
+  mocha.run();
+</script>
+</body>
+</html>

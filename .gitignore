@@ -30,3 +30,5 @@ bower_components
 
 # directory to grunt bower:install
 /app/lib/
+
+/app/test/js/app.js

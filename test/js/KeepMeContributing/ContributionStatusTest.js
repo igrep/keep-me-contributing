@@ -16,7 +16,9 @@ describe('ContributionStatus', function(){
      */
     this.describedInstance = new ContributionStatus({
       username: 'igrep',
-      apiUrl: 'http://localhost:8999'
+      // access to js-dev-server on test
+      // FIXME: use sinon.js fakeServer
+      apiUrl: 'http://localhost:9876/fixtures/github.com'
     });
   });
 

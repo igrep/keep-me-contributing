@@ -66,6 +66,7 @@ class ContributionsCalendar {
       let /** ?string */ dateString = goog.dom.dataset.get(element, 'date');
       let /** number */ count = parseInt(goog.dom.dataset.get(element, 'count'), 10);
       if(!dateString || isNaN(count)){
+        // TODO: throw error or do something to warn the user.
         return;
       }
       result[dateString] = { length: count };

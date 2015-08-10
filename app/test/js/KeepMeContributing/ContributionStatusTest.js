@@ -5,7 +5,6 @@ describe('ContributionStatus', function(){
     let github = new KeepMeContributing.Github({
       username: 'igrep',
       // access to js-dev-server on test
-      // FIXME: use sinon.js fakeServer
       apiUrl: '/test/fixtures/github.com'
     });
     this.describedInstance = new KeepMeContributing.ContributionStatus(github);

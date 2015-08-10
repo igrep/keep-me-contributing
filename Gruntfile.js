@@ -44,7 +44,6 @@ module.exports = function (grunt) {
 
             '--jscomp_error=constantProperty',
             '--jscomp_error=const',
-            '--jscomp_error=visibility',
             '--jscomp_error=checkRegExp',
             '--warning_level=VERBOSE',
             '--jscomp_warning=checkDebuggerStatement',

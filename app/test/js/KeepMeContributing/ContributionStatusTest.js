@@ -6,7 +6,7 @@ describe('ContributionStatus', function(){
       username: 'igrep',
       // access to js-dev-server on test
       // FIXME: use sinon.js fakeServer
-      apiUrl: 'http://localhost:9876/test/fixtures/github.com'
+      apiUrl: '/test/fixtures/github.com'
     });
     this.describedInstance = new KeepMeContributing.ContributionStatus(github);
   });

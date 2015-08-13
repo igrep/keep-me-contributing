@@ -10,8 +10,14 @@ goog.provide('KeepMeContributing.ContributionStatus');
 goog.require('KeepMeContributing.Github');
 
 goog.require('goog.Promise');
+goog.require('goog.events.EventTarget');
+goog.require('goog.async.Throttle');
 
-class ContributionStatus {
+/*
+ * NOTE: extending by ES6 style, closure compiler warns a lot.
+ *       report later if I remember.
+ */
+class ContributionStatus extends goog.events.EventTarget {
 
   /**
    * @constructor
@@ -19,6 +25,7 @@ class ContributionStatus {
    * @param {KeepMeContributing.Github} github
    */
   constructor(github){
+    super();
     /**
      * @type {KeepMeContributing.Github}
      * @private
@@ -44,6 +51,37 @@ class ContributionStatus {
       })
     ;
   }
+
+  /**
+   * Start to ask if I contributed today and tell the result by dispatching
+   * one of KeepMeContributing.ContributionStatus.Events.
+   * @param {number} interval Ask GitHub API per `interval` milliseconds.
+   */
+  startPolling(interval){
+    new goog.async.Throttle(
+      () => {
+        this.queryHasContributedAt(new Date())
+          .then((contributed) => {
+            if (contributed) {
+              this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.CONTRIBUTED);
+            } else {
+              this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.NOT_YET);
+            }
+          });
+      },
+      interval
+    ).fire();
+  }
 }
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+ContributionStatus.Events = {
+  CONTRIBUTED: 'contributed',
+  NOT_YET: 'not_yet',
+  ERROR: 'error'
+};
 
 KeepMeContributing.ContributionStatus = ContributionStatus;

@@ -1,5 +1,8 @@
 'use strict';
 
+goog.require('goog.Promise');
+goog.require('goog.object');
+
 describe('ContributionStatus', function(){
   before(function(){
     let github = new KeepMeContributing.Github({
@@ -7,7 +10,8 @@ describe('ContributionStatus', function(){
       // access to js-dev-server on test
       apiUrl: '/test/fixtures/github.com'
     });
-    this.describedInstance = new KeepMeContributing.ContributionStatus(github);
+    this.describedClass = KeepMeContributing.ContributionStatus;
+    this.describedInstance = new this.describedClass(github);
   });
 
   describe('#queryHasContributedAt', function(){
@@ -48,5 +52,56 @@ describe('ContributionStatus', function(){
       });
 
     });
+  });
+
+  /**
+   * FIXME: complex test code.
+   * Maybe I should test this method on the view model with less stubbed objects.
+   */
+  describe('startPolling', function(){
+    before(function(){
+      this.stubQuery = sinon.stub(this.describedClass.prototype, 'queryHasContributedAt');
+      this.clock = sinon.useFakeTimers();
+
+      this.subjectFunction = function(){
+        this.describedInstance.startPolling(1);
+        this.clock.tick(1);
+      };
+
+      this.expectTheDipatchedEventToBe = function(expectedEvent, done){
+        goog.events.listen(this.describedInstance, expectedEvent, function(){
+          expect(expectedEvent).to.be(expectedEvent);
+          done();
+        });
+        this.subjectFunction();
+      }.bind(this);
+    });
+    after(function(){
+      this.stubQuery.restore();
+      this.clock.restore();
+    });
+
+    context('when querying contribution status successfully', function(){
+      before(function(){
+        this.stubQueryResultAs = function(result){
+          this.stubQuery.returns(new goog.Promise(function(resolve){ resolve(result); }));
+        };
+      });
+
+      context('the answer is true', function(){
+        before(function(){ this.stubQueryResultAs(true); });
+        it('dispatches a contributed event', function(done){
+          this.expectTheDipatchedEventToBe(KeepMeContributing.ContributionStatus.Events.CONTRIBUTED, done);
+        });
+      });
+
+      context('the answer is false', function(){
+        before(function(){ this.stubQueryResultAs(false); });
+        it('dispatches a not_yet event', function(done){
+          this.expectTheDipatchedEventToBe(KeepMeContributing.ContributionStatus.Events.NOT_YET, done);
+        });
+      });
+    });
+
   });
 });

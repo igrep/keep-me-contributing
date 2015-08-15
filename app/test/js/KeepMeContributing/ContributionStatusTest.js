@@ -1,7 +1,6 @@
 'use strict';
 
 goog.require('goog.Promise');
-goog.require('goog.object');
 
 describe('ContributionStatus', function(){
   before(function(){

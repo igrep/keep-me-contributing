@@ -57,6 +57,23 @@ module.exports = function (grunt) {
       },
       testServer: { command: 'js-dev-server -S app/ -W app/ --port 9876' },
       lint: { command: 'eslint Gruntfile.js app/js/' }
+    },
+    watch: {
+      test: {
+        files: ['app/js/**/*.js'],
+        tasks: ['shell:buildTest', 'notify:buildTest'],
+        options: {
+          spawn: false
+        }
+      }
+    },
+    notify: {
+      buildTest: {
+        options: {
+          title: 'buildTest',
+          message: 'Finished to build test/js/app.js.\nCheck the terminal to check if an error occurred.'
+        }
+      }
     }
   });
 

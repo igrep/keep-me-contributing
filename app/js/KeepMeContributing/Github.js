@@ -82,8 +82,13 @@ class Github {
    * @param {{username: string, apiUrl: string}} config
    */
   constructor(config){
+    /**
+     * @type {string}
+     * @private
+     */
+    this.username_ = config.username;
     /** @type {string} */
-    this.endPointUrl_ = `${config.apiUrl}/users/${config.username}/contributions`;
+    this.endPointUrl_ = `${config.apiUrl}/users/${this.username_}/contributions`;
   }
 
   /**
@@ -93,7 +98,7 @@ class Github {
     return new goog.Promise(
       (
         /** function(ContributionsCalendar) */ resolve,
-        /** function() */ reject
+        /** function(Error) */ reject
       ) => {
         goog.net.XhrIo.send(
           this.endPointUrl_,
@@ -103,7 +108,7 @@ class Github {
             if(calendar){
               resolve(calendar);
             } else {
-              reject();
+              reject(new Error(`Couldn't get contribution calendar of ${this.username_}`));
             }
           },
           'GET'

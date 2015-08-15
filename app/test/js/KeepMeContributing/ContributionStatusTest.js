@@ -5,13 +5,16 @@ goog.require('goog.object');
 
 describe('ContributionStatus', function(){
   before(function(){
-    let github = new KeepMeContributing.Github({
-      username: 'igrep',
-      // access to js-dev-server on test
-      apiUrl: '/test/fixtures/github.com'
-    });
     this.describedClass = KeepMeContributing.ContributionStatus;
-    this.describedInstance = new this.describedClass(github);
+
+    this.describedInstanceFor = function(username){
+      let github = new KeepMeContributing.Github({
+        username: username,
+        // access to js-dev-server on test
+        apiUrl: '/test/fixtures/github.com'
+      });
+      return new this.describedClass(github);
+    };
   });
 
   describe('#queryHasContributedAt', function(){
@@ -26,6 +29,9 @@ describe('ContributionStatus', function(){
     });
 
     context('given a response of https://github.com/users/igrep/contributions', function(){
+      before(function(){
+        this.describedInstance = this.describedInstanceFor('igrep');
+      });
 
       context("the argument date's contribution count is 0", function(){
         it('returns false', function(){
@@ -52,6 +58,27 @@ describe('ContributionStatus', function(){
       });
 
     });
+
+    context('given no response from github.com', function(){
+      before(function(){
+        this.username = 'non_existing_user';
+        this.describedInstance = this.describedInstanceFor(this.username);
+      });
+
+      it('throws an error to show the reponse was unavailable.', function(){
+        return this.subjectFunction(new Date())
+          .then(
+            function(){ expect().fail(); },
+            function(error){
+              expect(error.toString()).to.match(
+                new RegExp("Error: Couldn't get contribution calendar of " + this.username)
+              );
+            }.bind(this)
+          )
+        ;
+      });
+
+    });
   });
 
   /**
@@ -60,6 +87,8 @@ describe('ContributionStatus', function(){
    */
   describe('startPolling', function(){
     before(function(){
+      this.describedInstance = this.describedInstanceFor('igrep');
+
       this.stubQuery = sinon.stub(this.describedClass.prototype, 'queryHasContributedAt');
       this.clock = sinon.useFakeTimers();
 

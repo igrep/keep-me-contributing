@@ -19,12 +19,9 @@ describe('ContributionStatus', function(){
 
   describe('#queryHasContributedAt', function(){
     before(function(){
-      this.subjectFunction = function(date){
-        return this.describedInstance.queryHasContributedAt(date);
-      };
-
       this.expectTheResultToBe = function(date, expected) {
-        return this.subjectFunction(date).then(function(actual){ expect(actual).to.be(expected); });
+        return this.describedInstance.queryHasContributedAt(date)
+          .then(function(actual){ expect(actual).to.be(expected); });
       };
     });
 
@@ -66,7 +63,7 @@ describe('ContributionStatus', function(){
       });
 
       it('throws an error to show the reponse was unavailable.', function(){
-        return this.subjectFunction(new Date())
+        return this.describedInstance.queryHasContributedAt(new Date())
           .then(
             function(){ expect().fail(); },
             function(error){
@@ -86,28 +83,26 @@ describe('ContributionStatus', function(){
    * Maybe I should test this method on the view model with less stubbed objects.
    */
   describe('startPolling', function(){
+    // Immediately timeout to show failure when the specified event doesn't occur.
+    this.timeout(100);
+
     before(function(){
+
       this.describedInstance = this.describedInstanceFor('igrep');
 
       this.stubQuery = sinon.stub(this.describedClass.prototype, 'queryHasContributedAt');
-      this.clock = sinon.useFakeTimers();
-
-      this.subjectFunction = function(){
-        this.describedInstance.startPolling(1);
-        this.clock.tick(1);
-      };
 
       this.expectTheDipatchedEventToBe = function(expectedEvent, done){
+
         goog.events.listen(this.describedInstance, expectedEvent, function(){
           expect(expectedEvent).to.be(expectedEvent);
           done();
         });
-        this.subjectFunction();
+        this.describedInstance.startPolling(1);
       }.bind(this);
     });
     after(function(){
       this.stubQuery.restore();
-      this.clock.restore();
     });
 
     context('when querying contribution status successfully', function(){

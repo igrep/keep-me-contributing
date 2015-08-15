@@ -67,7 +67,7 @@ describe('ContributionStatus', function(){
             function(){ expect().fail(); },
             function(error){
               expect(error.toString()).to.match(
-                new RegExp("Error: Couldn't get contribution calendar of " + this.username)
+                new RegExp(`Error: Couldn't get contribution calendar of ${this.username}`)
               );
             }.bind(this)
           )

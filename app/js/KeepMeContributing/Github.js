@@ -26,6 +26,10 @@ class ContributionsCalendar {
    * @param {Object<string, KeepMeContributing.Github.Contributions>} contributionCountByDateString
    */
   constructor(contributionCountByDateString){
+    /**
+     * @type {Object<string, KeepMeContributing.Github.Contributions>}
+     * @private
+     */
     this.contributionCountByDateString_ = contributionCountByDateString;
   }
 
@@ -77,8 +81,8 @@ class ContributionsCalendar {
 
 class Github {
   /**
-   * @constructor
    * @nosideeffects
+   * @constructor
    * @param {{username: string, apiUrl: string}} config
    */
   constructor(config){
@@ -87,7 +91,10 @@ class Github {
      * @private
      */
     this.username_ = config.username;
-    /** @type {string} */
+    /**
+     * @type {string}
+     * @private
+     **/
     this.endPointUrl_ = `${config.apiUrl}/users/${this.username_}/contributions`;
   }
 

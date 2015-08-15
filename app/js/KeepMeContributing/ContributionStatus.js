@@ -62,7 +62,7 @@ class ContributionStatus extends goog.events.EventTarget {
       () => {
         this.queryHasContributedAt(new Date())
           .then((contributed) => {
-            if (contributed) {
+            if (contributed){
               this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.CONTRIBUTED);
             } else {
               this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.NOT_YET);

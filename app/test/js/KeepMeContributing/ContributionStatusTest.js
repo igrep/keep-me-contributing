@@ -130,7 +130,7 @@ describe('ContributionStatus', function(){
       before(function(){
         this.stubQuery.returns(
           new goog.Promise(function(_, reject){
-            reject(new Error('error'));
+            reject(new Error('error caused by test'));
           })
         );
       });

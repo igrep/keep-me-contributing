@@ -132,5 +132,20 @@ describe('ContributionStatus', function(){
       });
     });
 
+    context('when failed to query contribution status', function(){
+      before(function(){
+        this.stubQuery.returns(
+          new goog.Promise(function(_, reject){
+            reject(new Error('error'));
+          })
+        );
+      });
+
+      it('dispatches an error event', function(done){
+        this.expectTheDipatchedEventToBe(KeepMeContributing.ContributionStatus.Events.ERROR, done);
+      });
+
+    });
+
   });
 });

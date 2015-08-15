@@ -71,7 +71,7 @@ module.exports = function (grunt) {
       buildTest: {
         options: {
           title: 'buildTest',
-          message: 'Finished to build test/js/app.js.\nCheck the terminal to check if an error occurred.'
+          message: 'Finished to build test/js/app.js.\nCheck the terminal to check for warnings.'
         }
       }
     }

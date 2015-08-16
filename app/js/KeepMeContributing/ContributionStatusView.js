@@ -12,6 +12,7 @@ goog.require('KeepMeContributing.Github');
 
 goog.require('goog.ui.Component');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 goog.require('goog.events.EventTarget');
 
 /**
@@ -48,33 +49,20 @@ class ContributionStatusView extends goog.ui.Component {
   enterDocument(){
     super();
 
-    this.getHandler().listen(
-      this.contributionStatus_,
+    this.attachContentToEvent_(
       KeepMeContributing.ContributionStatus.Events.CONTRIBUTED,
-      () => {
-        // TODO: switch class using goog.dom.classes.addRemove
-        this.getDomHelper().setTextContent(
-          this.getElement(), `Congratulations! ${this.username_} has already contributed today!`
-        );
-      }
+      `Congratulations! ${this.username_} has already contributed today!`,
+      'success'
     );
-    this.getHandler().listen(
-      this.contributionStatus_,
+    this.attachContentToEvent_(
       KeepMeContributing.ContributionStatus.Events.NOT_YET,
-      () => {
-        this.getDomHelper().setTextContent(
-          this.getElement(), `Oh my... ${this.username_} has NOT contributed yet today!`
-        );
-      }
+      `Oh my... ${this.username_} has NOT contributed yet today!`,
+      'danger'
     );
-    this.getHandler().listen(
-      this.contributionStatus_,
+    this.attachContentToEvent_(
       KeepMeContributing.ContributionStatus.Events.ERROR,
-      () => {
-        this.getDomHelper().setTextContent(
-          this.getElement(), 'An error occurred while loading contribution status. See the developer console for details.'
-        );
-      }
+      'An error occurred while loading contribution status. See the developer console for details.',
+      'warning'
     );
   }
 
@@ -92,6 +80,20 @@ class ContributionStatusView extends goog.ui.Component {
    **/
   canDecorate(_element){
     return false;
+  }
+
+  /**
+   * @private
+   * @param {ContributionStatus.Events} eventName
+   * @param {string} message
+   * @param {string} className
+   */
+  attachContentToEvent_(eventName, message, className){
+    this.getHandler().listen(this.contributionStatus_, eventName, () => {
+      let /** Element */ e = this.getElement();
+      this.getDomHelper().setTextContent(e, message);
+      goog.dom.classlist.set(e, className);
+    });
   }
 
 }

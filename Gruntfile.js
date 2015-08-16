@@ -26,16 +26,16 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      buildTest: {
+      buildDebug: {
         command: [
           'java -jar node_modules/google-closure-compiler/compiler.jar',
 
           '--only_closure_dependencies',
           '--closure_entry_point=KeepMeContributing',
 
-          '--create_source_map=app/test/js/output.js.map',
+          '--create_source_map=app/js/output.js.map',
           '--source_map_location_mapping=app\\|',
-          '--output_wrapper "%output%\n//# sourceMappingURL=/test/js/output.js.map"',
+          '--output_wrapper "%output%\n//# sourceMappingURL=/js/output.js.map"',
 
           '--allow_es6_out',
           '--language_in=ECMASCRIPT6',
@@ -52,26 +52,26 @@ module.exports = function (grunt) {
           '--js=app/lib/google-closure-library/third_party/closure/goog/**.js',
           '--js=!app/lib/google-closure-library/third_party/closure/goog/**test.js',
           '--js=app/js/KeepMeContributing/**.js',
-          '--js_output_file=app/test/js/app.js'
+          '--js_output_file=app/js/app.js'
         ].join(' ')
       },
       testServer: { command: 'js-dev-server -S app/ -W app/ --port 9876' },
       lint: { command: 'eslint Gruntfile.js app/js/' }
     },
     watch: {
-      test: {
+      buildDebug: {
         files: ['app/js/**/*.js'],
-        tasks: ['shell:buildTest', 'notify:buildTest'],
+        tasks: ['shell:buildDebug', 'notify:buildDebug'],
         options: {
           spawn: false
         }
       }
     },
     notify: {
-      buildTest: {
+      buildDebug: {
         options: {
-          title: 'buildTest',
-          message: 'Finished to build test/js/app.js.\nCheck the terminal to check for warnings.'
+          title: 'buildDebug',
+          message: 'Finished to build js/app.js.\nCheck the terminal to check for warnings.'
         }
       }
     }
@@ -82,12 +82,12 @@ module.exports = function (grunt) {
     'copy:closureLibrary'
   ]);
   grunt.registerTask('test', [
-    'shell:buildTest',
+    'shell:buildDebug',
     'shell:testServer'
   ]);
 
   grunt.registerTask('default', [
     'shell:lint',
-    'test'
+    'shell:buildDebug'
   ]);
 };

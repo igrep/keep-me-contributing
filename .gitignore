@@ -31,5 +31,5 @@ bower_components
 # directory to grunt bower:install
 /app/lib/
 
-/app/test/js/app.js
-/app/test/js/output.js.map
+/app/js/app.js
+/app/js/output.js.map

@@ -60,7 +60,7 @@ module.exports = function (grunt) {
     },
     watch: {
       buildDebug: {
-        files: ['app/js/**/*.js'],
+        files: ['app/js/KeepMeContributing/*.js'],
         tasks: ['shell:buildDebug', 'notify:buildDebug'],
         options: {
           spawn: false

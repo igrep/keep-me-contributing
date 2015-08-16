@@ -87,4 +87,7 @@ ContributionStatus.Events = {
   ERROR: 'error'
 };
 
+/**
+ * @typedef {ContributionStatus}
+ */
 KeepMeContributing.ContributionStatus = ContributionStatus;

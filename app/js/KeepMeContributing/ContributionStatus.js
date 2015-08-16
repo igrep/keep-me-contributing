@@ -68,7 +68,7 @@ class ContributionStatus extends goog.events.EventTarget {
               this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.NOT_YET);
             }
           }, (error) => {
-            console.error(error);
+            console.error(error.toString());
             this.dispatchEvent(KeepMeContributing.ContributionStatus.Events.ERROR);
           });
       },

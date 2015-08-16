@@ -62,9 +62,7 @@ module.exports = function (grunt) {
       buildDebug: {
         files: ['app/js/KeepMeContributing/*.js'],
         tasks: ['shell:buildDebug', 'notify:buildDebug'],
-        options: {
-          spawn: false
-        }
+        options: { interrupt: true }
       }
     },
     notify: {

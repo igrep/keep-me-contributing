@@ -11,6 +11,7 @@
   "scripts": {
     "build": "grunt default",
     "test": "grunt shell:test",
+    "watch.test": "grunt watch:test",
     "lint": "grunt shell:lint",
     "install": "grunt install"
   },

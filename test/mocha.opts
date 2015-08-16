@@ -1,4 +1,0 @@
---colors
---reporter spec
---require espower-babel/guess
---compilers js:babel/register

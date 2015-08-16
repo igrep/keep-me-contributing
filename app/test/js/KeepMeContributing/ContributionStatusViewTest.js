@@ -16,6 +16,7 @@ describe('ContributionStatusView', function(){
     beforeEach(function(){
       this.targetElement = goog.dom.createElement(goog.dom.TagName.DIV);
       this.describedInstance.render(this.targetElement);
+      this.subjectElement = this.describedInstance.getElement();
     });
 
     afterEach(function(){
@@ -28,9 +29,15 @@ describe('ContributionStatusView', function(){
       });
 
       it('renders a message showing that the user has already contributed', function(){
-        expect(goog.dom.getTextContent(this.targetElement)).to.be(
+        expect(goog.dom.getTextContent(this.subjectElement)).to.be(
           `Congratulations! ${this.username} has already contributed today!`
         );
+      });
+
+      it('sets the css class "success"', function(){
+        let classList = goog.dom.classlist.get(this.subjectElement);
+        expect(classList[0]).to.be('success');
+        expect(classList.length).to.be(1);
       });
     });
 
@@ -40,9 +47,15 @@ describe('ContributionStatusView', function(){
       });
 
       it('renders a message showing that the user has already contributed', function(){
-        expect(goog.dom.getTextContent(this.targetElement)).to.be(
+        expect(goog.dom.getTextContent(this.subjectElement)).to.be(
           `Oh my... ${this.username} has NOT contributed yet today!`
         );
+      });
+
+      it('sets the css class "danger"', function(){
+        let classList = goog.dom.classlist.get(this.subjectElement);
+        expect(classList[0]).to.be('danger');
+        expect(classList.length).to.be(1);
       });
     });
 
@@ -52,9 +65,15 @@ describe('ContributionStatusView', function(){
       });
 
       it('renders a message showing that the user has already contributed', function(){
-        expect(goog.dom.getTextContent(this.targetElement)).to.be(
-          `An error occurred while loading contribution status. See the developer console for details.`
+        expect(goog.dom.getTextContent(this.subjectElement)).to.be(
+          'An error occurred while loading contribution status. See the developer console for details.'
         );
+      });
+
+      it('sets the css class "warning"', function(){
+        let classList = goog.dom.classlist.get(this.subjectElement);
+        expect(classList[0]).to.be('warning');
+        expect(classList.length).to.be(1);
       });
     });
 

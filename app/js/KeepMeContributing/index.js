@@ -9,16 +9,18 @@ goog.require('KeepMeContributing.ContributionStatusView');
 
 goog.require('goog.dom');
 
+// public only when debug mode
+let /** ContributionStatus? */ contributionStatus = null;
 KeepMeContributing.main = function(){
   let kmc = KeepMeContributing;
   let /** string */ username = 'igrep';
-  let /** ContributionStatus */ status = new kmc.ContributionStatus(
+  contributionStatus = new kmc.ContributionStatus(
     new kmc.Github({ username: username, apiUrl: '/test/fixtures/github.com' })
   );
   let /** ContributionStatusView */ view = new kmc.ContributionStatusView(
-    username, status
+    username, contributionStatus
   );
 
   view.render(goog.dom.getElement('contributionStatus'));
-  status.startPolling(1000);
+  contributionStatus.startPolling(1000);
 };

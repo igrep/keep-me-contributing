@@ -37,7 +37,6 @@ module.exports = function (grunt) {
           '--source_map_location_mapping=app\\|',
           '--output_wrapper "%output%\n//# sourceMappingURL=/js/output.js.map"',
 
-          '--allow_es6_out',
           '--language_in=ECMASCRIPT6',
           '--language_out=ECMASCRIPT5_STRICT',
 

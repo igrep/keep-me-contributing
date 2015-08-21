@@ -15,6 +15,55 @@ goog.require('goog.dom.xml');
 goog.require('goog.dom.dataset');
 
 /**
+ * The only class that directly sends XHRs to GitHub.
+ * @constructor
+ */
+KeepMeContributing.Github = class {
+  /**
+   * @nosideeffects
+   * @param {{username: string, apiUrl: string}} config
+   */
+  constructor(config){
+    /**
+     * @type {string}
+     * @private
+     */
+    this.username_ = config.username;
+    /**
+     * @type {string}
+     * @private
+     **/
+    this.endPointUrl_ = `${config.apiUrl}/users/${this.username_}/contributions`;
+  }
+
+  /**
+   * @returns {goog.Promise<KeepMeContributing.Github.ContributionsCalendar, ?>}
+   */
+  fetchContributionsCalendar(){
+    return new goog.Promise(
+      (
+        /** function(KeepMeContributing.Github.ContributionsCalendar) */ resolve,
+        /** function(Error) */ reject
+      ) => {
+        goog.net.XhrIo.send(
+          this.endPointUrl_,
+          (event) => {
+            let /** ?KeepMeContributing.Github.ContributionsCalendar */ calendar =
+              KeepMeContributing.Github.ContributionsCalendar.parse(event.target.getResponseText());
+            if(calendar){
+              resolve(calendar);
+            } else {
+              reject(new Error(`Couldn't get contribution calendar of ${this.username_}`));
+            }
+          },
+          'GET'
+        );
+      }
+    );
+  }
+};
+
+/**
  * @constructor
  * Key-value store representing a contribution calendar in GitHub profile page.
  * Its key is the date of contribution.
@@ -77,55 +126,6 @@ KeepMeContributing.Github.ContributionsCalendar = class {
       result[dateString] = { length: count };
     });
     return new this(result);
-  }
-};
-
-/**
- * The only class that directly sends XHRs to GitHub.
- * @constructor
- */
-KeepMeContributing.Github = class {
-  /**
-   * @nosideeffects
-   * @param {{username: string, apiUrl: string}} config
-   */
-  constructor(config){
-    /**
-     * @type {string}
-     * @private
-     */
-    this.username_ = config.username;
-    /**
-     * @type {string}
-     * @private
-     **/
-    this.endPointUrl_ = `${config.apiUrl}/users/${this.username_}/contributions`;
-  }
-
-  /**
-   * @returns {goog.Promise<KeepMeContributing.Github.ContributionsCalendar, ?>}
-   */
-  fetchContributionsCalendar(){
-    return new goog.Promise(
-      (
-        /** function(KeepMeContributing.Github.ContributionsCalendar) */ resolve,
-        /** function(Error) */ reject
-      ) => {
-        goog.net.XhrIo.send(
-          this.endPointUrl_,
-          (event) => {
-            let /** ?KeepMeContributing.Github.ContributionsCalendar */ calendar =
-              KeepMeContributing.Github.ContributionsCalendar.parse(event.target.getResponseText());
-            if(calendar){
-              resolve(calendar);
-            } else {
-              reject(new Error(`Couldn't get contribution calendar of ${this.username_}`));
-            }
-          },
-          'GET'
-        );
-      }
-    );
   }
 };
 

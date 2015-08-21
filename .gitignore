@@ -37,4 +37,8 @@ bower_components
 # Java build target
 /target/
 
+# Intellij window specific file
 /.idea/workspace.xml
+
+# Procfile environment variables
+.env

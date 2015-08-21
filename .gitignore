@@ -33,3 +33,6 @@ bower_components
 
 /app/js/app.js
 /app/js/output.js.map
+
+# Java build target
+/target/

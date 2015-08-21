@@ -68,9 +68,10 @@ class ContributionsCalendar {
     let /** Object<string, KeepMeContributing.Github.Contributions> */ result = {};
     goog.array.forEach(elements, (/** Element */ element) => {
       let /** ?string */ dateString = goog.dom.dataset.get(element, 'date');
-      let /** number */ count = parseInt(goog.dom.dataset.get(element, 'count'), 10);
+      let /** ?string */ countString = goog.dom.dataset.get(element, 'count');
+      let /** number */ count = parseInt(countString, 10);
       if(!dateString || isNaN(count)){
-        // TODO: throw error or do something to warn the user.
+        console.warn(`Invalid day of contribution calendar: data-date: ${dateString}, data-count: ${countString}`);
         return;
       }
       result[dateString] = { length: count };

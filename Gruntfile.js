@@ -54,13 +54,19 @@ module.exports = function (grunt) {
           '--js_output_file=app/js/app.js'
         ].join(' ')
       },
-      testServer: { command: 'js-dev-server -S app/ -W app/ --port 9876' },
+      buildServer: { command: 'mvn compile' },
+      testServer: { command: 'foreman start web' },
       lint: { command: 'eslint Gruntfile.js app/js/' }
     },
     watch: {
       buildDebug: {
         files: ['app/js/KeepMeContributing/*.js'],
         tasks: ['shell:buildDebug', 'notify:buildDebug'],
+        options: { interrupt: true }
+      },
+      buildServer: {
+        files: ['src/main/java/**/*.java'],
+        tasks: ['shell:buildServer', 'notify:buildServer'],
         options: { interrupt: true }
       }
     },
@@ -69,6 +75,12 @@ module.exports = function (grunt) {
         options: {
           title: 'buildDebug',
           message: 'Finished to build js/app.js.\nCheck the terminal to check for warnings.'
+        }
+      },
+      buildServer: {
+        options: {
+          title: 'buildServer',
+          message: 'Finished to build the server application.\nCheck the terminal to check for warnings.'
         }
       }
     }

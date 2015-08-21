@@ -13,14 +13,12 @@ goog.require('goog.Promise');
 goog.require('goog.events.EventTarget');
 goog.require('goog.async.Throttle');
 
-/*
- * NOTE: extending by ES6 style, closure compiler warns a lot.
- *       report later if I remember.
+/**
+ * @constructor
  */
-class ContributionStatus extends goog.events.EventTarget {
+KeepMeContributing.ContributionStatus = class extends goog.events.EventTarget {
 
   /**
-   * @constructor
    * @nosideeffects
    * @param {KeepMeContributing.Github} github
    */
@@ -75,19 +73,14 @@ class ContributionStatus extends goog.events.EventTarget {
       interval
     ).fire();
   }
-}
+};
 
 /**
  * Constants for event names.
  * @enum {string}
  */
-ContributionStatus.Events = {
+KeepMeContributing.ContributionStatus.Events = {
   CONTRIBUTED: 'contributed',
   NOT_YET: 'not_yet',
   ERROR: 'error'
 };
-
-/**
- * @typedef {ContributionStatus}
- */
-KeepMeContributing.ContributionStatus = ContributionStatus;

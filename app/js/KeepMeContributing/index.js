@@ -10,7 +10,7 @@ goog.require('KeepMeContributing.ContributionStatusView');
 goog.require('goog.dom');
 
 // public only when debug mode
-let /** ContributionStatus? */ contributionStatus = null;
+let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
 KeepMeContributing.main = function(){
   let kmc = KeepMeContributing;
   let /** string */ username = 'igrep';

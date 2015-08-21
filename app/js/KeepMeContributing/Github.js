@@ -15,14 +15,14 @@ goog.require('goog.dom.xml');
 goog.require('goog.dom.dataset');
 
 /**
+ * @constructor
  * Key-value store representing a contribution calendar in GitHub profile page.
  * Its key is the date of contribution.
  * And the value contains a set of contribution of the day.
  */
-class ContributionsCalendar {
+KeepMeContributing.Github.ContributionsCalendar = class {
   /**
    * @nosideeffects
-   * @constructor
    * @param {Object<string, KeepMeContributing.Github.Contributions>} contributionCountByDateString
    */
   constructor(contributionCountByDateString){
@@ -78,12 +78,15 @@ class ContributionsCalendar {
     });
     return new this(result);
   }
-}
+};
 
-class Github {
+/**
+ * The only class that directly sends XHRs to GitHub.
+ * @constructor
+ */
+KeepMeContributing.Github = class {
   /**
    * @nosideeffects
-   * @constructor
    * @param {{username: string, apiUrl: string}} config
    */
   constructor(config){
@@ -100,19 +103,19 @@ class Github {
   }
 
   /**
-   * @returns {goog.Promise<ContributionsCalendar, ?>}
+   * @returns {goog.Promise<KeepMeContributing.Github.ContributionsCalendar, ?>}
    */
   fetchContributionsCalendar(){
     return new goog.Promise(
       (
-        /** function(ContributionsCalendar) */ resolve,
+        /** function(KeepMeContributing.Github.ContributionsCalendar) */ resolve,
         /** function(Error) */ reject
       ) => {
         goog.net.XhrIo.send(
           this.endPointUrl_,
           (event) => {
-            let /** ?ContributionsCalendar */ calendar =
-              ContributionsCalendar.parse(event.target.getResponseText());
+            let /** ?KeepMeContributing.Github.ContributionsCalendar */ calendar =
+              KeepMeContributing.Github.ContributionsCalendar.parse(event.target.getResponseText());
             if(calendar){
               resolve(calendar);
             } else {
@@ -124,20 +127,10 @@ class Github {
       }
     );
   }
-}
-
-/**
- * @typedef {Github}
- */
-KeepMeContributing.Github = Github;
+};
 
 /**
  * @typedef {{length: number}}
  * Currently it represents only count of the contributions of the day.
  */
 KeepMeContributing.Github.Contributions;
-
-/**
- * @typedef {ContributionsCalendar}
- */
-KeepMeContributing.Github.ContributionsCalendar = ContributionsCalendar;

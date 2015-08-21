@@ -16,14 +16,12 @@ goog.require('goog.dom.classlist');
 goog.require('goog.events.EventTarget');
 
 /**
- * NOTE: extending by ES6 style, closure compiler warns a lot.
- *       report later if I remember.
+ * @extends {goog.ui.Component}
+ * @constructor
  */
-class ContributionStatusView extends goog.ui.Component {
+let ContributionStatusView = class extends goog.ui.Component {
 
   /**
-   * @constructor
-   * @extends {goog.ui.Component}
    * @param {string} username
    * @param {KeepMeContributing.ContributionStatus} contributionStatus
    * @param {goog.dom.DomHelper=} domHelper
@@ -84,7 +82,7 @@ class ContributionStatusView extends goog.ui.Component {
 
   /**
    * @private
-   * @param {ContributionStatus.Events} eventName
+   * @param {KeepMeContributing.ContributionStatus.Events} eventName
    * @param {string} message
    * @param {string} className
    */
@@ -96,6 +94,6 @@ class ContributionStatusView extends goog.ui.Component {
     });
   }
 
-}
+};
 
 KeepMeContributing.ContributionStatusView = ContributionStatusView;

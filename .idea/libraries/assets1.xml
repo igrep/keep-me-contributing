@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="assets1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip-folder.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip-single-file.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip-folder-single-file.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip-single-component-json.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/grunt-bower-task/node_modules/bower/test/assets/package-zip-single-bower-json.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

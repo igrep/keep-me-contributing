@@ -1,0 +1,6 @@
+{
+  "name": "keep-me-contributing",
+  "description": "Automatically check if I contributed today.",
+  "image": "heroku/java",
+  "addons": []
+}

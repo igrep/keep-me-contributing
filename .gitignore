@@ -36,6 +36,7 @@ bower_components
 
 # Java build target
 /target/
+/out/ # by Intellij
 
 # Intellij window specific file
 /.idea/workspace.xml

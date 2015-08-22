@@ -1,6 +1,22 @@
 package info.igreque.keepmecontributing.github;
 
+import info.igreque.keepmecontributing.github.Contributions;
+import info.igreque.keepmecontributing.github.ContributionsCalendarException;
+
+import java.lang.Exception;
+
 import java.util.HashMap;
+import java.io.InputStream;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.client.HttpClient;
 
@@ -33,8 +49,38 @@ public class Github {
     return null;
   }
 
-  public HashMap<String, Contributions> contributionsCalendarFromSvg(String string){
-    return null;
+  public HashMap<String, Contributions> contributionsCalendarFromSvg(InputStream input)
+    throws ContributionsCalendarException
+  {
+    try {
+      Document doc =
+        DocumentBuilderFactory
+        .newInstance()
+        .newDocumentBuilder()
+        .parse(input);
+
+      NodeList days =
+        (NodeList) XPathFactory
+        .newInstance()
+        .newXPath()
+        .evaluate("//rect[@class='day']", doc, XPathConstants.NODESET);
+
+      HashMap<String, Contributions> result = new HashMap();
+      for(int i = 0; i < days.getLength(); ++i){
+        NamedNodeMap attributes = days.item(i).getAttributes();
+        String dayString = attributes.getNamedItem("data-date").getNodeValue();
+        int count = Integer.parseInt(attributes.getNamedItem("data-count").getNodeValue(), 10);
+        Contributions contributions = new Contributions(count);
+
+        result.put(dayString, contributions);
+      }
+      return result;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      String message = "An error occurred while parsing a response from github.com: " + e.toString();
+      throw new ContributionsCalendarException(message, e);
+    }
   }
 
 }

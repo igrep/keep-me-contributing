@@ -4,7 +4,7 @@ import static spark.Spark.*;
 
 /**
  * Server application for keep-me-contributing.
- * Download an svg representing my contribution calendar
+ * Download an svg representing my contributions calendar
  * from https://github.com/users/igrep/contributions.
  * Then convert it to a JSON.
  */

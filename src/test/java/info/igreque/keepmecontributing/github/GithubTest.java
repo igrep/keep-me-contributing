@@ -1,38 +1,14 @@
 package info.igreque.keepmecontributing.github;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
- * Unit test for simple App.
+ * Unit test for Github API client class
  */
-public class GithubTest
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public GithubTest(String testName)
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( GithubTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+public class GithubTest {
+  @Test
+  public void runsTests(){
+    assertEquals("The truth", 1, 2);
+  }
 }

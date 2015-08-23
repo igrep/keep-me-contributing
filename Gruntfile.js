@@ -55,6 +55,7 @@ module.exports = function (grunt) {
         ].join(' ')
       },
       buildServer: { command: 'mvn compile' },
+      buildServerTest: { command: 'mvn test' },
       testServer: { command: 'foreman start web' },
       lint: { command: 'eslint Gruntfile.js app/js/' }
     },
@@ -67,6 +68,11 @@ module.exports = function (grunt) {
       buildServer: {
         files: ['src/main/java/**/*.java'],
         tasks: ['shell:buildServer', 'notify:buildServer'],
+        options: { interrupt: true }
+      },
+      buildServerTest: {
+        files: ['src/main/java/**/*.java', 'src/test/java/**/*.java'],
+        tasks: ['shell:buildServerTest', 'notify:buildServerTest'],
         options: { interrupt: true }
       }
     },
@@ -81,6 +87,12 @@ module.exports = function (grunt) {
         options: {
           title: 'buildServer',
           message: 'Finished to build the server application.\nCheck the terminal to check for warnings.'
+        }
+      },
+      buildServerTest: {
+        options: {
+          title: 'buildServerTest',
+          message: 'Finished to build the tests of the server application.\nCheck the terminal to check for warnings.'
         }
       }
     }

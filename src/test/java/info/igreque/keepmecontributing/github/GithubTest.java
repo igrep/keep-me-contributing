@@ -2,17 +2,25 @@ package info.igreque.keepmecontributing.github;
 
 import java.util.HashMap;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.protocol.BasicHttpContext;
 
 import org.junit.Test;
 import org.junit.Before;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import info.igreque.keepmecontributing.github.Github;
-import info.igreque.keepmecontributing.github.Contributions;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
+import static info.igreque.keepmecontributing.testhelper.HttpGetMatcher.requestsUrlByGet;
 
 /**
  * Unit test for Github API client class
@@ -20,14 +28,34 @@ import info.igreque.keepmecontributing.github.Contributions;
 public class GithubTest {
   private Github describedInstance;
 
+  private String username = "igrep";
+  private HttpClient httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
+
   @Before
   public void setUp(){
-    describedInstance = new Github("igrep", null);
+    describedInstance = new Github(username, httpClient);
+  }
+
+  public HttpResponse whenContributionsCalendarSvgAvailable()
+    throws Exception
+  {
+    HttpResponse response = DefaultHttpResponseFactory.INSTANCE.newHttpResponse(
+      HttpVersion.HTTP_1_1, 200, new BasicHttpContext()
+    );
+    response.setEntity(new StringEntity("<svg></svg>"));
+
+    when(
+      httpClient.execute(requestsUrlByGet("https://github.com/users/" + username + "/contributions"))
+    ).thenReturn(response);
+    return response;
   }
 
   @Test
-  public void fetchesContributionsSvg(){
-    assertEquals("The truth", 1, 1);
+  public void fetchesContributionsSvg() throws Exception {
+    HttpResponse response = whenContributionsCalendarSvgAvailable();
+    assertThat("returns the response from github.com as is",
+      describedInstance.fetchContributionsCalendarSvg(), is(response)
+    );
   }
 
   @Test

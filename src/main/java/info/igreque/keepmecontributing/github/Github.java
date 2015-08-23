@@ -1,10 +1,13 @@
 package info.igreque.keepmecontributing.github;
 
+import java.io.IOException;
 import java.lang.Exception;
 
 import java.util.HashMap;
 import java.io.InputStream;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
@@ -40,8 +43,9 @@ public class Github {
     return mapper.writeValueAsString(fetchContributionsCalendar());
   }
 
-  public String fetchContributionsCalendarSvg(){
-    return null;
+  public HttpResponse fetchContributionsCalendarSvg() throws IOException{
+    return httpClient
+      .execute(new HttpGet("https://github.com/users/" + username + "/contributions"));
   }
 
   public HashMap<String, Contributions> contributionsCalendarFromSvg(InputStream input)

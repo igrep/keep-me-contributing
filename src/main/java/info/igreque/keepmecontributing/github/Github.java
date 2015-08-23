@@ -1,8 +1,5 @@
 package info.igreque.keepmecontributing.github;
 
-import info.igreque.keepmecontributing.github.Contributions;
-import info.igreque.keepmecontributing.github.ContributionsCalendarException;
-
 import java.lang.Exception;
 
 import java.util.HashMap;
@@ -13,10 +10,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.client.HttpClient;
 
@@ -65,7 +60,7 @@ public class Github {
         .newXPath()
         .evaluate("//rect[@class='day']", doc, XPathConstants.NODESET);
 
-      HashMap<String, Contributions> result = new HashMap();
+      HashMap<String, Contributions> result = new HashMap<>();
       for(int i = 0; i < days.getLength(); ++i){
         NamedNodeMap attributes = days.item(i).getAttributes();
         String dayString = attributes.getNamedItem("data-date").getNodeValue();

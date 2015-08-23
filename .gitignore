@@ -41,6 +41,7 @@ bower_components
 # Intellij window specific file
 /.idea/workspace.xml
 /.idea/uiDesigner.xml
+*.iws
 
 # Procfile environment variables
 .env

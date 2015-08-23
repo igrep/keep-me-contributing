@@ -60,6 +60,7 @@ public class GithubTest {
 
   @Test
   public void convertsContributionsSvgToMap() throws Exception {
+    @SuppressWarnings("ConstantConditions")
     HashMap<String, Contributions> result = describedInstance.contributionsCalendarFromSvg(
       new FileInputStream(
         Github.class.getClassLoader().getResource("contributions-2015-08-22.svg").getPath()

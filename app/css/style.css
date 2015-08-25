@@ -1,0 +1,16 @@
+#container {
+  width: 800px;
+}
+
+.warning {
+  background-color: #fcf893;
+
+  border-color: #ffd600;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 3px;
+
+  text-align: center;
+  padding: 1em;
+  margin: 1em;
+}

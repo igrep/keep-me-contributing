@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Unit test of API server for  KeepMeContributing, powered by Mocha</title>
+<link href="/lib/mocha/mocha.css" rel="stylesheet"/>
+<link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- independent container from div#mocha -->
+<div id="container">
+  <p class="warning">
+    <em>This test script (indirectly) accesses to github.com!</em>
+    <br />
+    Be careful NOT to run continuously!
+  </p>
+</div>
+
+<div id="mocha"></div>
+<script type="text/javascript" src="/lib/google-closure-library/closure/goog/base.js"></script>
+<script type="text/javascript" src="/lib/mocha/mocha.js"></script>
+<script type="text/javascript" src="/lib/sinonjs/sinon.js"></script>
+<script type="text/javascript" src="/lib/expect/index.js"></script>
+<script type="text/javascript">
+  mocha.setup('bdd');
+</script>
+<script type="text/javascript" src="/test/js/KeepMeContributing/ServerTest.js"></script>
+<script type="text/javascript">
+  mocha.checkLeaks();
+  mocha.run();
+</script>
+</body>
+</html>

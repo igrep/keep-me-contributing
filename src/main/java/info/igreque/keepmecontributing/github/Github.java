@@ -18,7 +18,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.client.HttpClient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -34,13 +33,13 @@ public class Github {
     this.httpClient = httpClient;
   }
 
-  public HashMap<String, Contributions> fetchContributionsCalendar(){
-    return null;
-  }
-
-  public String fetchContributionsCalendarJson() throws JsonProcessingException {
+  public static String contributionsCalendarJsonFromGithubResponse(HttpResponse response)
+    throws IOException
+  {
     ObjectMapper mapper = new ObjectMapper();
-    return mapper.writeValueAsString(fetchContributionsCalendar());
+    return mapper.writeValueAsString(
+      contributionsCalendarFromSvg(response.getEntity().getContent())
+    );
   }
 
   public HttpResponse fetchContributionsCalendarSvg() throws IOException{
@@ -48,7 +47,7 @@ public class Github {
       .execute(new HttpGet("https://github.com/users/" + username + "/contributions"));
   }
 
-  public HashMap<String, Contributions> contributionsCalendarFromSvg(InputStream input)
+  public static HashMap<String, Contributions> contributionsCalendarFromSvg(InputStream input)
     throws ContributionsCalendarException
   {
     try {

@@ -1,10 +1,16 @@
 package info.igreque.keepmecontributing;
 
+import info.igreque.keepmecontributing.github.ContributionsCalendarException;
 import info.igreque.keepmecontributing.github.Github;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.function.Function;
 
 import static spark.Spark.*;
 
@@ -30,25 +36,44 @@ public class Server {
    * @param username GitHub username.
    */
   private static void buildEntryPointFor(String username){
-    get("/users/" + username + "/contributions", (request, response) -> {
-      CloseableHttpClient httpClient = HttpClients.createDefault();
-      CloseableHttpResponse responseFromGithub = null;
-      try {
-        responseFromGithub = (CloseableHttpResponse)
-          new Github(username, httpClient).fetchContributionsCalendarSvg();
-
+    get("/users/" + username + "/contributions", (request, response) ->
+      buildResponseWithGithubApi(username, (responseFromGithub) -> {
         response.status(responseFromGithub.getStatusLine().getStatusCode());
         response.type("text/html; charset=utf-8"); // same as original.
-        return EntityUtils.toString(responseFromGithub.getEntity());
-      } finally {
-        if (responseFromGithub != null){
-          responseFromGithub.close();
+        try {
+          return EntityUtils.toString(responseFromGithub.getEntity());
+        } catch (IOException e) {
+          throw new UncheckedIOException(e);
         }
+      })
+    );
+    get("/users/" + username + "/contributions.json", (request, response) ->
+      buildResponseWithGithubApi(username, (responseFromGithub) -> {
+        response.status(responseFromGithub.getStatusLine().getStatusCode());
+        response.type("application/json");
+        try {
+          return Github.contributionsCalendarJsonFromGithubResponse(responseFromGithub);
+        } catch (IOException e) {
+          throw new UncheckedIOException(e);
+        }
+      })
+    );
+  }
+
+  private static String buildResponseWithGithubApi(
+    String username, Function<HttpResponse, String> builder
+  ) throws IOException {
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+    CloseableHttpResponse responseFromGithub = null;
+    try {
+      responseFromGithub = (CloseableHttpResponse)
+        new Github(username, httpClient).fetchContributionsCalendarSvg();
+      return builder.apply(responseFromGithub);
+    } finally {
+      if (responseFromGithub != null) {
+        responseFromGithub.close();
       }
-    });
-    get("/users/" + username + "/contributions.json", (request, response) -> {
-      return "TODO: Implement";
-    });
+    }
   }
 
 }

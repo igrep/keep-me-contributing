@@ -32,7 +32,8 @@ bower_components
 /app/lib/
 
 /app/js/app.js
-/app/js/output.js.map
+/app/js/worker.js
+/app/js/*.js.map
 
 # Java build target
 /target/

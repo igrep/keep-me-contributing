@@ -65,12 +65,12 @@ module.exports = function (grunt) {
     },
     watch: {
       buildDebug: {
-        files: ['app/js/KeepMeContributing/*.js'],
+        files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildDebug', 'notify:buildDebug'],
         options: { interrupt: true }
       },
       buildWorker: {
-        files: ['app/js/KeepMeContributing/*.js'],
+        files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildWorker', 'notify:buildWorker'],
         options: { interrupt: true }
       },

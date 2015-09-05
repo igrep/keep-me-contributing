@@ -15,7 +15,7 @@ KeepMeContributing.main = function(){
   let kmc = KeepMeContributing;
   let /** string */ username = 'igrep';
   contributionStatus = new kmc.ContributionStatus(
-    new kmc.Github({ username: username, apiUrl: '/test/fixtures/github.com' })
+    new kmc.Github({ username: username, apiUrl: '' })
   );
   let /** ContributionStatusView */ view = new kmc.ContributionStatusView(
     username, contributionStatus

@@ -14,3 +14,8 @@
   padding: 1em;
   margin: 1em;
 }
+
+#runTests {
+  /* avoid to overlap with baloon to request permission */
+  margin-top: 8em;
+}

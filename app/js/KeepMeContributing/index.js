@@ -22,5 +22,5 @@ KeepMeContributing.main = function(){
   );
 
   view.render(goog.dom.getElement('contributionStatus'));
-  contributionStatus.startPolling(1000);
+  contributionStatus.startPolling(5 * 60 * 1000);
 };

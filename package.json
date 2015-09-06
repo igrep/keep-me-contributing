@@ -10,7 +10,6 @@
   "main": "",
   "scripts": {
     "build": "grunt default",
-    "test": "grunt shell:test",
     "watch": "grunt watch:buildDebug",
     "server": "grunt shell:testServer",
     "lint": "grunt shell:lint",

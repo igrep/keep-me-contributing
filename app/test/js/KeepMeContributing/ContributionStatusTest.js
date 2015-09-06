@@ -91,10 +91,6 @@ describe('ContributionStatus', function(){
     });
   });
 
-  /**
-   * FIXME: complex test code.
-   * Maybe I should test this method on the view model with less stubbed objects.
-   */
   describe('startPolling', function(){
     // Immediately timeout to show failure when the specified event doesn't occur.
     this.timeout(100);

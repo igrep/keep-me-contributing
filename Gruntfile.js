@@ -61,7 +61,8 @@ module.exports = function (grunt) {
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },
       testServer: { command: 'foreman start web' },
-      lint: { command: 'eslint Gruntfile.js app/js/' }
+      lint: { command: 'eslint Gruntfile.js app/js/' },
+      deploy: { command: 'mvn heroku:deploy' }
     },
     watch: {
       buildDebug: {
@@ -124,6 +125,12 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'shell:lint',
-    'shell:buildDebug'
+    'shell:buildDebug',
+    'shell:buildServer'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'default',
+    'shell:deploy'
   ]);
 };

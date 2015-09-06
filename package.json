@@ -13,7 +13,8 @@
     "test": "grunt shell:test",
     "watch": "grunt watch:buildDebug",
     "lint": "grunt shell:lint",
-    "install": "grunt install"
+    "install": "grunt install",
+    "deploy": "grunt deploy"
   },
   "repository": {
     "type": "git",

@@ -21,7 +21,7 @@ goog.require('goog.dom.dataset');
 KeepMeContributing.Github = class {
   /**
    * @nosideeffects
-   * @param {{username: string, apiUrl: string}} config
+   * @param {{username: string, apiUrl: string, format: (KeepMeContributing.Github.Formats|undefined)}} config
    */
   constructor(config){
     /**
@@ -29,11 +29,23 @@ KeepMeContributing.Github = class {
      * @private
      */
     this.username_ = config.username;
+
+    /**
+     * @type {KeepMeContributing.Github.Formats}
+     * @private
+     **/
+    this.format_ =
+      config.format === undefined ? KeepMeContributing.Github.Formats.DEFAULT : config.format;
+
     /**
      * @type {string}
      * @private
      **/
     this.endPointUrl_ = `${config.apiUrl}/users/${this.username_}/contributions`;
+
+    if (this.format_ !== KeepMeContributing.Github.Formats.DEFAULT){
+      this.endPointUrl_ += `.${this.format_}`;
+    }
   }
 
   /**
@@ -49,7 +61,9 @@ KeepMeContributing.Github = class {
           this.endPointUrl_,
           (event) => {
             let /** ?KeepMeContributing.Github.ContributionsCalendar */ calendar =
-              KeepMeContributing.Github.ContributionsCalendar.parse(event.target.getResponseText());
+              KeepMeContributing.Github.ContributionsCalendar.parse(
+                event.target.getResponseText(), this.format_
+              );
             if(calendar){
               resolve(calendar);
             } else {
@@ -60,6 +74,14 @@ KeepMeContributing.Github = class {
         );
       }
     );
+  }
+
+  /**
+   * @returns {string}
+   * Public only for testing
+   */
+  getEndpointUrl(){
+    return this.endPointUrl_;
   }
 };
 
@@ -103,12 +125,17 @@ KeepMeContributing.Github.ContributionsCalendar = class {
 
   /**
    * @nosideeffects
-   * @param {string} svgData Response SVG Document from github.com/users/<username>/contributions
+   * @param {string} data Response body from github.com/users/<username>/contributions
+   * @param {KeepMeContributing.Github.Formats} format response body format
    * @returns {?KeepMeContributing.Github.ContributionsCalendar}
    */
-  static parse(svgData){
+  static parse(data, format){
+    if (format === KeepMeContributing.Github.Formats.JSON){
+      return new this(JSON.parse(data));
+    }
+
     let /** goog.array.ArrayLike */ elements =
-      goog.dom.getElementsByClass('day', goog.dom.xml.loadXml(svgData));
+      goog.dom.getElementsByClass('day', goog.dom.xml.loadXml(data));
 
     if(goog.array.isEmpty(elements)){
       return null;
@@ -134,3 +161,12 @@ KeepMeContributing.Github.ContributionsCalendar = class {
  * Currently it represents only count of the contributions of the day.
  */
 KeepMeContributing.Github.Contributions;
+
+/**
+ * Constants for format names. Used to suffix the request URL.
+ * @enum {string}
+ */
+KeepMeContributing.Github.Formats = {
+  DEFAULT: '',
+  JSON: 'json'
+};

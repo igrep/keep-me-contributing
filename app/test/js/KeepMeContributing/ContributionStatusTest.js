@@ -3,71 +3,85 @@
 goog.require('goog.Promise');
 
 describe('ContributionStatus', function(){
-  before(function(){
-    this.describedClass = KeepMeContributing.ContributionStatus;
-
-    this.describedInstanceFor = function(username){
-      let github = new KeepMeContributing.Github({
-        username: username,
-        // access to development server on test
-        apiUrl: '/test/fixtures/github.com'
-      });
-      return new this.describedClass(github);
-    };
-  });
+  let describedClass = KeepMeContributing.ContributionStatus;
+  let describedInstanceFor = function(username, opt_format){
+    let github = new KeepMeContributing.Github({
+      username: username,
+      // access to development server on test
+      apiUrl: '/test/fixtures/github.com',
+      format: opt_format
+    });
+    return new describedClass(github);
+  };
 
   describe('#queryHasContributedAt', function(){
-    before(function(){
-      this.expectTheResultToBe = function(date, expected) {
-        return this.describedInstance.queryHasContributedAt(date)
+
+    let returnsTrueOrFalseBasedOnContributionsCount = function(describedInstance){
+
+      let expectTheResultToBe = function(date, expected) {
+        return describedInstance.queryHasContributedAt(date)
           .then(function(actual){ expect(actual).to.be(expected); });
       };
-    });
-
-    context('given a response of https://github.com/users/igrep/contributions', function(){
-      before(function(){
-        this.describedInstance = this.describedInstanceFor('igrep');
-      });
 
       context("the argument date's contribution count is 0", function(){
         it('returns false', function(){
-          return this.expectTheResultToBe(new Date('2015-07-31'), false);
+          return expectTheResultToBe(new Date('2015-07-31'), false);
         });
       });
 
       context("the argument date's contribution count is 2", function(){
         it('returns true', function(){
-          return this.expectTheResultToBe(new Date('2015-07-23'), true);
+          return expectTheResultToBe(new Date('2015-07-23'), true);
         });
       });
 
       context("the argument date's contribution count is 1", function(){
         it('returns true', function(){
-          return this.expectTheResultToBe(new Date('2015-07-29'), true);
+          return expectTheResultToBe(new Date('2015-07-29'), true);
         });
       });
 
-      context("the argument date's contribution count is present", function(){
+      context("the argument date's contribution count is not present", function(){
         it('returns false', function(){
-          return this.expectTheResultToBe(new Date('2015-08-01'), false);
+          return expectTheResultToBe(new Date('2015-08-01'), false);
         });
       });
 
+    };
+
+    context('given a response of https://github.com/users/igrep/contributions', function(){
+      let describedInstance = describedInstanceFor('igrep');
+      returnsTrueOrFalseBasedOnContributionsCount(describedInstance);
+
+      it('has correct endpoint URL', function(){
+        expect(describedInstance.getEndpointUrl()).to.match(
+          new RegExp('github\\.com/users/igrep/contributions$')
+        );
+      });
+    });
+
+    context('given a response of https://github.com/users/igrep/contributions.json', function(){
+      let describedInstance = describedInstanceFor('igrep', KeepMeContributing.Github.Formats.JSON);
+      returnsTrueOrFalseBasedOnContributionsCount(describedInstance);
+
+      it('has correct endpoint URL', function(){
+        expect(describedInstance.getEndpointUrl()).to.match(
+          new RegExp('github\\.com/users/igrep/contributions\\.json$')
+        );
+      });
     });
 
     context('given no response from github.com', function(){
-      before(function(){
-        this.username = 'non_existing_user';
-        this.describedInstance = this.describedInstanceFor(this.username);
-      });
+      let username = 'non_existing_user';
+      let describedInstance = describedInstanceFor(username);
 
       it('throws an error to show the reponse was unavailable.', function(){
-        return this.describedInstance.queryHasContributedAt(new Date())
+        return describedInstance.queryHasContributedAt(new Date())
           .then(
             function(){ expect().fail(); },
             function(error){
               expect(error.toString()).to.match(
-                new RegExp(`Error: Couldn't get contribution calendar of ${this.username}`)
+                new RegExp(`Error: Couldn't get contribution calendar of ${username}`)
               );
             }.bind(this)
           )
@@ -87,9 +101,9 @@ describe('ContributionStatus', function(){
 
     before(function(){
 
-      this.describedInstance = this.describedInstanceFor('igrep');
+      this.describedInstance = describedInstanceFor('igrep');
 
-      this.stubQuery = sinon.stub(this.describedClass.prototype, 'queryHasContributedAt');
+      this.stubQuery = sinon.stub(describedClass.prototype, 'queryHasContributedAt');
 
       this.expectTheDipatchedEventToBe = function(expectedEvent, done){
 

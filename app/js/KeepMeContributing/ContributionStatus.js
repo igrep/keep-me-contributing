@@ -74,6 +74,14 @@ KeepMeContributing.ContributionStatus = class extends goog.events.EventTarget {
       interval
     ).fire();
   }
+
+  /**
+   * @returns {string}
+   * Public only for testing
+   */
+  getEndpointUrl(){
+    return this.github_.getEndpointUrl();
+  }
 };
 
 /**

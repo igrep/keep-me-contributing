@@ -1,5 +1,7 @@
 # keep-me-contributing
 
+https://keep-me-contributing.herokuapp.com/
+
 Web page to check if I did something that greens the contribution map on https://github.com/igrep.
 
 # Building

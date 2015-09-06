@@ -2,5 +2,15 @@
   "name": "keep-me-contributing",
   "description": "Automatically check if I contributed today.",
   "image": "heroku/java",
-  "addons": []
+  "addons": [],
+  "env": {
+    "CLIENT_APP_DIRECTORY": {
+      "description": "Client application (static files) directory. Possible values are 'app/' or 'build/'.",
+      "required": true
+    },
+    "PORT": {
+      "description": "TCP port where this app runs.",
+      "required": true
+    }
+  }
 }

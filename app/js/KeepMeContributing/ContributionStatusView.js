@@ -30,17 +30,12 @@ let ContributionStatusView = class extends goog.ui.Component {
     super(domHelper);
 
     /**
-     * @type {goog.events.EventTarget}
-     * @private
-     */
-    this.contributionStatus_ = contributionStatus;
-    /**
      * @type {string}
      * @private
      */
     this.username_ = username;
 
-    this.registerDisposable(this.contributionStatus_);
+    this.setModel(contributionStatus);
   }
 
   /** @override */
@@ -64,12 +59,6 @@ let ContributionStatusView = class extends goog.ui.Component {
     );
   }
 
-  /** @override */
-  disposeInternal(){
-    super();
-    this.contributionStatus_ = null;
-  }
-
   /**
    * {@code goog.ui.Component.prototype.render} is enough to use this component because it doesn't have any children.
    * @override
@@ -87,7 +76,8 @@ let ContributionStatusView = class extends goog.ui.Component {
    * @param {string} className
    */
   attachContentToEvent_(eventName, message, className){
-    this.getHandler().listen(this.contributionStatus_, eventName, () => {
+    let contributionStatus = /** KeepMeContributing.ContributionStatus */ this.getModel();
+    this.getHandler().listen(contributionStatus, eventName, () => {
       let /** Element */ e = this.getElement();
       this.getDomHelper().setTextContent(e, message);
       goog.dom.classlist.set(e, className);

@@ -76,7 +76,8 @@ let ContributionStatusView = class extends goog.ui.Component {
    * @param {string} className
    */
   attachContentToEvent_(eventName, message, className){
-    let contributionStatus = /** KeepMeContributing.ContributionStatus */ this.getModel();
+    let /** KeepMeContributing.ContributionStatus */ contributionStatus =
+      /** @type {KeepMeContributing.ContributionStatus} */ (this.getModel());
     this.getHandler().listen(contributionStatus, eventName, () => {
       let /** Element */ e = this.getElement();
       this.getDomHelper().setTextContent(e, message);

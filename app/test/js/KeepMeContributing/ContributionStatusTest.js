@@ -9,7 +9,7 @@ describe('ContributionStatus', function(){
     this.describedInstanceFor = function(username){
       let github = new KeepMeContributing.Github({
         username: username,
-        // access to js-dev-server on test
+        // access to development server on test
         apiUrl: '/test/fixtures/github.com'
       });
       return new this.describedClass(github);

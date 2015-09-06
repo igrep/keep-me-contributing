@@ -3,6 +3,12 @@
   font-size: 14pt;
 }
 
+/** GithubProfileLinkedText **/
+#title a:link, #title a:visited, #title a:active, #title a:hover {
+  color: #000000;
+  text-decoration: none;
+}
+
 /** Contribution Status **/
 
 /* TODO: abstract as scss mix-in */

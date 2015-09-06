@@ -6,6 +6,7 @@ goog.require('KeepMeContributing.ContributionStatus');
 goog.require('KeepMeContributing.Github');
 
 goog.require('KeepMeContributing.ContributionStatusView');
+goog.require('KeepMeContributing.GithubProfileLinkedTextView');
 
 goog.require('goog.dom');
 
@@ -23,4 +24,9 @@ KeepMeContributing.main = function(){
 
   view.render(goog.dom.getElement('contributionStatus'));
   contributionStatus.startPolling(5 * 60 * 1000);
+
+  new kmc.GithubProfileLinkedTextView('', username, "'s Current Contribution Status:")
+    .render(goog.dom.getElement('title'));
+  new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details")
+    .render(goog.dom.getElement('seeProfile'));
 };

@@ -12,6 +12,7 @@
     "build": "grunt default",
     "test": "grunt shell:test",
     "watch": "grunt watch:buildDebug",
+    "server": "grunt shell:testServer",
     "lint": "grunt shell:lint",
     "install": "grunt install",
     "deploy": "grunt deploy"

@@ -8,6 +8,8 @@ goog.require('KeepMeContributing.Github');
 goog.require('KeepMeContributing.ContributionStatusView');
 goog.require('KeepMeContributing.GithubProfileLinkedTextView');
 
+goog.require('KeepMeContributing.Worker.TimeOfDay');
+
 goog.require('goog.dom');
 
 // public only when debug mode

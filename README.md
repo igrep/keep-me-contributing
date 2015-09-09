@@ -26,11 +26,11 @@ npm run build
 
 ## Run locally
 
-1. Copy and edit [.env](/.env.sample).
-
-```bash
-npm run server
-```
+1. Copy [.env.sample](/.env.sample) into .env and edit it.
+2. Then run:
+    ```bash
+    npm run server
+    ```
 
 ## Run tests
 
@@ -39,10 +39,10 @@ TODO
 ## Deploy
 
 1. Setup your heroku account and application
-
-```bash
-npm run deploy
-```
+2. Then run:
+    ```bash
+    npm run deploy
+    ```
 
 # Target Browsers
 

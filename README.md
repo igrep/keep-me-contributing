@@ -26,8 +26,9 @@ npm run build
 
 ## Run locally
 
-1. Copy [.env.sample](/.env.sample) into .env and edit it.
+1. Copy [`.env.sample`](/.env.sample) into `.env` and edit it.
 2. Then run:
+
     ```bash
     npm run server
     ```
@@ -40,6 +41,7 @@ TODO
 
 1. Setup your heroku account and application
 2. Then run:
+
     ```bash
     npm run deploy
     ```

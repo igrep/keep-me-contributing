@@ -32,14 +32,7 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
-    bower: {
-      install: {
-        options: {
-          targetDir: 'app/lib',
-          verbose: true
-        }
-      }
-    },
+    bower: { install: { options: { targetDir: 'app/lib', verbose: true } } },
     copy: {
       closureLibrary: {
         files: [

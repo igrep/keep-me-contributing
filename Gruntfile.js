@@ -61,22 +61,22 @@ module.exports = function (grunt) {
       buildDebug: {
         files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildDebug', 'notify:buildDebug'],
-        options: { interrupt: true }
+        options: { interrupt: true, atBegin: true }
       },
       buildWorker: {
         files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildWorker', 'notify:buildWorker'],
-        options: { interrupt: true }
+        options: { interrupt: true, atBegin: true }
       },
       buildServer: {
         files: ['src/main/java/**/*.java'],
         tasks: ['shell:buildServer', 'notify:buildServer'],
-        options: { interrupt: true }
+        options: { interrupt: true, atBegin: true  }
       },
       buildServerTest: {
         files: ['src/main/java/**/*.java', 'src/test/java/**/*.java'],
         tasks: ['shell:buildServerTest', 'notify:buildServerTest'],
-        options: { interrupt: true }
+        options: { interrupt: true, atBegin: true  }
       }
     },
     notify: {

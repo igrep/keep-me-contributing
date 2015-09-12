@@ -51,6 +51,7 @@ module.exports = function (grunt) {
     shell: {
       buildDebug: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
       buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker') },
+      buildWorkerTestLib: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker-test-lib') },
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },
       testServer: { command: 'foreman start web' },
@@ -67,6 +68,11 @@ module.exports = function (grunt) {
         files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildWorker', 'notify:buildWorker'],
         options: { interrupt: true, atBegin: true }
+      },
+      buildWorkerTestLib: {
+        files: ['app/js/KeepMeContributing/**/*.js'],
+        tasks: ['shell:buildWorkerTestLib', 'notify:buildWorkerTestLib'],
+        options: { interrupt: true, atBegin: true  }
       },
       buildServer: {
         files: ['src/main/java/**/*.java'],
@@ -90,6 +96,12 @@ module.exports = function (grunt) {
         options: {
           title: 'buildWorker',
           message: 'Finished to build js/worker.js.\nCheck the terminal to check for warnings.'
+        }
+      },
+      buildWorkerTestLib: {
+        options: {
+          title: 'buildWorkerTestLib',
+          message: 'Finished to build js/worker-test-lib.js.\nCheck the terminal to check for warnings.'
         }
       },
       buildServer: {

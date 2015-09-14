@@ -81,4 +81,13 @@ KeepMeContributing.Worker.TimeOfDay = class {
     }
   }
 
+  /**
+   * Used when receiving data from postMessage
+   * @param {{hour_: number, minute_: number}} data
+   * @returns {KeepMeContributing.Worker.TimeOfDay}
+   */
+  static fromData(data){
+    return new this(data.hour_, data.minute_);
+  }
+
 };

@@ -33,6 +33,7 @@ bower_components
 
 /app/js/app.js
 /app/js/worker.js
+/app/js/worker-test-lib.js
 /app/js/*.js.map
 
 # Java build target

@@ -7,7 +7,6 @@
 <link href="/css/style.css" rel="stylesheet"/>
 </head>
 <body>
-<button id="runTests">Run Tests After Granting Notification Permission.</button>
 <div id="mocha"></div>
 <script type="text/javascript" src="/js/worker-test-lib.js"></script>
 <script type="text/javascript" src="/lib/mocha/mocha.js"></script>
@@ -16,17 +15,10 @@
 <script type="text/javascript">
   mocha.setup('bdd');
 </script>
-<script type="text/javascript" src="/test/js/KeepMeContributing/WorkerTest.js"></script>
+<script type="text/javascript" src="/test/js/KeepMeContributing/TimeOfDayTest.js"></script>
 <script type="text/javascript">
   mocha.checkLeaks();
-  document
-    .getElementById('runTests')
-    .addEventListener('click', function(){ mocha.run(); });
-
-  // Immediately run when already granted
-  if (Notification.permission === 'granted'){
-    mocha.run();
-  }
+  mocha.run();
 </script>
 </body>
 </html>

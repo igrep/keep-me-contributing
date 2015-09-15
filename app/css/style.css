@@ -36,10 +36,3 @@
   background-color: #FFFCA7;
   border-color: #FDE14F;
 }
-
-/** WorkerTest **/
-
-#runTests {
-  /* avoid to overlap with baloon to request permission */
-  margin-top: 8em;
-}

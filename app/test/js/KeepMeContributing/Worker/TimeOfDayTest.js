@@ -12,6 +12,14 @@ describe('TimeOfDay', function(){
     });
   });
 
+  describe('#toMinutes', function(){
+    it('returns an integer representing total minutes since the beginning of the day.', function(){
+      expect(
+        (new describedClass(     2,  3)).toMinutes()
+      ).to.be(              60 * 2 + 3);
+    });
+  });
+
   describe('#toHHMM', function(){
     let describedFunction = function(hour, minute){
       return new describedClass(hour, minute).toHHMM();

@@ -52,8 +52,15 @@ KeepMeContributing.Worker.TimeOfDay = class {
    */
   millisecsAfter(date){
     return 1000 * 60 * (
-      (this.hour_ * 60 + this.minute_) - (date.getHours() * 60 + date.getMinutes())
+      this.toMinutes() - (date.getHours() * 60 + date.getMinutes())
     );
+  }
+
+  /**
+   * @returns {number} total minutes since the beginning of the day.
+   */
+  toMinutes(){
+    return this.hour_ * 60 + this.minute_;
   }
 
   /**

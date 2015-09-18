@@ -5,6 +5,8 @@ goog.provide('KeepMeContributing.Worker.SchedulesRunner');
 
 goog.require('KeepMeContributing.Worker.TimeOfDay');
 
+goog.require('goog.array');
+
 /**
  * @fileoverview Class to handle schedule to check contribution status in the background.
  */
@@ -36,8 +38,20 @@ KeepMeContributing.Worker.SchedulesRunner = class {
 
   /**
    * @param {!Array<KeepMeContributing.Worker.TimeOfDay>} schedules
+   * @returns {KeepMeContributing.Worker.SchedulesRunner}
    */
   update(schedules){
+    let /** !Date */ now = new Date();
+    ( // <- parenthesis required when using desctructuring assignment like below.
+      { 'true': this.dones, 'false': this.notYets } = goog.array.bucket(schedules, (
+        /** KeepMeContributing.Worker.TimeOfDay */ timeOfDay
+      ) => {
+        return timeOfDay.millisecsAfter(now) <= 0;
+      })
+    );
+    goog.array.sortByKey(this.dones, (time) => { return time.toMinutes(); });
+    goog.array.sortByKey(this.notYets, (time) => { return time.toMinutes(); });
+    return this;
   }
 
   /**

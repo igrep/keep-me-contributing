@@ -50,7 +50,7 @@ module.exports = function (grunt) {
     },
     shell: {
       buildDebug: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
-      buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker') },
+      buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker.Main', 'worker') },
       buildWorkerTestLib: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker-test-lib') },
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },

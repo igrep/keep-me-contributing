@@ -17,13 +17,13 @@ KeepMeContributing.Worker.SchedulesRunner = class {
   constructor(){
     /**
      * public for testing.
-     * @type {!Array<KeepMeContributing.Worker.TimeOfDay>}
+     * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
     this.notYets = [];
 
     /**
      * public for testing.
-     * @type {!Array<KeepMeContributing.Worker.TimeOfDay>}
+     * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
     this.dones = [];
 

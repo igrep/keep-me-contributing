@@ -49,8 +49,8 @@ KeepMeContributing.Worker.SchedulesRunner = class {
         return timeOfDay.millisecsAfter(now) <= 0;
       })
     );
-    goog.array.sortByKey(this.dones, (time) => { return time.toMinutes(); });
-    goog.array.sortByKey(this.notYets, (time) => { return time.toMinutes(); });
+    goog.array.sortByKey(this.dones, (time) => { return time.toMillisecs(); });
+    goog.array.sortByKey(this.notYets, (time) => { return time.toMillisecs(); });
     return this;
   }
 

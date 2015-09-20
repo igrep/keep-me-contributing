@@ -12,11 +12,16 @@ describe('TimeOfDay', function(){
     });
   });
 
-  describe('#toMinutes', function(){
-    it('returns an integer representing total minutes since the beginning of the day.', function(){
-      expect(
-        (new describedClass(     2,  3)).toMinutes()
-      ).to.be(              60 * 2 + 3);
+  describe('#toMillisecs', function(){
+    it('returns an integer representing total milliseconds since the beginning of the day.', function(){
+      let hour   = 2;
+      let minute = 3;
+
+      let hourInMillisecs   = hour * 60 * 60 * 1000;
+      let minuteInMillisecs =    minute * 60 * 1000;
+      let millisecs = hourInMillisecs + minuteInMillisecs;
+
+      expect((new describedClass(hour, minute)).toMillisecs()).to.be(millisecs);
     });
   });
 

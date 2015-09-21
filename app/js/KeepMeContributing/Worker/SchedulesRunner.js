@@ -18,22 +18,44 @@ goog.require('goog.array');
 KeepMeContributing.Worker.SchedulesRunner = class {
   constructor(){
     /**
-     * public for testing.
+     * @private
      * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
-    this.notYets = [];
+    this.times_ = [];
 
     /**
-     * public for testing.
-     * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
+     * @private
+     * @type {number}
      */
-    this.dones = [];
+    this.nextTimeIndex_ = KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX;
 
     /**
      * @private
      * @type {number|null}
      */
-    this.timerId = null;
+    this.timerId_ = null;
+  }
+
+  /**
+   * @return {Array<KeepMeContributing.Worker.TimeOfDay>}
+   */
+  get notYets(){
+    if (this.nextTimeIndex_ === KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX){
+      return [];
+    } else {
+      return goog.array.slice(this.times_, this.nextTimeIndex_);
+    }
+  }
+
+  /**
+   * @return {Array<KeepMeContributing.Worker.TimeOfDay>}
+   */
+  get dones(){
+    if (this.nextTimeIndex_ === KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX){
+      return [];
+    } else {
+      return goog.array.slice(this.times_, 0, this.nextTimeIndex_);
+    }
   }
 
   /**
@@ -41,25 +63,16 @@ KeepMeContributing.Worker.SchedulesRunner = class {
    * @returns {KeepMeContributing.Worker.SchedulesRunner}
    */
   update(schedules){
-    if (this.timerId !== null){
-      clearTimeout(this.timerId);
+    if (this.timerId_ !== null){
+      clearTimeout(this.timerId_);
     }
 
-    if (goog.array.isEmpty(schedules)){
-      this.notYets = [];
-      this.dones = [];
-      return this;
-    }
+    this.times_ = schedules;
+    goog.array.sortByKey(this.times_, (time) => { return time.toMillisecs(); });
+
     let /** !Date */ now = new Date();
-    ( // <- parenthesis required when using desctructuring assignment like below.
-      { 'true': this.dones, 'false': this.notYets } = goog.array.bucket(schedules, (
-        /** KeepMeContributing.Worker.TimeOfDay */ timeOfDay
-      ) => {
-        return timeOfDay.millisecsAfter(now) <= 0;
-      })
-    );
-    goog.array.sortByKey(this.dones, (time) => { return time.toMillisecs(); });
-    goog.array.sortByKey(this.notYets, (time) => { return time.toMillisecs(); });
+    this.nextTimeIndex_ =
+      goog.array.findIndex(this.times_, (time) => { return time.millisecsAfter(now) > 0; });
     return this;
   }
 
@@ -67,26 +80,21 @@ KeepMeContributing.Worker.SchedulesRunner = class {
    * @param {function()} task
    */
   run(task, after = void 0){
-    if (goog.array.isEmpty(this.notYets) && goog.array.isEmpty(this.dones)){
+    if (goog.array.isEmpty(this.times_)){
       return;
     }
 
     if (after === void 0){
-      after = this.notYets[0].millisecsAfter(new Date());
+      after = this.times_[this.nextTimeIndex_].millisecsAfter(new Date());
     }
 
-    this.timerId = setTimeout(() => {
+    this.timerId_ = setTimeout(() => {
       task();
-      this.dones.push(this.notYets.shift());
-      if (goog.array.isEmpty(this.notYets)){
-        if (goog.array.isEmpty(this.dones)){
-          return;
-        }
+      ++this.nextTimeIndex_;
+      if (this.nextTimeIndex_ >= this.times_.length){
+        this.nextTimeIndex_ = 0;
 
-        this.notYets = this.dones;
-        this.dones = [];
-
-        let tomorrowFirstTimeOfDay = this.notYets[0];
+        let tomorrowFirstTimeOfDay = this.times_[0];
         let now = new Date();
         let tomorrowFirstTime = new Date(now.valueOf());
         tomorrowFirstTime.setDate(tomorrowFirstTime.getDate() + 1);
@@ -101,3 +109,9 @@ KeepMeContributing.Worker.SchedulesRunner = class {
   }
 
 };
+
+/**
+ * A result of goog.array.findIndex showing that no element that the given function returns true.
+ * @const {number}
+ */
+KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX = -1;

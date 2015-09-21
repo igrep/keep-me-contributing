@@ -30,10 +30,10 @@ KeepMeContributing.Worker.SchedulesRunner = class {
     this.dones = [];
 
     /**
-     * public for testing.
-     * @type {number}
+     * @private
+     * @type {number|null}
      */
-    this.runsAfterMillisecs = 0;
+    this.timerId = null;
   }
 
   /**
@@ -41,6 +41,15 @@ KeepMeContributing.Worker.SchedulesRunner = class {
    * @returns {KeepMeContributing.Worker.SchedulesRunner}
    */
   update(schedules){
+    if (this.timerId !== null){
+      clearTimeout(this.timerId);
+    }
+
+    if (goog.array.isEmpty(schedules)){
+      this.notYets = [];
+      this.dones = [];
+      return this;
+    }
     let /** !Date */ now = new Date();
     ( // <- parenthesis required when using desctructuring assignment like below.
       { 'true': this.dones, 'false': this.notYets } = goog.array.bucket(schedules, (
@@ -55,9 +64,40 @@ KeepMeContributing.Worker.SchedulesRunner = class {
   }
 
   /**
-   * @param {function():boolean} task
+   * @param {function()} task
    */
-  run(task){
+  run(task, after = void 0){
+    if (goog.array.isEmpty(this.notYets) && goog.array.isEmpty(this.dones)){
+      return;
+    }
+
+    if (after === void 0){
+      after = this.notYets[0].millisecsAfter(new Date());
+    }
+
+    this.timerId = setTimeout(() => {
+      task();
+      this.dones.push(this.notYets.shift());
+      if (goog.array.isEmpty(this.notYets)){
+        if (goog.array.isEmpty(this.dones)){
+          return;
+        }
+
+        this.notYets = this.dones;
+        this.dones = [];
+
+        let tomorrowFirstTimeOfDay = this.notYets[0];
+        let now = new Date();
+        let tomorrowFirstTime = new Date(now.valueOf());
+        tomorrowFirstTime.setDate(tomorrowFirstTime.getDate() + 1);
+        tomorrowFirstTime.setHours(tomorrowFirstTimeOfDay.hour);
+        tomorrowFirstTime.setMinutes(tomorrowFirstTimeOfDay.minute);
+
+        this.run(task, tomorrowFirstTime - now);
+      } else {
+        this.run(task);
+      }
+    }, after);
   }
 
 };

@@ -37,28 +37,6 @@ KeepMeContributing.Worker.SchedulesRunner = class {
   }
 
   /**
-   * @return {Array<KeepMeContributing.Worker.TimeOfDay>}
-   */
-  get notYets(){
-    if (this.nextTimeIndex_ === KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX){
-      return [];
-    } else {
-      return goog.array.slice(this.times_, this.nextTimeIndex_);
-    }
-  }
-
-  /**
-   * @return {Array<KeepMeContributing.Worker.TimeOfDay>}
-   */
-  get dones(){
-    if (this.nextTimeIndex_ === KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX){
-      return [];
-    } else {
-      return goog.array.slice(this.times_, 0, this.nextTimeIndex_);
-    }
-  }
-
-  /**
    * @param {!Array<KeepMeContributing.Worker.TimeOfDay>} schedules
    * @returns {KeepMeContributing.Worker.SchedulesRunner}
    */

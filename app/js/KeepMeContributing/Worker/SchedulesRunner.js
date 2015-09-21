@@ -16,18 +16,47 @@ goog.require('goog.array');
  * Decides when to check contribution status next based on its TimeOfDay-s collection.
  */
 KeepMeContributing.Worker.SchedulesRunner = class {
-  constructor(){
+
+  /**
+   * @param {Array<KeepMeContributing.Worker.TimeOfDay>} times
+   * @param {function(KeepMeContributing.Worker.TimeOfDay)} task
+   *   function to run. should accepts the time when the task runs.
+   */
+  static run(times, task){
+    if (this.currentRunner){
+      this.currentRunner.stop();
+    }
+    this.currentRunner = new this(times, task);
+    this.currentRunner.run();
+  }
+
+  /**
+   * @param {Array<KeepMeContributing.Worker.TimeOfDay>} times
+   * @param {function(KeepMeContributing.Worker.TimeOfDay)} task
+   */
+  constructor(times, task){
     /**
      * @private
      * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
-    this.times_ = [];
+    this.times_ = times;
+    goog.array.sortByKey(this.times_, (time) => { return time.toMillisecs(); });
+
+    /**
+     * @private
+     * @type {function(KeepMeContributing.Worker.TimeOfDay)?}
+     */
+    this.task_ = task;
+
+
+    let /** !Date */ now = new Date();
 
     /**
      * @private
      * @type {number}
      */
-    this.nextTimeIndex_ = KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX;
+    this.nextTimeIndex_ =
+      goog.array.findIndex(this.times_, (time) => { return time.millisecsAfter(now) > 0; });
 
     /**
      * @private
@@ -37,27 +66,13 @@ KeepMeContributing.Worker.SchedulesRunner = class {
   }
 
   /**
-   * @param {!Array<KeepMeContributing.Worker.TimeOfDay>} schedules
-   * @returns {KeepMeContributing.Worker.SchedulesRunner}
+   * Start to run at the given times (this.times_).
+   * When finished all the given tasks in the day,
+   * prepare to run the tasks again in the next day.
+   *
+   * @param {number|undefined} after
    */
-  update(schedules){
-    if (this.timerId_ !== null){
-      clearTimeout(this.timerId_);
-    }
-
-    this.times_ = schedules;
-    goog.array.sortByKey(this.times_, (time) => { return time.toMillisecs(); });
-
-    let /** !Date */ now = new Date();
-    this.nextTimeIndex_ =
-      goog.array.findIndex(this.times_, (time) => { return time.millisecsAfter(now) > 0; });
-    return this;
-  }
-
-  /**
-   * @param {function()} task
-   */
-  run(task, after = void 0){
+  run(after = void 0){
     if (goog.array.isEmpty(this.times_)){
       return;
     }
@@ -67,7 +82,7 @@ KeepMeContributing.Worker.SchedulesRunner = class {
     }
 
     this.timerId_ = setTimeout(() => {
-      task();
+      this.task_(this.times_[this.nextTimeIndex_]);
       ++this.nextTimeIndex_;
       if (this.nextTimeIndex_ >= this.times_.length){
         this.nextTimeIndex_ = 0;
@@ -79,17 +94,36 @@ KeepMeContributing.Worker.SchedulesRunner = class {
         tomorrowFirstTime.setHours(tomorrowFirstTimeOfDay.hour);
         tomorrowFirstTime.setMinutes(tomorrowFirstTimeOfDay.minute);
 
-        this.run(task, tomorrowFirstTime - now);
+        this.run(tomorrowFirstTime - now);
       } else {
-        this.run(task);
+        this.run();
       }
     }, after);
+  }
+
+  /**
+   * stop to run the tasks
+   */
+  stop(){
+    clearTimeout(this.timerId_);
+
+    this.times_ = [];
+    this.task_ = null;
   }
 
 };
 
 /**
- * A result of goog.array.findIndex showing that no element that the given function returns true.
+ * @type {KeepMeContributing.Worker.SchedulesRunner}
+ */
+KeepMeContributing.Worker.SchedulesRunner.currentRunner = null;
+
+/**
+ * Used when calculate the next time when the scheduler checks
+ * if the scheduled time has passed or not.
+ * On the assumption that the scheduled time set by `setTImeOut`
+ * is often delayed by the environment (i.e. the other processes etc.).
+ *
  * @const {number}
  */
-KeepMeContributing.Worker.SchedulesRunner.NO_SUCH_INDEX = -1;
+//KeepMeContributing.Worker.SchedulesRunner.DELAY_COEFFICIENT = 0.75;

@@ -72,12 +72,12 @@ KeepMeContributing.Worker.SchedulesRunner = class {
    *
    * @param {number|undefined} after
    */
-  run(after = void 0){
+  run(after = undefined){
     if (goog.array.isEmpty(this.times_)){
       return;
     }
 
-    if (after === void 0){
+    if (after === undefined){
       after = this.times_[this.nextTimeIndex_].millisecsAfter(new Date());
     }
 

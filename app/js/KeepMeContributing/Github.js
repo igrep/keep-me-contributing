@@ -131,7 +131,15 @@ KeepMeContributing.Github.ContributionsCalendar = class {
    */
   static parse(data, format){
     if (format === KeepMeContributing.Github.Formats.JSON){
-      return new this(JSON.parse(data));
+      let parsedResponse = null;
+      try {
+        parsedResponse = JSON.parse(data);
+      } catch (_){ }
+      if (parsedResponse){
+        return new this(parsedResponse);
+      } else {
+        return null;
+      }
     }
 
     let /** goog.array.ArrayLike */ elements =

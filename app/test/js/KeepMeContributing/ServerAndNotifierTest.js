@@ -7,7 +7,7 @@
  *
  * Why not unit test of KeepMeContributing.Worker.ContributionStatusNotifier?
  * ----------------
- *  I'm concerned about some edge cases which occurrs only when communicating with
+ *  I'm concerned about some edge cases which occurs only when communicating with
  *  the server, especially the slowness of the response of API,
  *  which I guess has caused a timing error when wrapping goog.XhrIo.send
  *  with goog.Promise.

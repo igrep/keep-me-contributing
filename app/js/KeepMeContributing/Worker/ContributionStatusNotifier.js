@@ -92,7 +92,7 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
    * @param {Object} options passed to ServiceWorkerRegistration#showNotification.
    */
   showNotification(title, options){
-    return self.registration.showNotification(title, options);
+    self.registration.showNotification(title, options);
   }
 
 };

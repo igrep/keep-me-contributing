@@ -54,7 +54,8 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
             `Congratulations! ${this.username_} has already contributed today!`,
             {
               body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}`,
-              tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG
+              tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
+              icon: '/img/icon.png'
             }
           );
         } else {
@@ -62,7 +63,8 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
             `Oh my... ${this.username_} has NOT contributed yet today!`,
             {
               body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}`,
-              tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG
+              tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
+              icon: '/img/icon-not_yet.png'
             }
           );
         }
@@ -73,7 +75,8 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
           'An error occurred while asking if contributed',
           {
             body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}\n\n${message}`,
-            tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG
+            tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
+            icon: '/img/icon-error.png'
           }
         );
       }

@@ -20,7 +20,6 @@ goog.require('goog.dom.dataset');
  */
 KeepMeContributing.Github = class {
   /**
-   * @nosideeffects
    * @param {{username: string, apiUrl: string, format: (KeepMeContributing.Github.Formats|undefined)}} config
    */
   constructor(config){
@@ -93,7 +92,6 @@ KeepMeContributing.Github = class {
  */
 KeepMeContributing.Github.ContributionsCalendar = class {
   /**
-   * @nosideeffects
    * @param {Object<string, KeepMeContributing.Github.Contributions>} contributionCountByDateString
    */
   constructor(contributionCountByDateString){
@@ -106,7 +104,6 @@ KeepMeContributing.Github.ContributionsCalendar = class {
 
   /**
    * Retrieve Contributions set by Date
-   * @nosideeffects
    * @param {Date} date
    * @returns {?KeepMeContributing.Github.Contributions}
    */
@@ -124,7 +121,6 @@ KeepMeContributing.Github.ContributionsCalendar = class {
   }
 
   /**
-   * @nosideeffects
    * @param {string} data Response body from github.com/users/<username>/contributions
    * @param {KeepMeContributing.Github.Formats} format response body format
    * @returns {?KeepMeContributing.Github.ContributionsCalendar}

@@ -48,4 +48,4 @@ TODO
 
 # Target Browsers
 
-Only Chrome and Chrome for Android so far. Because I'm going to use [Service Worker](https://github.com/slightlyoff/ServiceWorker) API.
+I tested only on Chrome. Some of the test codes depend on ES6 feature such as `let`.

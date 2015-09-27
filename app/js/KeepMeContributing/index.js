@@ -14,7 +14,7 @@ goog.require('goog.dom');
 
 // public only when debug mode
 let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
-KeepMeContributing.main = function(){
+KeepMeContributing.main = () => {
   let kmc = KeepMeContributing;
   let /** string */ username = 'igrep';
   contributionStatus = new kmc.ContributionStatus(

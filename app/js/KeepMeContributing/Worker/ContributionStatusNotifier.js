@@ -30,7 +30,7 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
    * Simple wrapper for Notification#constructor.
    * Checks if  Notification.permission is 'granted' in advance.
    * @param {string} title passed to new Notification().
-   * @param {Object} options passed to new Notification().
+   * @param {!NotificationOptions} options passed to new Notification().
    */
   notify(title, options){
     if (this.getPermission() === 'granted'){
@@ -92,10 +92,10 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
 
   /**
    * @param {string} title passed to new Notification().
-   * @param {Object} options passed to new Notification().
+   * @param {!NotificationOptions} options passed to new Notification().
    */
   showNotification(title, options){
-    self.registration.showNotification(title, options);
+    new Notification(title, options);
   }
 
 };

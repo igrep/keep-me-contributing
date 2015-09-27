@@ -54,7 +54,7 @@ describe('ContributionStatus', function(){
       returnsTrueOrFalseBasedOnContributionsCount(describedInstance);
 
       it('has correct endpoint URL', function(){
-        expect(describedInstance.getEndpointUrl()).to.match(
+        expect(describedInstance.endpointUrl).to.match(
           new RegExp('github\\.com/users/igrep/contributions$')
         );
       });
@@ -65,7 +65,7 @@ describe('ContributionStatus', function(){
       returnsTrueOrFalseBasedOnContributionsCount(describedInstance);
 
       it('has correct endpoint URL', function(){
-        expect(describedInstance.getEndpointUrl()).to.match(
+        expect(describedInstance.endpointUrl).to.match(
           new RegExp('github\\.com/users/igrep/contributions\\.json$')
         );
       });

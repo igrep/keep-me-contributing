@@ -79,7 +79,7 @@ KeepMeContributing.Github = class {
    * @returns {string}
    * Public only for testing
    */
-  getEndpointUrl(){
+  get endpointUrl(){
     return this.endPointUrl_;
   }
 };

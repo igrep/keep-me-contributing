@@ -15,6 +15,7 @@ goog.require('KeepMeContributing.WorkerHandler');
 goog.require('KeepMeContributing.SchedulesView');
 
 goog.require('goog.dom');
+goog.require('goog.ui.Button');
 
 // public only when debug mode
 let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
@@ -25,15 +26,33 @@ KeepMeContributing.main = () => {
   contributionStatus = new kmc.ContributionStatus(
     new kmc.Github({ username: username, apiUrl: '' })
   );
-  let /** ContributionStatusView */ view = new kmc.ContributionStatusView(
+  let /** ContributionStatusView */ statusView = new kmc.ContributionStatusView(
     username, contributionStatus
   );
 
-  view.render(goog.dom.getElement('contributionStatus'));
+  statusView.render(goog.dom.getElement('contributionStatus'));
   contributionStatus.startPolling(5 * 60 * 1000);
 
   new kmc.GithubProfileLinkedTextView('', username, "'s Current Contribution Status:")
     .render(goog.dom.getElement('title'));
   new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details")
     .render(goog.dom.getElement('seeProfile'));
+
+  let controller = new kmc.SchedulesController();
+  let store = new kmc.SchedulesStore(controller);
+  new kmc.WorkerHandler(new Worker('/js/worker.js'), controller);
+
+  let schedulesView = new kmc.SchedulesView(
+    controller, store, {
+      update: new goog.ui.Button(),
+      stop: new goog.ui.Button(),
+      add: new goog.ui.Button()
+    }
+  );
+
+  let schdulesFormElement = goog.dom.getElement('schedulesForm');
+  schedulesView.updateButton.decorate(goog.dom.getElementByClass('updateButton', schdulesFormElement));
+  schedulesView.stopButton.decorate(goog.dom.getElementByClass('stopButton', schdulesFormElement));
+  schedulesView.addButton.decorate(goog.dom.getElementByClass('addButton', schdulesFormElement));
+  schedulesView.render(goog.dom.getElementByClass('schedulesView', schdulesFormElement));
 };

@@ -2,13 +2,17 @@
 
 goog.provide('KeepMeContributing');
 
+// Manage the panel showing current contribution status.
 goog.require('KeepMeContributing.ContributionStatus');
 goog.require('KeepMeContributing.Github');
-
 goog.require('KeepMeContributing.ContributionStatusView');
 goog.require('KeepMeContributing.GithubProfileLinkedTextView');
 
-goog.require('KeepMeContributing.Worker.TimeOfDay');
+// Manage the form to controll the worker to notify contribution status.
+goog.require('KeepMeContributing.SchedulesController');
+goog.require('KeepMeContributing.SchedulesStore');
+goog.require('KeepMeContributing.WorkerHandler');
+goog.require('KeepMeContributing.SchedulesView');
 
 goog.require('goog.dom');
 
@@ -16,6 +20,7 @@ goog.require('goog.dom');
 let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
 KeepMeContributing.main = () => {
   let kmc = KeepMeContributing;
+
   let /** string */ username = 'igrep';
   contributionStatus = new kmc.ContributionStatus(
     new kmc.Github({ username: username, apiUrl: '' })

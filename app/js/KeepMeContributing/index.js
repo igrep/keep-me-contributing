@@ -20,6 +20,8 @@ goog.require('goog.ui.Button');
 // public only when debug mode
 let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
 KeepMeContributing.main = () => {
+  Notification.requestPermission();
+
   let kmc = KeepMeContributing;
 
   let /** string */ username = 'igrep';

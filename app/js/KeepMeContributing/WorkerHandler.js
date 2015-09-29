@@ -9,6 +9,8 @@ goog.require('KeepMeContributing.Worker.TimeOfDay');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.Event');
 
+goog.require('goog.array');
+
 /**
  * Start and stop running the worker to check contribution status.
  */
@@ -36,16 +38,21 @@ KeepMeContributing.WorkerHandler = class extends goog.events.EventTarget {
     this.registerDisposable(this.handler_);
 
     /*
+     * Start the worker with initial schedules on loaded events.
+     */
+    this.handler_.listen(
+      controller,
+      KeepMeContributing.SchedulesController.Events.LOADED,
+      (/** goog.events.Event */ event) => { this.handleEventWithSchedules_(event); }
+    );
+
+    /*
      * Sends schedules and run the worker on updated events.
      */
     this.handler_.listen(
       controller,
       KeepMeContributing.SchedulesController.Events.UPDATED,
-      (/** goog.events.Event */ event) => {
-        let /** {schedules: Array<KeepMeContributing.Worker.TimeOfDay>} */ eventWithSchedules =
-          /** @type {{schedules: Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
-        this.worker_.postMessage(eventWithSchedules.schedules);
-      }
+      (/** goog.events.Event */ event) => { this.handleEventWithSchedules_(event); }
     );
 
     /*
@@ -63,6 +70,18 @@ KeepMeContributing.WorkerHandler = class extends goog.events.EventTarget {
    */
   stop(){
     this.worker_.terminate();
+  }
+
+  /**
+   * @private
+   * @param {goog.events.Event} event
+   */
+  handleEventWithSchedules_(event){
+    let /** {schedules: Array<KeepMeContributing.Worker.TimeOfDay>} */ eventWithSchedules =
+      /** @type {{schedules: Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
+    if (!(goog.array.isEmpty(eventWithSchedules.schedules))){
+      this.worker_.postMessage(eventWithSchedules.schedules);
+    }
   }
 
   /**

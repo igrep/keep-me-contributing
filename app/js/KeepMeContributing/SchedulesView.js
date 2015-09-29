@@ -142,10 +142,11 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
         let /** {schedules: Array<KeepMeContributing.Worker.TimeOfDay>} */ eventWithSchedules =
           /** @type {{schedules: Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
         this.replaceWith(eventWithSchedules.schedules);
+        this.controller_.finishLoading(eventWithSchedules.schedules);
       }
     );
 
-    this.controller_.load();
+    this.controller_.beginLoading();
   }
 
   /**

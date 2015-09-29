@@ -13,8 +13,18 @@ goog.require('goog.events.EventTarget');
  */
 KeepMeContributing.SchedulesController = class extends goog.events.EventTarget {
 
-  load(){
-    this.dispatchEvent(KeepMeContributing.SchedulesController.Events.LOADED);
+  beginLoading(){
+    this.dispatchEvent(KeepMeContributing.SchedulesController.Events.LOADING);
+  }
+
+  /**
+   * @param {!Array<!KeepMeContributing.Worker.TimeOfDay>} schedules
+   */
+  finishLoading(schedules){
+    this.dispatchEvent({
+      type: KeepMeContributing.SchedulesController.Events.LOADED,
+      schedules: schedules
+    });
   }
 
   /**
@@ -38,7 +48,8 @@ KeepMeContributing.SchedulesController = class extends goog.events.EventTarget {
  * @enum {string}
  */
 KeepMeContributing.SchedulesController.Events = {
-  LOADED: 'loaded',
+  LOADING: 'loading',
+  LOADED:  'loaded',
   UPDATED: 'updated',
   STOPPED: 'stopped'
 };

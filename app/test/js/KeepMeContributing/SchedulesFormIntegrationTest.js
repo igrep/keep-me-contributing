@@ -171,6 +171,11 @@ describe('The form to input schedules', function(){
       );
     });
 
+    it('the worker has received all the saved schedules.', function(){
+      sinon.assert.calledOnce(this.postMessageSpy);
+      sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.savedTimes));
+    });
+
     // TODO: implement and test the delete button
 
   });

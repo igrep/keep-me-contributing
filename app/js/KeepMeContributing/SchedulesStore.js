@@ -55,7 +55,7 @@ KeepMeContributing.SchedulesStore = class extends goog.events.EventTarget {
      */
     this.handler_.listen(
       controller,
-      KeepMeContributing.SchedulesController.Events.LOADED,
+      KeepMeContributing.SchedulesController.Events.LOADING,
       () => {
         this.dispatchEvent({
           type: KeepMeContributing.SchedulesStore.Events.LOADED,

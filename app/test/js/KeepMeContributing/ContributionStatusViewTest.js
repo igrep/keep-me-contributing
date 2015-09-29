@@ -23,6 +23,22 @@ describe('ContributionStatusView', function(){
       this.describedInstance.exitDocument();
     });
 
+    context('without no event', function(){
+
+      it("renders a message showing it's loading the user's contribution status", function(){
+        expect(goog.dom.getTextContent(this.subjectElement)).to.be(
+          `Loading ${this.username}'s contribution status...`
+        );
+      });
+
+      it('sets the css class "loading"', function(){
+        let classList = goog.dom.classlist.get(this.subjectElement);
+        expect(classList[0]).to.be('loading');
+        expect(classList.length).to.be(1);
+      });
+
+    });
+
     context('when a CONTRIBUTED event happens', function(){
       beforeEach(function(){
         this.contributionStatus.dispatchEvent(KeepMeContributing.ContributionStatus.Events.CONTRIBUTED);

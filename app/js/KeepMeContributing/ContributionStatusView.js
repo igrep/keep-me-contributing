@@ -39,6 +39,15 @@ let ContributionStatusView = class extends goog.ui.Component {
   }
 
   /** @override */
+  createDom(){
+    super();
+
+    let /** Element */ e = this.getElement();
+    this.getDomHelper().setTextContent(e, `Loading ${this.username_}'s contribution status...`);
+    goog.dom.classlist.set(e, 'loading');
+  }
+
+  /** @override */
   enterDocument(){
     super();
 

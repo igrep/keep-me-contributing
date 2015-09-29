@@ -62,13 +62,13 @@ module.exports = function (grunt) {
     watch: {
       buildFrontend: {
         files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: ['shell:buildFrontend', 'notify:buildClient'],
+        tasks: ['shell:buildFrontend', 'notify:buildFrontend'],
         options: { interrupt: true, atBegin: true }
       },
       buildDebug: {
         files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: [
-          'shell:buildFrontend', 'notify:buildClient',
+          'shell:buildFrontend', 'notify:buildFrontend',
           'shell:buildWorker', 'notify:buildWorker'
         ],
         options: { interrupt: true, atBegin: true }

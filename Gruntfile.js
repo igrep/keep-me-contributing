@@ -52,6 +52,7 @@ module.exports = function (grunt) {
       buildFrontend: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
       buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker.Main', 'worker') },
       buildWorkerTestLib: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker-test-lib') },
+      installServerDeps: { command: 'mvn install' },
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },
       testServer: { command: 'foreman start web' },
@@ -128,6 +129,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('install', [
+    'shell:installServerDeps',
     'bower:install',
     'copy:closureLibrary'
   ]);

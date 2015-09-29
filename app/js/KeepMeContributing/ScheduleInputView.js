@@ -34,7 +34,7 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
     let /** goog.ui.ComboBox */ comboBox = new goog.ui.ComboBox(
       undefined, undefined, new goog.ui.LabelInput('HH:MM')
     );
-    for (let /** number */ hour = 0; hour < 23; ++hour){
+    for (let /** number */ hour = 0; hour <= 23; ++hour){
       let /** string */ hh00 =
         (new KeepMeContributing.Worker.TimeOfDay(hour, 0)).toHHMM();
       comboBox.addItem(new goog.ui.MenuItem(hh00));

@@ -49,7 +49,7 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      buildDebug: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
+      buildFrontend: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
       buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker.Main', 'worker') },
       buildWorkerTestLib: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker-test-lib') },
       buildServer: { command: 'mvn compile' },
@@ -59,9 +59,17 @@ module.exports = function (grunt) {
       deploy: { command: 'mvn heroku:deploy' }
     },
     watch: {
+      buildFrontend: {
+        files: ['app/js/KeepMeContributing/**/*.js'],
+        tasks: ['shell:buildFrontend', 'notify:buildClient'],
+        options: { interrupt: true, atBegin: true }
+      },
       buildDebug: {
         files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: ['shell:buildDebug', 'notify:buildDebug'],
+        tasks: [
+          'shell:buildFrontend', 'notify:buildClient',
+          'shell:buildWorker', 'notify:buildWorker'
+        ],
         options: { interrupt: true, atBegin: true }
       },
       buildWorker: {
@@ -86,9 +94,9 @@ module.exports = function (grunt) {
       }
     },
     notify: {
-      buildDebug: {
+      buildFrontend: {
         options: {
-          title: 'buildDebug',
+          title: 'buildFrontend',
           message: 'Finished to build js/app.js.\nCheck the terminal to check for warnings.'
         }
       },
@@ -130,7 +138,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'shell:lint',
-    'shell:buildDebug',
+    'shell:buildFrontend',
+    'shell:buildWorker',
     'shell:buildServer'
   ]);
 

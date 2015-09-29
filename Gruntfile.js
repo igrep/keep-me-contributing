@@ -133,10 +133,6 @@ module.exports = function (grunt) {
     'bower:install',
     'copy:closureLibrary'
   ]);
-  grunt.registerTask('test', [
-    'shell:buildDebug',
-    'shell:testServer'
-  ]);
 
   grunt.registerTask('default', [
     'shell:lint',

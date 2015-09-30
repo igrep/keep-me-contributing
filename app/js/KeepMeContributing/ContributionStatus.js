@@ -58,7 +58,6 @@ KeepMeContributing.ContributionStatus = class extends goog.events.EventTarget {
   startPolling(interval){
     new goog.async.Throttle(
       () => {
-        // TODO: add LOADING event here.
         this.queryHasContributedAt(new Date())
           .then((contributed) => {
             if (contributed){

@@ -4,6 +4,10 @@ https://keep-me-contributing.herokuapp.com/
 
 Web page to check if I did something that greens the contribution map on https://github.com/igrep.
 
+# Motivation and Details of Development
+
+[See here (in Japanese).](/これも読んでください.ja.md)
+
 # Building and Deployment
 
 ## Prerequisites

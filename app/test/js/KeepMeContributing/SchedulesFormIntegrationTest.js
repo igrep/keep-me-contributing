@@ -18,7 +18,7 @@ describe('The form to input schedules', function(){
 
     let controller = new kmc.SchedulesController();
 
-    this.store = new kmc.SchedulesStore(controller);
+    this.store = new kmc.SchedulesStore('KeepMeContributing::SchedulesFormIntegrationTest', controller);
 
     this.worker = new Worker('/test/js/KeepMeContributing/Worker/dummy.js');
     this.postMessageSpy = sinon.spy(this.worker, 'postMessage');

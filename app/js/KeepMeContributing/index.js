@@ -41,7 +41,7 @@ KeepMeContributing.main = () => {
     .render(goog.dom.getElement('seeProfile'));
 
   let controller = new kmc.SchedulesController();
-  let store = new kmc.SchedulesStore(controller);
+  let store = new kmc.SchedulesStore('KeepMeContributing.SchedulesStore', controller);
   new kmc.WorkerHandler(new Worker('/js/worker.js'), controller);
 
   let schedulesView = new kmc.SchedulesView(

@@ -28,9 +28,10 @@ KeepMeContributing.SchedulesStore = class extends goog.events.EventTarget {
    * listen events from the given controller.
    *
    * @override
+   * @param {string} prefix
    * @param {KeepMeContributing.SchedulesController} controller
    */
-  constructor(controller){
+  constructor(prefix, controller){
     super();
 
     /**
@@ -38,8 +39,7 @@ KeepMeContributing.SchedulesStore = class extends goog.events.EventTarget {
      * @type {goog.storage.mechanism.PrefixedMechanism}
      */
     this.storage_ = new goog.storage.mechanism.PrefixedMechanism(
-      new goog.storage.mechanism.HTML5LocalStorage(),
-      'KeepMeContributing.SchedulesStore'
+      new goog.storage.mechanism.HTML5LocalStorage(), prefix
     );
 
     /**

@@ -2,16 +2,40 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
-  var closureCompilerCommandFor = function(entryPoint, outName){
+  /*
+   * Build Rule class
+   */
+  ClosureCompilerRule = function(outName, entryPoint){
+    this.outName = outName;
+    this.entryPoint = entryPoint;
+  };
+  ClosureCompilerRule.ruleFor = function(name){
+    var rules = {
+      frontend:      new this('app',             'KeepMeContributing'),
+      worker:        new this('worker',          'KeepMeContributing.Worker.Main'),
+      workerTestLib: new this('worker-test-lib', 'KeepMeContributing.Worker'),
+    };
+    if (name in rules){
+      return rules[name];
+    } else {
+      throw new Error('Unknown target of Closure Compiler: ' + name);
+    }
+  };
+
+  ClosureCompilerRule.prototype.outRoot = function(){ return 'app'; };
+  ClosureCompilerRule.prototype.outPath = function(){
+    return this.outRoot() + '/js/' + this.outName + '.js';
+  };
+  ClosureCompilerRule.prototype.compilerCommand = function(){
     return [
       'java -jar node_modules/google-closure-compiler/compiler.jar',
 
       '--only_closure_dependencies',
-      '--closure_entry_point="' + entryPoint + '"',
+      '--closure_entry_point="' + this.entryPoint + '"',
 
-      '--create_source_map="app/js/' + outName + '.js.map"',
+      '--create_source_map="' + this.outPath() + '.map"',
       '--source_map_location_mapping=app\\|',
-      '--output_wrapper "%output%\n//# sourceMappingURL=/js/' + outName + '.js.map"',
+      '--output_wrapper "%output%\n//# sourceMappingURL=/js/' + this.outName + '.js.map"',
 
       '--language_in=ECMASCRIPT6',
       '--language_out=ECMASCRIPT5_STRICT',
@@ -27,9 +51,12 @@ module.exports = function (grunt) {
       '--js=app/lib/google-closure-library/third_party/closure/goog/**.js',
       '--js=!app/lib/google-closure-library/third_party/closure/goog/**test.js',
       '--js=app/js/KeepMeContributing/**.js',
-      '--js_output_file=app/js/' + outName + '.js'
+      '--js_output_file=' + this.outPath()
     ].join(' ');
   };
+
+  var targetName = grunt.option('target') || 'frontend';
+  var closureCompilerRule = ClosureCompilerRule.ruleFor(targetName);
 
   grunt.initConfig({
     bower: { install: { options: { targetDir: 'app/lib', verbose: true } } },
@@ -49,9 +76,8 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      buildFrontend: { command: closureCompilerCommandFor('KeepMeContributing', 'app') },
-      buildWorker: { command: closureCompilerCommandFor('KeepMeContributing.Worker.Main', 'worker') },
-      buildWorkerTestLib: { command: closureCompilerCommandFor('KeepMeContributing.Worker', 'worker-test-lib') },
+      // FIXME: Can't build all client js file at once!
+      buildClient: { command: closureCompilerRule.compilerCommand() },
       installServerDeps: { command: 'mvn install' },
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },
@@ -60,28 +86,10 @@ module.exports = function (grunt) {
       deploy: { command: 'mvn heroku:deploy' }
     },
     watch: {
-      buildFrontend: {
+      buildClient: {
         files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: ['shell:buildFrontend', 'notify:buildFrontend'],
+        tasks: ['shell:buildClient', 'notify:buildClient'],
         options: { interrupt: true, atBegin: true }
-      },
-      buildDebug: {
-        files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: [
-          'shell:buildFrontend', 'notify:buildFrontend',
-          'shell:buildWorker', 'notify:buildWorker'
-        ],
-        options: { interrupt: true, atBegin: true }
-      },
-      buildWorker: {
-        files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: ['shell:buildWorker', 'notify:buildWorker'],
-        options: { interrupt: true, atBegin: true }
-      },
-      buildWorkerTestLib: {
-        files: ['app/js/KeepMeContributing/**/*.js'],
-        tasks: ['shell:buildWorkerTestLib', 'notify:buildWorkerTestLib'],
-        options: { interrupt: true, atBegin: true  }
       },
       buildServer: {
         files: ['src/main/java/**/*.java'],
@@ -95,22 +103,10 @@ module.exports = function (grunt) {
       }
     },
     notify: {
-      buildFrontend: {
+      buildClient: {
         options: {
-          title: 'buildFrontend',
-          message: 'Finished to build js/app.js.\nCheck the terminal to check for warnings.'
-        }
-      },
-      buildWorker: {
-        options: {
-          title: 'buildWorker',
-          message: 'Finished to build js/worker.js.\nCheck the terminal to check for warnings.'
-        }
-      },
-      buildWorkerTestLib: {
-        options: {
-          title: 'buildWorkerTestLib',
-          message: 'Finished to build js/worker-test-lib.js.\nCheck the terminal to check for warnings.'
+          title: 'buildClient: ' + targetName,
+          message: 'Finished to build js/' + closureCompilerRule.outName + '.js\nCheck the terminal to check for warnings.'
         }
       },
       buildServer: {
@@ -134,10 +130,10 @@ module.exports = function (grunt) {
     'copy:closureLibrary'
   ]);
 
+  // FIXME: build all client file at once!
   grunt.registerTask('default', [
     'shell:lint',
-    'shell:buildFrontend',
-    'shell:buildWorker',
+    'shell:buildClient',
     'shell:buildServer'
   ]);
 

@@ -2,12 +2,24 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
+  /**
+   * Process grunt.option-s and argv
+   */
+  /* Build target of closure compiler. See the ClosureCompilerRule class for details. */
+  var targetName = grunt.option('target') || 'frontend';
+  /*
+   * Run on an connected Android device after building by cordova.
+   * NOTE: only valid when building by cordova.
+   */
+  var runAfterbuilding = grunt.option('run');
+
   /*
    * Build Rule class
    */
-  ClosureCompilerRule = function(outName, entryPoint){
+  ClosureCompilerRule = function(outName, entryPoint, opt_outRoot){
     this.outName = outName;
     this.entryPoint = entryPoint;
+    this.outRoot = opt_outRoot || 'app';
   };
   ClosureCompilerRule.ruleFor = function(name){
     var rules = {
@@ -22,10 +34,10 @@ module.exports = function (grunt) {
     }
   };
 
-  ClosureCompilerRule.prototype.outRoot = function(){ return 'app'; };
   ClosureCompilerRule.prototype.outPath = function(){
-    return this.outRoot() + '/js/' + this.outName + '.js';
+    return this.outRoot + '/js/' + this.outName + '.js';
   };
+
   ClosureCompilerRule.prototype.compilerCommand = function(){
     return [
       'java -jar node_modules/google-closure-compiler/compiler.jar',
@@ -34,7 +46,7 @@ module.exports = function (grunt) {
       '--closure_entry_point="' + this.entryPoint + '"',
 
       '--create_source_map="' + this.outPath() + '.map"',
-      '--source_map_location_mapping=app\\|',
+      '--source_map_location_mapping=' + this.outRoot + '\\|',
       '--output_wrapper "%output%\n//# sourceMappingURL=/js/' + this.outName + '.js.map"',
 
       '--language_in=ECMASCRIPT6',
@@ -55,7 +67,10 @@ module.exports = function (grunt) {
     ].join(' ');
   };
 
-  var targetName = grunt.option('target') || 'frontend';
+  ClosureCompilerRule.prototype.setOutRoot = function(outRoot){
+    return new this.constructor(this.outName, this.entryPoint, outRoot);
+  };
+
   var closureCompilerRule = ClosureCompilerRule.ruleFor(targetName);
 
   grunt.initConfig({
@@ -73,11 +88,33 @@ module.exports = function (grunt) {
             dest: 'app/lib/'
           }
         ]
+      },
+      cordova: {
+        files: [
+          {
+            expand: true, cwd: 'app',
+            src: ['css/*', 'img/*', 'index.html'],
+            dest: 'www/'
+          }
+        ]
       }
     },
     shell: {
       // FIXME: Can't build all client js file at once!
-      buildClient: { command: closureCompilerRule.compilerCommand() },
+      buildClient: {
+        command: function(cordova){
+          if (cordova === 'cordova'){
+            return closureCompilerRule.setOutRoot('www').compilerCommand();
+          } else {
+            return closureCompilerRule.compilerCommand();
+          }
+        }
+      },
+      cordova: {
+        command: 
+          runAfterbuilding ?
+            'cordova run android --device' : 'cordova build android'
+      },
       installServerDeps: { command: 'mvn install' },
       buildServer: { command: 'mvn compile' },
       buildServerTest: { command: 'mvn test' },
@@ -89,6 +126,17 @@ module.exports = function (grunt) {
       buildClient: {
         files: ['app/js/KeepMeContributing/**/*.js'],
         tasks: ['shell:buildClient', 'notify:buildClient'],
+        options: { interrupt: true, atBegin: true }
+      },
+      cordova: {
+        files: ['app/js/KeepMeContributing/**/*.js'],
+        tasks: [
+          'shell:buildClient:cordova',
+          'notify:buildClient',
+          'copy:cordova',
+          'shell:cordova',
+          'notify:cordova'
+        ],
         options: { interrupt: true, atBegin: true }
       },
       buildServer: {
@@ -107,6 +155,12 @@ module.exports = function (grunt) {
         options: {
           title: 'buildClient: ' + targetName,
           message: 'Finished to build js/' + closureCompilerRule.outName + '.js\nCheck the terminal to check for warnings.'
+        }
+      },
+      cordova: {
+        options: {
+          title: 'Cordova',
+          message: 'Finished to build cordova app.'
         }
       },
       buildServer: {
@@ -134,7 +188,14 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'shell:lint',
     'shell:buildClient',
+    'shell:buildClient:cordova',
     'shell:buildServer'
+  ]);
+
+  grunt.registerTask('cordova', [
+    'shell:buildClient:cordova',
+    'copy:cordova',
+    'shell:cordova'
   ]);
 
   grunt.registerTask('deploy', [

@@ -51,3 +51,10 @@ bower_components
 # Cordova
 /platforms
 /plugins
+/www/css/*
+/www/img/*
+/www/js/*
+!/www/css/.gitkeep
+!/www/img/.gitkeep
+!/www/js/.gitkeep
+/www/index.html

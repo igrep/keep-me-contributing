@@ -42,7 +42,8 @@ KeepMeContributing.main = () => {
 
   let controller = new kmc.SchedulesController();
   let store = new kmc.SchedulesStore('KeepMeContributing.SchedulesStore', controller);
-  new kmc.WorkerHandler(new Worker('/js/worker.js'), controller);
+  // Relative path to worker.js from the loader document (index.html)
+  new kmc.WorkerHandler(new Worker('js/worker.js'), controller);
 
   let schedulesView = new kmc.SchedulesView(
     controller, store, {

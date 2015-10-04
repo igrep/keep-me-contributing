@@ -93,7 +93,7 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true, cwd: 'app',
-            src: ['css/*', 'img/*', 'index.html'],
+            src: ['css/*', 'img/*', 'js/load.js', 'index.html'],
             dest: 'www/'
           }
         ]
@@ -129,7 +129,13 @@ module.exports = function (grunt) {
         options: { interrupt: true, atBegin: true }
       },
       cordova: {
-        files: ['app/js/KeepMeContributing/**/*.js'],
+        files: [
+          'app/js/KeepMeContributing/**/*.js',
+          'app/css/*.css',
+          'app/img/*.png',
+          'app/js/loaod.js',
+          'app/index.html'
+        ],
         tasks: [
           'shell:buildClient:cordova',
           'notify:buildClient',

@@ -16,10 +16,11 @@ module.exports = function (grunt) {
   /*
    * Build Rule class
    */
-  ClosureCompilerRule = function(outName, entryPoint, opt_outRoot){
+  ClosureCompilerRule = function(outName, entryPoint, opt_cordovaMode){
     this.outName = outName;
     this.entryPoint = entryPoint;
-    this.outRoot = opt_outRoot || 'app';
+    this.outRoot = opt_cordovaMode ? 'www' : 'app';
+    this.cordova = opt_cordovaMode || false;
   };
   ClosureCompilerRule.ruleFor = function(name){
     var rules = {
@@ -58,6 +59,10 @@ module.exports = function (grunt) {
       '--warning_level=VERBOSE',
       '--jscomp_warning=checkDebuggerStatement',
 
+      '--define KeepMeContributing.Defines.CORDOVA=' + this.cordova,
+
+      '--externs=app/js/externs/cordova.js',
+
       '--js=app/lib/google-closure-library/closure/goog/**.js',
       '--js=!app/lib/google-closure-library/closure/goog/**test.js',
       '--js=app/lib/google-closure-library/third_party/closure/goog/**.js',
@@ -67,8 +72,8 @@ module.exports = function (grunt) {
     ].join(' ');
   };
 
-  ClosureCompilerRule.prototype.setOutRoot = function(outRoot){
-    return new this.constructor(this.outName, this.entryPoint, outRoot);
+  ClosureCompilerRule.prototype.cordovaMode = function(){
+    return new this.constructor(this.outName, this.entryPoint, true);
   };
 
   var closureCompilerRule = ClosureCompilerRule.ruleFor(targetName);
@@ -104,7 +109,7 @@ module.exports = function (grunt) {
       buildClient: {
         command: function(cordova){
           if (cordova === 'cordova'){
-            return closureCompilerRule.setOutRoot('www').compilerCommand();
+            return closureCompilerRule.cordovaMode().compilerCommand();
           } else {
             return closureCompilerRule.compilerCommand();
           }

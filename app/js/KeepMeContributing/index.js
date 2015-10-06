@@ -2,6 +2,8 @@
 
 goog.provide('KeepMeContributing');
 
+goog.require('KeepMeContributing.Defines');
+
 // Manage the panel showing current contribution status.
 goog.require('KeepMeContributing.ContributionStatus');
 goog.require('KeepMeContributing.Github');
@@ -19,9 +21,7 @@ goog.require('goog.ui.Button');
 
 // public only when debug mode
 let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
-KeepMeContributing.main = () => {
-  Notification.requestPermission();
-
+KeepMeContributing.start = () => {
   let kmc = KeepMeContributing;
 
   let /** string */ username = 'igrep';
@@ -58,4 +58,23 @@ KeepMeContributing.main = () => {
   schedulesView.stopButton.decorate(goog.dom.getElementByClass('stopButton', schdulesFormElement));
   schedulesView.addButton.decorate(goog.dom.getElementByClass('addButton', schdulesFormElement));
   schedulesView.render(goog.dom.getElementByClass('schedulesView', schdulesFormElement));
+};
+
+/**
+ * @param {function()} start
+ */
+KeepMeContributing.ready = (start) => {
+  if (KeepMeContributing.Defines.CORDOVA){
+    document.addEventListener('deviceready', () => {
+      cordova.plugins.notification.local.registerPermission();
+      start();
+    });
+  } else {
+    Notification.requestPermission();
+    start();
+  }
+};
+
+KeepMeContributing.main = () => {
+  KeepMeContributing.ready(KeepMeContributing.start);
 };

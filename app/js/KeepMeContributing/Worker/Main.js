@@ -38,9 +38,9 @@ self.addEventListener('message', (/** MessageEvent */ event) => {
 
   let /** Array<Object> */ timesObject = /** @type {Array<Object>} */ (event.data);
   let /** Array<KeepMeContributing.Worker.TimeOfDay> */ times =
-    goog.array.map(timesObject, (/** {hour_: number, minute_: number} */ timeObject) => {
-      return KeepMeContributing.Worker.TimeOfDay.fromData(timeObject);
-    });
+    goog.array.map(timesObject, (/** {hour_: number, minute_: number} */ timeObject) =>
+      KeepMeContributing.Worker.TimeOfDay.fromData(timeObject)
+    );
   KeepMeContributing.Worker.SchedulesRunner.run(
     times,
     (/** KeepMeContributing.Worker.TimeOfDay */ time) => {

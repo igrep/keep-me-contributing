@@ -114,9 +114,7 @@ KeepMeContributing.SchedulesStore = class extends goog.events.EventTarget {
     return goog.iter.toArray(
         goog.iter.map(
         this.storage_.__iterator__(),
-        (/** string */ hhmm) => {
-          return KeepMeContributing.Worker.TimeOfDay.fromHHMM(hhmm);
-        }
+        (/** string */ hhmm) => KeepMeContributing.Worker.TimeOfDay.fromHHMM(hhmm)
       )
     );
   }

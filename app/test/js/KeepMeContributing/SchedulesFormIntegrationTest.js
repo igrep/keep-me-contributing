@@ -165,9 +165,9 @@ describe('The form to input schedules', function(){
     });
 
     it('renders saved times on each input, with an empty input to create new one.', function(){
-      let renderedStrings = goog.array.map(this.collectInputs(), (input) => { return input.value; });
+      let renderedStrings = goog.array.map(this.collectInputs(), (input) => input.value);
       expect(renderedStrings).to.eql(
-        goog.array.map(this.savedTimes, (time) => { return time.toHHMM(); }).concat([''])
+        goog.array.map(this.savedTimes, (time) => time.toHHMM()).concat([''])
       );
     });
 

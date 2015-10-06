@@ -40,7 +40,7 @@ KeepMeContributing.Worker.SchedulesRunner = class {
      * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
     this.times_ = times;
-    goog.array.sortByKey(this.times_, (time) => { return time.toMillisecs(); });
+    goog.array.sortByKey(this.times_, (time) => time.toMillisecs());
 
     /**
      * @private
@@ -56,7 +56,7 @@ KeepMeContributing.Worker.SchedulesRunner = class {
      * @type {number}
      */
     this.nextTimeIndex_ =
-      goog.array.findIndex(this.times_, (time) => { return time.millisecsAfter(now) > 0; });
+      goog.array.findIndex(this.times_, (time) => time.millisecsAfter(now) > 0);
 
     /**
      * @private

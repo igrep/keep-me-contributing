@@ -1,19 +1,17 @@
 # vim: filetype=yaml :
-"rules":
-  "no-unused-vars": [2, {"vars": "all", "args": "none"}]
-  "no-multi-spaces": 0
-  "no-unused-expressions": 0
-  "no-underscore-dangle": 0
-  "indent": [2, 2]
-  "quotes": [2, "single", "avoid-escape"]
-  "linebreak-style": [2, "unix"]
-  "semi": [2, "always"]
-"ecmaFeatures":
-  "modules": true
-"sourceType": "module"
-"env":
-  "es6": true
-  "node": true
-  "mocha": true
-  "browser": true
-  "worker": true
+rules:
+  no-unused-vars: [2, { vars: all, args: none }]
+  no-multi-spaces: 0
+  no-unused-expressions: 0
+  no-underscore-dangle: 0
+  indent: [2, 2]
+  quotes: [2, single, avoid-escape]
+  linebreak-style: [2, unix]
+  semi: [2, always]
+env:
+  es6: true
+  mocha: true
+  browser: true
+  worker: true
+globals:
+  goog: false

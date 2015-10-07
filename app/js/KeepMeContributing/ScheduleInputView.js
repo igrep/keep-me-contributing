@@ -10,6 +10,7 @@ goog.provide('KeepMeContributing.ScheduleInputView');
 goog.require('KeepMeContributing.Worker.TimeOfDay');
 
 goog.require('goog.ui.Control');
+goog.require('goog.ui.Button');
 goog.require('goog.ui.ComboBox');
 goog.require('goog.dom');
 
@@ -40,7 +41,22 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
       comboBox.addItem(new goog.ui.MenuItem(hh00));
     }
 
+    this.addChild(new goog.ui.Button('Ｘ'));
     this.addChild(comboBox);
+  }
+
+  /**
+   * @returns {goog.ui.Button}
+   */
+  get closeButton(){
+    return /** @type {goog.ui.Button} */ (this.getChildAt(0));
+  }
+
+  /**
+   * @returns {goog.ui.ComboBox}
+   */
+  get comboBox(){
+    return /** @type {goog.ui.ComboBox} */ (this.getChildAt(1));
   }
 
   /**
@@ -63,13 +79,6 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
   }
 
   /**
-   * @returns {goog.ui.ComboBox}
-   */
-  get comboBox(){
-    return /** @type {goog.ui.ComboBox} */ (this.getChildAt(0));
-  }
-
-  /**
    * This component can't be decorated because the child comboBox
    * can't be decorated.
    *
@@ -89,14 +98,27 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
   createDom(){
     super();
 
-    this.comboBox.createDom();
-    this.getDomHelper().appendChild(
-      this.getElement(), this.comboBox.getElement()
-    );
+    this.forEachChild((child) => {
+      child.createDom();
+      this.getDomHelper().appendChild(
+        this.getElement(), child.getElement()
+      );
+    });
 
     this.comboBox.getInputElement().value = this.timeString_;
+  }
 
-    // TODO: add button to close
+  /**
+   * @override
+   */
+  enterDocument(){
+    super();
+
+    this.getHandler().listen(
+      this.closeButton, goog.ui.Component.EventType.ACTION, () => {
+        this.getParent().removeChild(this, true);
+      }
+    );
   }
 
 };

@@ -176,7 +176,35 @@ describe('The form to input schedules', function(){
       sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.savedTimes));
     });
 
-    // TODO: implement and test the delete button
+    context('then, clicking the close button', function(){
+      beforeEach(function(){
+        this.indexToDelete = 1;
+        this.view.getChildAt(this.indexToDelete).closeButton.getElement().click();
+      });
+
+      it('there is no such schedule rendered.', function(){
+        let renderedStrings = goog.array.map(this.collectInputs(), (input) => input.value);
+
+        let withoutClosed = goog.array.map(this.savedTimes, (time) => time.toHHMM());
+        withoutClosed.splice(this.indexToDelete, 1);
+        withoutClosed.push(''); // contains the initial empty input
+
+        expect(renderedStrings).to.eql(withoutClosed);
+      });
+
+      context('and by clicking the update button', function(){
+        beforeEach(function(){
+          this.view.updateButton.getElement().click();
+        });
+
+        it('the schedules store can reload all the input schedules except the closed schedule.', function(){
+          let reloadedSchedules = this.store.load();
+          this.savedTimes.splice(this.indexToDelete, 1);
+          expect(reloadedSchedules).to.be.eql(this.savedTimes);
+        });
+      });
+
+    });
 
   });
 

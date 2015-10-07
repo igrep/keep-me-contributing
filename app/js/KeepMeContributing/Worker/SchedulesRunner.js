@@ -117,13 +117,3 @@ KeepMeContributing.Worker.SchedulesRunner = class {
  * @type {KeepMeContributing.Worker.SchedulesRunner}
  */
 KeepMeContributing.Worker.SchedulesRunner.currentRunner = null;
-
-/**
- * Used when calculate the next time when the scheduler checks
- * if the scheduled time has passed or not.
- * On the assumption that the scheduled time set by `setTImeOut`
- * is often delayed by the environment (i.e. the other processes etc.).
- *
- * @const {number}
- */
-//KeepMeContributing.Worker.SchedulesRunner.DELAY_COEFFICIENT = 0.75;

@@ -53,7 +53,6 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
           this.notify(
             `Congratulations! ${this.username_} has already contributed today!`,
             {
-              body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}`,
               tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
               icon: '/img/icon.png'
             }
@@ -62,7 +61,6 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
           this.notify(
             `Oh my... ${this.username_} has NOT contributed yet today!`,
             {
-              body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}`,
               tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
               icon: '/img/icon-not_yet.png'
             }
@@ -74,7 +72,6 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
         this.notify(
           'An error occurred while asking if contributed',
           {
-            body: `Status check at ${time.toHHMM()}. Actual current time: ${actualCurrentTime}\n\n${message}`,
             tag: KeepMeContributing.Worker.ContributionStatusNotifier.TAG,
             icon: '/img/icon-error.png'
           }

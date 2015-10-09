@@ -17,7 +17,7 @@ describe('SchedulesRunner', function(){
 
   describe('.run', function(){
     let describedFunction = (times, task) => {
-      describedClass.run(times, task);
+      describedClass.run(goog.array.clone(times), task);
     };
 
     beforeEach(function(){ this.spy = sinon.spy(); });
@@ -179,6 +179,34 @@ describe('SchedulesRunner', function(){
             expect(this.spy.lastCall.calledWithExactly(passedTimes[0])).to.be(true);
           });
         });
+      });
+
+      context('when some of the schedules are duplicate', function(){
+        let times = [
+          new KeepMeContributing.Worker.TimeOfDay(noon.getHours() + 1, noon.getMinutes()),
+          new KeepMeContributing.Worker.TimeOfDay(noon.getHours() + 1, noon.getMinutes()),
+          new KeepMeContributing.Worker.TimeOfDay(noon.getHours() + 2, noon.getMinutes())
+        ];
+        beforeEach(function(){ describedFunction(times, this.spy); });
+
+        context('when it becomes the earliest not-yet time', function(){
+          beforeEach(function(){ this.clock.tick(times[0].millisecsAfter(noon)); });
+          it('executes the task for first not-yet time once.', function(){
+            expect(this.spy.callCount).to.be(1);
+            expect(this.spy.calledWithExactly(times[0])).to.be(true);
+          });
+        });
+
+        context('when it becomes the third earliest not-yet time', function(){
+          beforeEach(function(){ this.clock.tick(times[2].millisecsAfter(noon)); });
+          it('executes the task twice: for first not-yet time and the third (non-duplicate) one.', function(){
+            expect(this.spy.callCount).to.be(2);
+            expect(this.spy.getCall(0).calledWithExactly(times[0])).to.be(true);
+            expect(this.spy.getCall(1).calledWithExactly(times[2])).to.be(true);
+          });
+        });
+
+
       });
 
     });

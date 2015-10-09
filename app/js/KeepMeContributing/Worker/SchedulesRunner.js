@@ -40,6 +40,7 @@ KeepMeContributing.Worker.SchedulesRunner = class {
      * @type {Array<KeepMeContributing.Worker.TimeOfDay>}
      */
     this.times_ = times;
+    goog.array.removeDuplicates(this.times_, null, (time) => time.toHHMM());
     goog.array.sortByKey(this.times_, (time) => time.toMillisecs());
 
     /**

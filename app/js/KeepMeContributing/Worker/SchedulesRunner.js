@@ -55,7 +55,7 @@ KeepMeContributing.Worker.SchedulesRunner = class {
      * @private
      * @type {number}
      */
-    this.nextTimeIndex_ =
+    this.firstTimeIndex_ =
       goog.array.findIndex(this.times_, (time) => time.millisecsAfter(now) > 0);
 
     /**
@@ -70,34 +70,36 @@ KeepMeContributing.Worker.SchedulesRunner = class {
    * When finished all the given tasks in the day,
    * prepare to run the tasks again in the next day.
    *
-   * @param {number|undefined} after
+   * @param {number} nextIndex
    */
-  run(after = undefined){
+  run(nextIndex = this.firstTimeIndex_){
     if (goog.array.isEmpty(this.times_)){
       return;
     }
 
-    if (after === undefined){
-      after = this.times_[this.nextTimeIndex_].millisecsAfter(new Date());
+    let /** KeepMeContributing.Worker.TimeOfDay? */ next = this.times_[nextIndex];
+
+    let /** number */ after = 0;
+    let /** number */ nextNextIndex = 0;
+    if (next){
+      after = next.millisecsAfter(new Date());
+      nextNextIndex = nextIndex + 1;
+    } else {
+      let /** KeepMeContributing.Worker.TimeOfDay */ tomorrowFirst = this.times_[0];
+      let /** Date */ now = new Date();
+      let /** Date */ tomorrowFirstTime = new Date(now.valueOf());
+      tomorrowFirstTime.setDate(tomorrowFirstTime.getDate() + 1);
+      tomorrowFirstTime.setHours(tomorrowFirst.hour);
+      tomorrowFirstTime.setMinutes(tomorrowFirst.minute);
+
+      next = tomorrowFirst;
+      after = tomorrowFirstTime - now;
+      nextNextIndex = 1;
     }
 
     this.timerId_ = setTimeout(() => {
-      this.task_(this.times_[this.nextTimeIndex_]);
-      ++this.nextTimeIndex_;
-      if (this.nextTimeIndex_ >= this.times_.length){
-        this.nextTimeIndex_ = 0;
-
-        let tomorrowFirstTimeOfDay = this.times_[0];
-        let now = new Date();
-        let tomorrowFirstTime = new Date(now.valueOf());
-        tomorrowFirstTime.setDate(tomorrowFirstTime.getDate() + 1);
-        tomorrowFirstTime.setHours(tomorrowFirstTimeOfDay.hour);
-        tomorrowFirstTime.setMinutes(tomorrowFirstTimeOfDay.minute);
-
-        this.run(tomorrowFirstTime - now);
-      } else {
-        this.run();
-      }
+      this.task_(next);
+      this.run(nextNextIndex);
     }, after);
   }
 

@@ -25,8 +25,18 @@ KeepMeContributing.start = () => {
   let kmc = KeepMeContributing;
 
   let /** string */ username = 'igrep';
+
+  let /** string */ apiUrl = '';
+  let /** KeepMeContributing.Github.Formats */ format = KeepMeContributing.Github.Formats.DEFAULT;
+  if (KeepMeContributing.Defines.CORDOVA){
+    apiUrl = 'https://keep-me-contributing.herokuapp.com/';
+
+    // Seems my phone can't handle XML by some bug!
+    format = KeepMeContributing.Github.Formats.JSON;
+  }
+
   contributionStatus = new kmc.ContributionStatus(
-    new kmc.Github({ username: username, apiUrl: '' })
+    new kmc.Github({ username: username, format: format, apiUrl: apiUrl })
   );
   let /** ContributionStatusView */ statusView = new kmc.ContributionStatusView(
     username, contributionStatus

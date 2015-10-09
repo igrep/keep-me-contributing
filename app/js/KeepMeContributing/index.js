@@ -76,7 +76,7 @@ KeepMeContributing.start = () => {
 KeepMeContributing.ready = (start) => {
   if (KeepMeContributing.Defines.CORDOVA){
     document.addEventListener('deviceready', () => {
-      cordova.plugins.notification.local.registerPermission();
+      cordova.plugins.notification.local.registerPermission((/** boolean */ _) => {});
       start();
     });
   } else {

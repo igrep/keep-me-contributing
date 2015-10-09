@@ -1,5 +1,5 @@
 /**
- * @type {{plugins: {notification: {local: {registerPermission: function()}}}}}
+ * @type {{plugins: {notification: {local: {registerPermission: function(function(boolean))}}}}}
  */
 var cordova = {
   plugins: {

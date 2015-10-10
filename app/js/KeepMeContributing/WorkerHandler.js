@@ -8,6 +8,7 @@ goog.require('KeepMeContributing.Worker.TimeOfDay');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.Event');
+goog.require('goog.events.EventHandler');
 
 goog.require('goog.array');
 

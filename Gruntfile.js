@@ -129,13 +129,17 @@ module.exports = function (grunt) {
     },
     watch: {
       buildClient: {
-        files: ['app/js/KeepMeContributing/**/*.js'],
+        files: [
+          'app/js/KeepMeContributing/**/*.js',
+          'app/js/externs/**/*.js',
+        ],
         tasks: ['shell:buildClient', 'notify:buildClient'],
         options: { interrupt: true, atBegin: true }
       },
       cordova: {
         files: [
           'app/js/KeepMeContributing/**/*.js',
+          'app/js/externs/**/*.js',
           'app/css/*.css',
           'app/img/*.png',
           'app/js/loaod.js',

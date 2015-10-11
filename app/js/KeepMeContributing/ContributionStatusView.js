@@ -8,7 +8,6 @@
 goog.provide('KeepMeContributing.ContributionStatusView');
 
 goog.require('KeepMeContributing.ContributionStatus');
-goog.require('KeepMeContributing.Github');
 
 goog.require('goog.ui.Component');
 goog.require('goog.dom');

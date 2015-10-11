@@ -71,6 +71,29 @@ KeepMeContributing.Worker.TimeOfDay = class {
   }
 
   /**
+   * @returns {{id: number, title: string, text: string, every: string, at: Date, icon: string}}
+   */
+  toCordovaPluginsNotificationArgument(){
+    let /** Date */ now = new Date();
+
+    let /** Date */ at = new Date(now.getTime());
+    at.setHours(this.hour_);
+    at.setMinutes(this.minute_);
+    if (this.millisecsAfter(now) <= 0){
+      at.setDate(at.getDate() + 1);
+    }
+
+    return {
+      id: this.toMillisecs(),
+      title: 'Have I contributed today?',
+      text: 'Loading my contribution status...',
+      every: 'day',
+      at: at,
+      icon: 'img/icon.png'
+    };
+  }
+
+  /**
    * @param {string} string HH:MM formatted String
    * @returns {?KeepMeContributing.Worker.TimeOfDay}
    */

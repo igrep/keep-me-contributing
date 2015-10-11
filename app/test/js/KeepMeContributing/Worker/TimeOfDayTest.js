@@ -39,6 +39,62 @@ describe('TimeOfDay', function(){
 
   });
 
+  describe('#toCordovaPluginsNotificationArgument', function(){
+    let now = new Date();
+    now.setHours(17);
+    now.setMinutes(0);
+    now.setSeconds(0, 0);
+
+    beforeEach(function (){ this.clock = sinon.useFakeTimers(now.getTime()); });
+    afterEach(function (){ this.clock.restore(); });
+
+    let describedFunction = (hour, minute) =>
+      new describedClass(hour, minute).toCordovaPluginsNotificationArgument();
+
+    describe('its id property', function(){
+      it('same time has same id', function(){
+        let resultA = describedFunction(now.getHours(), now.getMinutes());
+        let resultB = describedFunction(now.getHours(), now.getMinutes());
+        expect(resultA.id).to.be(resultB.id);
+      });
+
+      it('different time has different id', function(){
+        let resultA = describedFunction(now.getHours(), now.getMinutes());
+        let resultB = describedFunction(now.getHours(), now.getMinutes() + 1);
+        expect(resultA.id).not.to.be(resultB.id);
+      });
+    });
+
+    describe('its at property', function(){
+      it("is at the current day's same time when given non passed time.", function(){
+        let expectedMinutes = now.getMinutes() + 1;
+        let nonPassedTimeResult = describedFunction(now.getHours(), expectedMinutes);
+
+        let expectedDate = new Date(now.getTime());
+        expectedDate.setMinutes(expectedMinutes);
+
+        expect(nonPassedTimeResult.at).to.eql(expectedDate);
+      });
+
+      it("is at the next day's same time when given already passed time.", function(){
+        let expectedMinutes1 = now.getMinutes() - 1;
+        let passedTimeResult1   = describedFunction(now.getHours(), expectedMinutes1);
+        let passedTimeResult2   = describedFunction(now.getHours(), now.getMinutes());
+
+        let expectedDate1 = new Date(now.getTime());
+        expectedDate1.setDate(now.getDate() + 1);
+        expectedDate1.setMinutes(expectedMinutes1);
+
+        let expectedDate2 = new Date(now.getTime());
+        expectedDate2.setDate(now.getDate() + 1);
+
+        expect(passedTimeResult1.at).to.eql(expectedDate1);
+        expect(passedTimeResult2.at).to.eql(expectedDate2);
+      });
+    });
+
+  });
+
   describe('.fromHHMM', function(){
     let describedFunction = (string) => describedClass.fromHHMM(string);
 

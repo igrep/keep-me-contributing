@@ -26,9 +26,8 @@ describe('TimeOfDay', function(){
   });
 
   describe('#toHHMM', function(){
-    let describedFunction = function(hour, minute){
-      return new describedClass(hour, minute).toHHMM();
-    };
+    let describedFunction = (hour, minute) =>
+      new describedClass(hour, minute).toHHMM();
 
     it('converts into HH:MM formatted string', function(){
       expect(describedFunction(12, 34)).to.be('12:34');
@@ -41,9 +40,7 @@ describe('TimeOfDay', function(){
   });
 
   describe('.fromHHMM', function(){
-    let describedFunction = function(string){
-      return describedClass.fromHHMM(string);
-    };
+    let describedFunction = (string) => describedClass.fromHHMM(string);
 
     it('converts HH:MM formatted string into a described instance', function(){
       let result = describedFunction('23:59');

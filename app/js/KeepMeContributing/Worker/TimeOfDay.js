@@ -86,7 +86,7 @@ KeepMeContributing.Worker.TimeOfDay = class {
     return {
       id: this.toMillisecs(),
       title: 'Have I contributed today?',
-      text: 'Loading my contribution status...',
+      text: 'Tap to see my contribution status.',
       every: 'day',
       at: at,
       icon: 'img/icon.png'

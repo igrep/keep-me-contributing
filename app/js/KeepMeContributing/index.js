@@ -14,6 +14,7 @@ goog.require('KeepMeContributing.GithubProfileLinkedTextView');
 goog.require('KeepMeContributing.SchedulesController');
 goog.require('KeepMeContributing.SchedulesStore');
 goog.require('KeepMeContributing.WorkerHandler');
+goog.require('KeepMeContributing.NotificationScheduler');
 goog.require('KeepMeContributing.SchedulesView');
 
 goog.require('goog.dom');
@@ -52,8 +53,13 @@ KeepMeContributing.start = () => {
 
   let controller = new kmc.SchedulesController();
   let store = new kmc.SchedulesStore('KeepMeContributing.SchedulesStore', controller);
-  // Relative path to worker.js from the loader document (index.html)
-  new kmc.WorkerHandler(new Worker('js/worker.js'), controller);
+
+  if (KeepMeContributing.Defines.CORDOVA){
+    new kmc.NotificationScheduler(contributionStatus, controller);
+  } else {
+    // Relative path to worker.js from the loader document (index.html)
+    new kmc.WorkerHandler(new Worker('js/worker.js'), controller);
+  }
 
   let schedulesView = new kmc.SchedulesView(
     controller, store, {

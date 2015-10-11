@@ -142,7 +142,7 @@ module.exports = function (grunt) {
           'app/js/externs/**/*.js',
           'app/css/*.css',
           'app/img/*.png',
-          'app/js/loaod.js',
+          'app/js/load.js',
           'app/index.html'
         ],
         tasks: [

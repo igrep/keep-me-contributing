@@ -160,6 +160,23 @@ describe('The form to input schedules', function(){
       });
     });
 
+    context('by clicking the toggle checkbox to uncheck', function(){
+      beforeEach(function(){
+        this.view.toggleCheckbox.getElement().click();
+      });
+
+      it('terminates the worker', function(){
+        sinon.assert.calledOnce(this.terminateSpy);
+      });
+
+      it('disables the all inputs', function(){
+        goog.array.forEach(this.collectInputs(), (input) => {
+          expect(input.disabled).to.be(true);
+        });
+      });
+
+    });
+
   });
 
   context('when some times have already been saved', function(){

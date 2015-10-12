@@ -117,8 +117,12 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
     super();
 
     this.getHandler().listen(
-      this.toggleCheckbox, goog.ui.Component.EventType.CHANGE, (/** goog.events.Event */ event) => {
-        // TODO
+      this.toggleCheckbox, goog.ui.Component.EventType.CHANGE, () => {
+        let /** boolean */ checked = this.toggleCheckbox.getChecked() === true;
+        this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
+          input.setEnabled(checked);
+        });
+        this.controller_.stop();
       }
     );
 

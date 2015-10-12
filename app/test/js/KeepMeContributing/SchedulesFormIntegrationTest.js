@@ -175,6 +175,10 @@ describe('The form to input schedules', function(){
         });
       });
 
+      it('saves info that notification is disabled', function(){
+        expect(this.notificationStatusStore.isEnabled()).to.be(false);
+      });
+
     });
 
   });

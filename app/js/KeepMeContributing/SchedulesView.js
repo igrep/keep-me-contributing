@@ -122,6 +122,8 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
         this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
           input.setEnabled(checked);
         });
+        this.notificationStatusStore_.save(checked);
+
         this.controller_.stop();
       }
     );

@@ -131,4 +131,11 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
     );
   }
 
+  /**
+   * @param {string} value
+   */
+  setValue(value){
+    this.comboBox.setValue(value);
+  }
+
 };

@@ -65,7 +65,6 @@ KeepMeContributing.start = () => {
 
   let /** KeepMeContributing.SchedulesView */ schedulesView = new kmc.SchedulesView(
     controller, store, notificationStatusStore, {
-      update: new goog.ui.Button(),
       add: new goog.ui.Button()
     }
   );
@@ -75,7 +74,6 @@ KeepMeContributing.start = () => {
 
   let /** Element */ schdulesFormElement = goog.dom.getElement('schedulesForm');
   notificationStatusViewModel.decorate(goog.dom.getElementByClass('toggleCheckbox', schdulesFormElement));
-  schedulesView.updateButton.decorate(goog.dom.getElementByClass('updateButton', schdulesFormElement));
   schedulesView.addButton.decorate(goog.dom.getElementByClass('addButton', schdulesFormElement));
   schedulesView.render(goog.dom.getElementByClass('schedulesView', schdulesFormElement));
 };

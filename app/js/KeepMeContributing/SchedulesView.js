@@ -29,7 +29,7 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    * @param {KeepMeContributing.SchedulesController} controller
    * @param {KeepMeContributing.SchedulesStore} store
    * @param {KeepMeContributing.NotificationStatusStore} notificationStatusStore
-   * @param {{update: goog.ui.Button, add: goog.ui.Button}} controls
+   * @param {{add: goog.ui.Button}} controls
    * @param {goog.dom.DomHelper=} domHelper
    */
   constructor(controller, store, notificationStatusStore, controls, domHelper = undefined){
@@ -60,13 +60,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
      * @public for testing use only.
      * @type {goog.ui.Button}
      */
-    this.updateButton = controls.update;
-    this.registerDisposable(this.updateButton);
-
-    /**
-     * @public for testing use only.
-     * @type {goog.ui.Button}
-     */
     this.addButton = controls.add;
     this.registerDisposable(this.addButton);
 
@@ -81,7 +74,7 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
     this.removeChildren(true);
 
     goog.array.forEach(schedules, (/** KeepMeContributing.Worker.TimeOfDay */ schedule) => {
-      this.addChild(new KeepMeContributing.ScheduleInputView(schedule), true);
+      this.addInput(new KeepMeContributing.ScheduleInputView(schedule));
     });
 
     this.addNewInput();
@@ -102,12 +95,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    */
   enterDocument(){
     super();
-
-    this.getHandler().listen(
-      this.updateButton, goog.ui.Component.EventType.ACTION, () => {
-        this.sendInputSchedulesIfValid_();
-      }
-    );
 
     this.getHandler().listen(
       this.addButton, goog.ui.Component.EventType.ACTION, () => { this.addNewInput(); }
@@ -149,10 +136,28 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
   }
 
   /**
+   * Add a schedule input and observe.
+   * @param {KeepMeContributing.ScheduleInputView} input
+   */
+  addInput(input){
+    this.addChild(input, true);
+    this.getHandler().listen(
+      input, goog.ui.Component.EventType.CHANGE, () => {
+        this.sendInputSchedulesIfValid_();
+      }
+    );
+    this.getHandler().listen(
+      input.closeButton, goog.ui.Component.EventType.ACTION, () => {
+        this.sendInputSchedulesIfValid_();
+      }
+    );
+  }
+
+  /**
    * Add an empty schedule input to add new one.
    */
   addNewInput(){
-    this.addChild(new KeepMeContributing.ScheduleInputView(), true);
+    this.addInput(new KeepMeContributing.ScheduleInputView());
   }
 
   /**

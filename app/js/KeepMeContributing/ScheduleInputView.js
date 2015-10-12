@@ -46,6 +46,7 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
   }
 
   /**
+   * Public only for testing.
    * @returns {goog.ui.Button}
    */
   get closeButton(){
@@ -53,10 +54,18 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
   }
 
   /**
+   * Public only for testing.
    * @returns {goog.ui.ComboBox}
    */
   get comboBox(){
     return /** @type {goog.ui.ComboBox} */ (this.getChildAt(1));
+  }
+
+  /**
+   * @param {boolean} enabled
+   */
+  setEnabled(enabled){
+    this.comboBox.setEnabled(enabled);
   }
 
   /**

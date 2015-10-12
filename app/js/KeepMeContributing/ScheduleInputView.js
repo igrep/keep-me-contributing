@@ -9,14 +9,14 @@ goog.provide('KeepMeContributing.ScheduleInputView');
 
 goog.require('KeepMeContributing.Worker.TimeOfDay');
 
-goog.require('goog.ui.Control');
+goog.require('goog.ui.Component');
 goog.require('goog.ui.Button');
 goog.require('goog.ui.ComboBox');
 goog.require('goog.dom');
 
 goog.require('goog.array');
 
-KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
+KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
 
   /**
    * @override

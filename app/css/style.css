@@ -1,6 +1,9 @@
-#container {
-  width: 800px;
-  font-size: 14pt;
+@media (min-width: 720px){
+  #container {
+    width: 700px;
+    font-size: 13pt;
+    margin: auto;
+  }
 }
 
 /** Used by goog.ui **/
@@ -12,6 +15,7 @@
   color: #555;
 }
 .goog-checkbox-checked + span {
+  font-weight: bold;
   color: #000;
 }
 
@@ -32,13 +36,16 @@
   content: '✔';
 }
 
-/** GithubProfileLinkedText **/
-#title a:link, #title a:visited, #title a:active, #title a:hover {
-  color: #000000;
-  text-decoration: none;
-}
-
 /** Contribution Status **/
+
+h1 {
+  text-align: center;
+}
+@media (max-width: 700px){
+  h1 {
+    font-size: 110%;
+  }
+}
 
 /* TODO: abstract as scss mix-in */
 .loading, .success, .danger, .warning {
@@ -71,7 +78,43 @@
   border-color: #FDE14F;
 }
 
-/** ScheduleInputView **/
+.betweenStatusAndForm {
+  border: solid 1px #CCC;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.toggleCheckboxWithLabel {
+  margin-bottom: 1em;
+}
+
+.ScheduleInputView .goog-combobox .goog-menu {
+  width: 6em; /* as wide as the input */
+  text-align: center;
+}
+
+@media (max-width: 720px){
+  .schedulesForm {
+    font-size: 150%;
+  }
+  .schedulesForm button, .schedulesForm input {
+    font-size: 115%;
+  }
+
+  .ScheduleInputView {
+    margin-bottom: 0.6em;
+  }
+  .ScheduleInputView input[type='text'] {
+    width: 4em;
+  }
+  .ScheduleInputView .goog-combobox .goog-menu {
+    width: 6.5em; /* as wide as the input */
+  }
+  .ScheduleInputView .goog-combobox .goog-menuitem {
+    margin-bottom: 0.5em;
+  }
+}
+
 .ScheduleInputView-invalid input {
   background-color: #FFC2C3;
 

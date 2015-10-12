@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://keep-me-contributing.herokuapp.com;">
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
@@ -12,10 +13,12 @@
 </head>
 <body>
 <div id="container">
-  <h1 id="title"></h1>
+  <h1>Have I contributed today?</h1>
   <div id="contributionStatus"></div>
   <div id="seeProfile"></div>
-  <div id="schedulesForm">
+  <div class="betweenStatusAndForm"></div>
+  <h1>Notification Settings</h1>
+  <div class="schedulesForm">
     <div class="toggleCheckboxWithLabel">
       <span class="toggleCheckbox"></span><span>Tell me whether I have contributed today at:<span>
     </div>

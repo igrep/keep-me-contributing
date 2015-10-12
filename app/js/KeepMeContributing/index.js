@@ -45,9 +45,7 @@ KeepMeContributing.start = () => {
   statusView.render(goog.dom.getElement('contributionStatus'));
   contributionStatus.startPolling(5 * 60 * 1000);
 
-  new kmc.GithubProfileLinkedTextView('', username, "'s Current Contribution Status:")
-    .render(goog.dom.getElement('title'));
-  new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details")
+  new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details.")
     .render(goog.dom.getElement('seeProfile'));
 
   let /** KeepMeContributing.SchedulesController */ controller = new kmc.SchedulesController();
@@ -72,7 +70,7 @@ KeepMeContributing.start = () => {
   let /** KeepMeContributing.NotificationStatusViewModel */ notificationStatusViewModel =
     new kmc.NotificationStatusViewModel(notificationStatusStore);
 
-  let /** Element */ schdulesFormElement = goog.dom.getElement('schedulesForm');
+  let /** Element */ schdulesFormElement = goog.dom.getElementByClass('schedulesForm');
   notificationStatusViewModel.decorate(goog.dom.getElementByClass('toggleCheckbox', schdulesFormElement));
   schedulesView.addButton.decorate(goog.dom.getElementByClass('addButton', schdulesFormElement));
   schedulesView.render(goog.dom.getElementByClass('schedulesView', schdulesFormElement));

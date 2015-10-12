@@ -129,6 +129,7 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
     });
 
     this.comboBox.getInputElement().value = this.timeString_;
+    goog.dom.classlist.add(this.getElement(), 'ScheduleInputView');
   }
 
   /**

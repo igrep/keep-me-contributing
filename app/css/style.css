@@ -84,6 +84,37 @@ h1 {
   margin-bottom: 2em;
 }
 
+.toggleCheckboxWithLabel {
+  margin-bottom: 1em;
+}
+
+.ScheduleInputView .goog-combobox .goog-menu {
+  width: 6em; /* as wide as the input */
+  text-align: center;
+}
+
+@media (max-width: 720px){
+  .schedulesForm {
+    font-size: 150%;
+  }
+  .schedulesForm button, .schedulesForm input {
+    font-size: 115%;
+  }
+
+  .ScheduleInputView {
+    margin-bottom: 0.6em;
+  }
+  .ScheduleInputView input[type='text'] {
+    width: 4em;
+  }
+  .ScheduleInputView .goog-combobox .goog-menu {
+    width: 6.5em; /* as wide as the input */
+  }
+  .ScheduleInputView .goog-combobox .goog-menuitem {
+    margin-bottom: 0.5em;
+  }
+}
+
 .ScheduleInputView-invalid input {
   background-color: #FFC2C3;
 

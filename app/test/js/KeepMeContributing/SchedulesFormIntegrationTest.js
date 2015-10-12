@@ -9,6 +9,7 @@
 goog.require('goog.ui.Checkbox');
 goog.require('goog.ui.Button');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 
 describe('The form to input schedules', function(){
   let root = goog.dom.getElement('SchedulesFormIntegrationTest');
@@ -116,6 +117,7 @@ describe('The form to input schedules', function(){
         context('if one of the times is invalid', function(){
           beforeEach(function(){
             this.typeAndUpdate(['12:', '03:21']);
+            this.invalidElement = this.view.getChildAt(0).getElement();
           });
 
           it('the schedules store can reload nothing.', function(){
@@ -125,6 +127,32 @@ describe('The form to input schedules', function(){
           it('the worker has never called.', function(){
             sinon.assert.notCalled(this.postMessageSpy);
           });
+
+          it('the invalid input has class "ScheduleInputView-invalid"', function(){
+            expect(
+              goog.dom.classlist.contains(this.invalidElement, 'ScheduleInputView-invalid')
+            ).to.be(true);
+          });
+
+          it('the invalid input has a tooltip', function(){
+            expect(this.invalidElement.title).not.to.be.empty();
+          });
+
+          context('then, by fixing the invalid input', function(){
+            beforeEach(function(){
+              this.typeAndUpdate(['12:21', '03:21']);
+            });
+            it('the invalid input does not have class "ScheduleInputView-invalid"', function(){
+              expect(
+                goog.dom.classlist.contains(this.invalidElement, 'ScheduleInputView-invalid')
+              ).to.be(false);
+            });
+
+            it('the invalid input does not have a tooltip', function(){
+              expect(this.invalidElement.title).to.be.empty();
+            });
+          });
+
         });
 
         context('if one of the times is empty', function(){

@@ -13,6 +13,7 @@ goog.require('goog.ui.Component');
 goog.require('goog.ui.Button');
 goog.require('goog.ui.ComboBox');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 
 goog.require('goog.array');
 
@@ -67,17 +68,29 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
   setEnabled(enabled){
     this.closeButton.setEnabled(enabled);
     this.comboBox.setEnabled(enabled);
+
+    goog.dom.classlist.enable(this.getElement(), 'ScheduleInputView-invalid', false);
+    this.getElement().title = '';
   }
 
   /**
    * Retrieve timeOfDay from user-input value.
-   * TODO: add / remove class to the element by the result of fromHHMM().
    * @returns {?KeepMeContributing.Worker.TimeOfDay}
    */
   parseInputTimeOfDay(){
-    return KeepMeContributing.Worker.TimeOfDay.fromHHMM(
-      this.comboBox.getInputElement().value
-    );
+    let /** ?KeepMeContributing.Worker.TimeOfDay */ maybeTime =
+      KeepMeContributing.Worker.TimeOfDay.fromHHMM(
+        this.comboBox.getInputElement().value
+      );
+
+    let /** boolean */ invalid = maybeTime === null;
+    goog.dom.classlist.enable(this.getElement(), 'ScheduleInputView-invalid', invalid);
+    if (invalid){
+      this.getElement().title = 'Enter an HH:MM format time (e.g. "12:34").';
+    } else {
+      this.getElement().title = '';
+    }
+    return maybeTime;
   }
 
   /**

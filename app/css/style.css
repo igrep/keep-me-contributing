@@ -70,3 +70,12 @@
   background-color: #FFFCA7;
   border-color: #FDE14F;
 }
+
+/** ScheduleInputView **/
+.ScheduleInputView-invalid input {
+  background-color: #FFC2C3;
+
+  border-color: #FF6258;
+  border-width: 2px;
+  border-style: solid;
+}

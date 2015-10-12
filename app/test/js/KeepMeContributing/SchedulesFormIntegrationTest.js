@@ -9,6 +9,7 @@
 goog.require('goog.ui.Checkbox');
 goog.require('goog.ui.Button');
 goog.require('goog.dom');
+goog.require('goog.dom.classlist');
 
 describe('The form to input schedules', function(){
   let root = goog.dom.getElement('SchedulesFormIntegrationTest');
@@ -125,6 +126,28 @@ describe('The form to input schedules', function(){
           it('the worker has never called.', function(){
             sinon.assert.notCalled(this.postMessageSpy);
           });
+
+          it('the invalid input has class "ScheduleInputView-invalid"', function(){
+            expect(
+              goog.dom.classlist.contains(
+                this.view.getChildAt(0).getElement(), 'ScheduleInputView-invalid'
+              )
+            ).to.be(true);
+          });
+
+          context('then, by fixing the invalid input', function(){
+            beforeEach(function(){
+              this.typeAndUpdate(['12:21', '03:21']);
+            });
+            it('the invalid input doesn\'t have class "ScheduleInputView-invalid"', function(){
+              expect(
+                goog.dom.classlist.contains(
+                  this.view.getChildAt(0).getElement(), 'ScheduleInputView-invalid'
+                )
+              ).to.be(false);
+            });
+          });
+
         });
 
         context('if one of the times is empty', function(){

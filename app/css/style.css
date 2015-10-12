@@ -76,7 +76,12 @@ h1 {
   border-color: #FDE14F;
 }
 
-/** ScheduleInputView **/
+.betweenStatusAndForm {
+  border: solid 1px #CCC;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .ScheduleInputView-invalid input {
   background-color: #FFC2C3;
 

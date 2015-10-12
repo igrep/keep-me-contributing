@@ -68,6 +68,9 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
   setEnabled(enabled){
     this.closeButton.setEnabled(enabled);
     this.comboBox.setEnabled(enabled);
+
+    goog.dom.classlist.enable(this.getElement(), 'ScheduleInputView-invalid', false);
+    this.getElement().title = '';
   }
 
   /**

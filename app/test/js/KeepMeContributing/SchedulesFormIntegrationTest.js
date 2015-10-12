@@ -33,8 +33,6 @@ describe('The form to input schedules', function(){
 
     this.view = new kmc.SchedulesView(
       controller, this.store, this.notificationStatusStore, {
-        update: new goog.ui.Button(),
-        stop: new goog.ui.Button(),
         add: new goog.ui.Button()
       }
     );
@@ -52,8 +50,6 @@ describe('The form to input schedules', function(){
   before(function(){
     this.render = () => {
       this.notificationStatusViewModel.decorate(domHelper.getElementByClass('toggleCheckbox', root));
-      this.view.updateButton.decorate(domHelper.getElementByClass('updateButton', root));
-      this.view.stopButton.decorate(domHelper.getElementByClass('stopButton', root));
       this.view.addButton.decorate(domHelper.getElementByClass('addButton', root));
       this.view.render(domHelper.getElementByClass('schedulesView', root));
     };
@@ -89,14 +85,12 @@ describe('The form to input schedules', function(){
         expect(inputs[1].value).to.be.empty();
       });
 
-      context('then typing some time to run, and click update button', function(){
+      context('then setting some time to run', function(){
         before(function(){
           this.typeAndUpdate = (inputValues) => {
-            let inputs = this.collectInputs();
-            goog.array.forEach(inputValues, (inputValue, index) => {
-              inputs[index].value = inputValue;
+            this.view.forEachChild((child, index) => {
+              child.setValue(inputValues[index]);
             });
-            this.view.updateButton.getElement().click();
           };
         });
 
@@ -115,7 +109,6 @@ describe('The form to input schedules', function(){
           });
 
           it('the worker has received all the input schedules.', function(){
-            sinon.assert.calledOnce(this.postMessageSpy);
             sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.expectedTimes));
           });
         });
@@ -146,20 +139,10 @@ describe('The form to input schedules', function(){
           });
 
           it('the worker has received all the non-empty input schedules.', function(){
-            sinon.assert.calledOnce(this.postMessageSpy);
             sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.expectedTimes));
           });
         });
 
-      });
-    });
-
-    context('by clicking the stop button', function(){
-      beforeEach(function(){
-        this.view.stopButton.getElement().click();
-      });
-      it('terminates the worker', function(){
-        sinon.assert.calledOnce(this.terminateSpy);
       });
     });
 
@@ -233,16 +216,10 @@ describe('The form to input schedules', function(){
           expect(renderedStrings).to.eql(withoutClosed);
         });
 
-        context('and by clicking the update button', function(){
-          beforeEach(function(){
-            this.view.updateButton.getElement().click();
-          });
-
-          it('the schedules store can reload all the input schedules except the closed schedule.', function(){
-            let reloadedSchedules = this.store.load();
-            this.savedTimes.splice(this.indexToDelete, 1);
-            expect(reloadedSchedules).to.be.eql(this.savedTimes);
-          });
+        it('the schedules store can reload all the input schedules except the closed schedule.', function(){
+          let reloadedSchedules = this.store.load();
+          this.savedTimes.splice(this.indexToDelete, 1);
+          expect(reloadedSchedules).to.be.eql(this.savedTimes);
         });
 
       });

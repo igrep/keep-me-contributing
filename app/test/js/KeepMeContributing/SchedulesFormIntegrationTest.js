@@ -49,9 +49,8 @@ describe('The form to input schedules', function(){
       this.view.render(domHelper.getElementByClass('schedulesView', root));
     };
 
-    this.collectInputs = () => {
-      return this.view.getContentElement().querySelectorAll("input[type='text']");
-    };
+    this.collectInputs = () =>
+      this.view.getContentElement().querySelectorAll("input[type='text']");
   });
 
   context('without any times saved in advance', function(){

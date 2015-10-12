@@ -10,10 +10,12 @@ goog.provide('KeepMeContributing.SchedulesView');
 goog.require('KeepMeContributing.Worker.TimeOfDay');
 goog.require('KeepMeContributing.SchedulesController');
 goog.require('KeepMeContributing.SchedulesStore');
+goog.require('KeepMeContributing.NotificationStatusStore');
 goog.require('KeepMeContributing.ScheduleInputView');
 
 goog.require('goog.ui.Component');
 goog.require('goog.ui.Button');
+goog.require('goog.ui.Checkbox');
 goog.require('goog.dom');
 goog.require('goog.events.Event');
 

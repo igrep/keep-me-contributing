@@ -50,6 +50,7 @@ KeepMeContributing.SchedulesController = class extends goog.events.EventTarget {
 KeepMeContributing.SchedulesController.Events = {
   LOADING: 'loading',
   LOADED:  'loaded',
+  TOGGLED: 'toggled',
   UPDATED: 'updated',
   STOPPED: 'stopped'
 };

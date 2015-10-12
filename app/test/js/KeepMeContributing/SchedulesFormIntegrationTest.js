@@ -109,7 +109,6 @@ describe('The form to input schedules', function(){
           });
 
           it('the worker has received all the input schedules.', function(){
-            sinon.assert.calledOnce(this.postMessageSpy);
             sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.expectedTimes));
           });
         });
@@ -140,7 +139,6 @@ describe('The form to input schedules', function(){
           });
 
           it('the worker has received all the non-empty input schedules.', function(){
-            sinon.assert.calledOnce(this.postMessageSpy);
             sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.expectedTimes));
           });
         });

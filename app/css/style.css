@@ -3,6 +3,35 @@
   font-size: 14pt;
 }
 
+/** Used by goog.ui **/
+
+.goog-checkbox + span {
+  /* align with .goog-checkbox:before/height to avoid to shift when checking or unchecking */
+  vertical-align: middle;
+
+  color: #555;
+}
+.goog-checkbox-checked + span {
+  color: #000;
+}
+
+.goog-checkbox:before {
+  display: inline-block;
+
+  border: solid 1px #000;
+  border-radius: 2px;
+  width: 1.1em;
+  height: 1.1em;
+
+  margin-right: 0.5em;
+  vertical-align: middle;
+  text-align: center;
+  content: '　';
+}
+.goog-checkbox-checked:before {
+  content: '✔';
+}
+
 /** GithubProfileLinkedText **/
 #title a:link, #title a:visited, #title a:active, #title a:hover {
   color: #000000;

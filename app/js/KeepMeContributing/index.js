@@ -22,8 +22,6 @@ goog.require('goog.dom');
 goog.require('goog.ui.Button');
 goog.require('goog.ui.Checkbox');
 
-// public only when debug mode
-let /** KeepMeContributing.ContributionStatus? */ contributionStatus = null;
 KeepMeContributing.start = () => {
   let kmc = KeepMeContributing;
 
@@ -38,9 +36,8 @@ KeepMeContributing.start = () => {
     format = KeepMeContributing.Github.Formats.JSON;
   }
 
-  contributionStatus = new kmc.ContributionStatus(
-    new kmc.Github({ username: username, format: format, apiUrl: apiUrl })
-  );
+  let /** KeepMeContributing.ContributionStatus? */ contributionStatus =
+    new kmc.ContributionStatus(new kmc.Github({ username: username, format: format, apiUrl: apiUrl }));
   let /** ContributionStatusView */ statusView = new kmc.ContributionStatusView(
     username, contributionStatus
   );

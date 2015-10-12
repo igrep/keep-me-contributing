@@ -10,6 +10,7 @@ goog.provide('KeepMeContributing.SchedulesView');
 goog.require('KeepMeContributing.Worker.TimeOfDay');
 goog.require('KeepMeContributing.SchedulesController');
 goog.require('KeepMeContributing.SchedulesStore');
+goog.require('KeepMeContributing.NotificationStatusViewModel');
 goog.require('KeepMeContributing.NotificationStatusStore');
 goog.require('KeepMeContributing.ScheduleInputView');
 
@@ -28,7 +29,7 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    * @param {KeepMeContributing.SchedulesController} controller
    * @param {KeepMeContributing.SchedulesStore} store
    * @param {KeepMeContributing.NotificationStatusStore} notificationStatusStore
-   * @param {{toggle: goog.ui.Checkbox, update: goog.ui.Button, stop: goog.ui.Button, add: goog.ui.Button}} controls
+   * @param {{update: goog.ui.Button, stop: goog.ui.Button, add: goog.ui.Button}} controls
    * @param {goog.dom.DomHelper=} domHelper
    */
   constructor(controller, store, notificationStatusStore, controls, domHelper = undefined){
@@ -54,13 +55,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
      */
     this.notificationStatusStore_ = notificationStatusStore;
     this.registerDisposable(this.notificationStatusStore_);
-
-    /**
-     * @public for testing use only.
-     * @type {goog.ui.Checkbox}
-     */
-    this.toggleCheckbox = controls.toggle;
-    this.registerDisposable(this.toggleCheckbox);
 
     /**
      * @public for testing use only.
@@ -117,24 +111,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
     super();
 
     this.getHandler().listen(
-      this.toggleCheckbox, goog.ui.Component.EventType.CHANGE, () => {
-        let /** boolean */ checked = this.toggleCheckbox.getChecked() === true;
-        this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
-          input.setEnabled(checked);
-        });
-        this.addButton.setEnabled(checked);
-
-        this.notificationStatusStore_.save(checked);
-
-        if (checked){
-          this.sendInputSchedulesIfValid_();
-        } else {
-          this.controller_.stop();
-        }
-      }
-    );
-
-    this.getHandler().listen(
       this.updateButton, goog.ui.Component.EventType.ACTION, () => {
         this.sendInputSchedulesIfValid_();
       }
@@ -158,26 +134,31 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
           /** @type {{schedules: !Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
 
         this.replaceWith(eventWithSchedules.schedules);
-        if (this.notificationStatusStore_.isEnabled()){
-          this.controller_.finishLoading(eventWithSchedules.schedules);
-        }
       }
     );
 
     this.getHandler().listen(
       this.notificationStatusStore_,
-      KeepMeContributing.NotificationStatusStore.Events.LOADED,
-      (/** goog.events.Event */ event) => {
-        let /** boolean */ enabled = /** @type {{enabled: boolean}} */ (event).enabled;
-        this.toggleCheckbox.setChecked(enabled);
+      KeepMeContributing.NotificationStatusStore.Events.UPDATED,
+      () => {
+        let /** boolean */ enabled = this.notificationStatusStore_.isEnabled();
         this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
           input.setEnabled(enabled);
         });
         this.addButton.setEnabled(enabled);
+
+        if (enabled){
+          this.sendInputSchedulesIfValid_();
+        } else {
+          this.controller_.stop();
+        }
       }
     );
 
     this.controller_.beginLoading();
+
+    // Ask initial status
+    this.notificationStatusStore_.notifyUpdated();
   }
 
   /**

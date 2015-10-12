@@ -20,16 +20,6 @@ KeepMeContributing.SchedulesController = class extends goog.events.EventTarget {
   /**
    * @param {!Array<!KeepMeContributing.Worker.TimeOfDay>} schedules
    */
-  finishLoading(schedules){
-    this.dispatchEvent({
-      type: KeepMeContributing.SchedulesController.Events.LOADED,
-      schedules: schedules
-    });
-  }
-
-  /**
-   * @param {!Array<!KeepMeContributing.Worker.TimeOfDay>} schedules
-   */
   update(schedules){
     this.dispatchEvent({
       type: KeepMeContributing.SchedulesController.Events.UPDATED,

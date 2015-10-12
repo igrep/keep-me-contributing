@@ -33,28 +33,28 @@ describe('The form to input schedules', function(){
 
     this.view = new kmc.SchedulesView(
       controller, this.store, this.notificationStatusStore, {
-        toggle: new goog.ui.Checkbox(),
         update: new goog.ui.Button(),
         stop: new goog.ui.Button(),
         add: new goog.ui.Button()
       }
     );
-
-    this.view.toggleCheckbox.decorate(domHelper.getElementByClass('toggleCheckbox', root));
-    this.view.updateButton.decorate(domHelper.getElementByClass('updateButton', root));
-    this.view.stopButton.decorate(domHelper.getElementByClass('stopButton', root));
-    this.view.addButton.decorate(domHelper.getElementByClass('addButton', root));
+    this.notificationStatusViewModel = new kmc.NotificationStatusViewModel(this.notificationStatusStore);
   });
   afterEach(function(){
     this.workerHandler.stop();
     this.notificationStatusStore.clear();
     this.store.clear();
     this.view.dispose();
+    this.notificationStatusViewModel.dispose();
   });
 
   // common methods using the view.
   before(function(){
     this.render = () => {
+      this.notificationStatusViewModel.decorate(domHelper.getElementByClass('toggleCheckbox', root));
+      this.view.updateButton.decorate(domHelper.getElementByClass('updateButton', root));
+      this.view.stopButton.decorate(domHelper.getElementByClass('stopButton', root));
+      this.view.addButton.decorate(domHelper.getElementByClass('addButton', root));
       this.view.render(domHelper.getElementByClass('schedulesView', root));
     };
 
@@ -75,7 +75,7 @@ describe('The form to input schedules', function(){
     });
 
     it('has the toggle checkbox checked', function(){
-      expect(this.view.toggleCheckbox.getChecked()).to.be(true);
+      expect(this.notificationStatusViewModel.getChecked()).to.be(true);
     });
 
     context('by clicking the add button', function(){
@@ -165,7 +165,7 @@ describe('The form to input schedules', function(){
 
     context('by clicking the toggle checkbox to uncheck', function(){
       beforeEach(function(){
-        this.view.toggleCheckbox.getElement().click();
+        this.notificationStatusViewModel.getElement().click();
       });
 
       it('terminates the worker', function(){
@@ -313,7 +313,7 @@ describe('The form to input schedules', function(){
 
       context('by clicking the toggle checkbox to check', function(){
         beforeEach(function(){
-          this.view.toggleCheckbox.getElement().click();
+          this.notificationStatusViewModel.getElement().click();
         });
 
         itPassesSavedTimes();

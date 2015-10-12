@@ -5,12 +5,9 @@ goog.provide('KeepMeContributing.NotificationStatusStore');
 
 goog.require('KeepMeContributing.SchedulesController');
 
-goog.require('goog.iter');
-goog.require('goog.array');
 goog.require('goog.storage.mechanism.PrefixedMechanism');
 goog.require('goog.storage.mechanism.HTML5LocalStorage');
 goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
 
 /**
  * @fileoverview Storage of notfication status (enabled or disabled)
@@ -23,14 +20,12 @@ goog.require('goog.events.EventHandler');
 KeepMeContributing.NotificationStatusStore = class extends goog.events.EventTarget {
 
   /**
-   * Load notification status from the given WebStorage and
-   * listen events from the given controller.
+   * Load notification status from the given WebStorage
    *
    * @override
    * @param {string} prefix
-   * @param {KeepMeContributing.SchedulesController} controller
    */
-  constructor(prefix, controller){
+  constructor(prefix){
     super();
 
     /**
@@ -39,41 +34,6 @@ KeepMeContributing.NotificationStatusStore = class extends goog.events.EventTarg
      */
     this.storage_ = new goog.storage.mechanism.PrefixedMechanism(
       new goog.storage.mechanism.HTML5LocalStorage(), prefix
-    );
-
-    /**
-     * @private
-     * @type {goog.events.EventHandler}
-     */
-    this.handler_ = new goog.events.EventHandler(this);
-    this.registerDisposable(this.handler_);
-
-    /*
-     * Load schedules on loaded events.
-     * Then dispatch updated event to notify the view.
-     */
-    this.handler_.listen(
-      controller,
-      KeepMeContributing.SchedulesController.Events.LOADING,
-      () => {
-        this.dispatchEvent({
-          type: KeepMeContributing.NotificationStatusStore.Events.LOADED,
-          enabled: this.isEnabled()
-        });
-      }
-    );
-
-    /*
-     * Save schedules on updated events.
-     * Then dispatch updated event to notify the view.
-     */
-    this.handler_.listen(
-      controller,
-      KeepMeContributing.SchedulesController.Events.TOGGLED,
-      (/** goog.events.Event */ event) => {
-        let /** {enabled: boolean} */ eventWithStatus = /** @type {{enabled: boolean}} */ (event);
-        this.save(eventWithStatus.enabled);
-      }
     );
   }
 
@@ -102,6 +62,7 @@ KeepMeContributing.NotificationStatusStore = class extends goog.events.EventTarg
           KeepMeContributing.NotificationStatusStore.ENABLED.TRUE
         : KeepMeContributing.NotificationStatusStore.ENABLED.FALSE
     );
+    this.notifyUpdated();
   }
 
   /**
@@ -114,6 +75,10 @@ KeepMeContributing.NotificationStatusStore = class extends goog.events.EventTarg
     return s === null || s === KeepMeContributing.NotificationStatusStore.ENABLED.TRUE;
   }
 
+  notifyUpdated(){
+    this.dispatchEvent(KeepMeContributing.NotificationStatusStore.Events.UPDATED);
+  }
+
 };
 
 /**
@@ -121,7 +86,7 @@ KeepMeContributing.NotificationStatusStore = class extends goog.events.EventTarg
  * @enum {string}
  */
 KeepMeContributing.NotificationStatusStore.Events = {
-  LOADED: 'loaded'
+  UPDATED: 'updated'
 };
 
 /**

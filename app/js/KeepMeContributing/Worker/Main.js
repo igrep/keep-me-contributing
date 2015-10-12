@@ -34,7 +34,7 @@ self.addEventListener('message', (/** MessageEvent */ event) => {
   );
 
   let /** KeepMeContributing.Worker.ContributionStatusNotifier */ notifier =
-    new kmc.Worker.ContributionStatusNotifier( username, contributionStatus);
+    new kmc.Worker.ContributionStatusNotifier(username, contributionStatus);
 
   let /** Array<Object> */ timesObject = /** @type {Array<Object>} */ (event.data);
   let /** Array<KeepMeContributing.Worker.TimeOfDay> */ times =

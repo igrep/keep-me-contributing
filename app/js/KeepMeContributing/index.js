@@ -54,7 +54,7 @@ KeepMeContributing.start = () => {
   let /** KeepMeContributing.SchedulesStore */ store =
     new kmc.SchedulesStore('KeepMeContributing.SchedulesStore', controller);
   let /** KeepMeContributing.NotificationStatusStore */ notificationStatusStore =
-    new kmc.NotificationStatusStore('KeepMeContributing.NotificationStatusStore', controller);
+    new kmc.NotificationStatusStore('KeepMeContributing.NotificationStatusStore');
 
   if (KeepMeContributing.Defines.CORDOVA){
     new kmc.NotificationScheduler(contributionStatus, controller);
@@ -63,17 +63,19 @@ KeepMeContributing.start = () => {
     new kmc.WorkerHandler(new Worker('js/worker.js'), controller);
   }
 
-  let schedulesView = new kmc.SchedulesView(
+  let /** KeepMeContributing.SchedulesView */ schedulesView = new kmc.SchedulesView(
     controller, store, notificationStatusStore, {
-      toggle: new goog.ui.Checkbox(),
       update: new goog.ui.Button(),
       stop: new goog.ui.Button(),
       add: new goog.ui.Button()
     }
   );
 
-  let schdulesFormElement = goog.dom.getElement('schedulesForm');
-  schedulesView.toggleCheckbox.decorate(goog.dom.getElementByClass('toggleCheckbox', schdulesFormElement));
+  let /** KeepMeContributing.NotificationStatusViewModel */ notificationStatusViewModel =
+    new kmc.NotificationStatusViewModel(notificationStatusStore);
+
+  let /** Element */ schdulesFormElement = goog.dom.getElement('schedulesForm');
+  notificationStatusViewModel.decorate(goog.dom.getElementByClass('toggleCheckbox', schdulesFormElement));
   schedulesView.updateButton.decorate(goog.dom.getElementByClass('updateButton', schdulesFormElement));
   schedulesView.stopButton.decorate(goog.dom.getElementByClass('stopButton', schdulesFormElement));
   schedulesView.addButton.decorate(goog.dom.getElementByClass('addButton', schdulesFormElement));

@@ -33,12 +33,6 @@ KeepMeContributing.SchedulesExecutor = class extends goog.Disposable {
 
     this.handler_.listen(
       controller,
-      KeepMeContributing.SchedulesController.Events.LOADED,
-      (/** goog.events.Event */ event) => { this.handleEventWithSchedules_(event); }
-    );
-
-    this.handler_.listen(
-      controller,
       KeepMeContributing.SchedulesController.Events.UPDATED,
       (/** goog.events.Event */ event) => { this.handleEventWithSchedules_(event); }
     );
@@ -55,10 +49,10 @@ KeepMeContributing.SchedulesExecutor = class extends goog.Disposable {
    * @param {goog.events.Event} event
    */
   handleEventWithSchedules_(event){
-    let /** {schedules: Array<KeepMeContributing.Worker.TimeOfDay>} */ eventWithSchedules =
-      /** @type {{schedules: Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
-    if (!(goog.array.isEmpty(eventWithSchedules.schedules))){
-      this.receiveNewSchedules(eventWithSchedules.schedules);
+    let /** Array<KeepMeContributing.Worker.TimeOfDay> */ schedules =
+      /** @type {{schedules: Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event).schedules;
+    if (!(goog.array.isEmpty(schedules))){
+      this.receiveNewSchedules(schedules);
     }
   }
 

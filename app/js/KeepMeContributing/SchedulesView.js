@@ -29,7 +29,7 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    * @param {KeepMeContributing.SchedulesController} controller
    * @param {KeepMeContributing.SchedulesStore} store
    * @param {KeepMeContributing.NotificationStatusStore} notificationStatusStore
-   * @param {{update: goog.ui.Button, stop: goog.ui.Button, add: goog.ui.Button}} controls
+   * @param {{update: goog.ui.Button, add: goog.ui.Button}} controls
    * @param {goog.dom.DomHelper=} domHelper
    */
   constructor(controller, store, notificationStatusStore, controls, domHelper = undefined){
@@ -62,13 +62,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
      */
     this.updateButton = controls.update;
     this.registerDisposable(this.updateButton);
-
-    /**
-     * @public for testing use only.
-     * @type {goog.ui.Button}
-     */
-    this.stopButton = controls.stop;
-    this.registerDisposable(this.stopButton);
 
     /**
      * @public for testing use only.
@@ -113,12 +106,6 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
     this.getHandler().listen(
       this.updateButton, goog.ui.Component.EventType.ACTION, () => {
         this.sendInputSchedulesIfValid_();
-      }
-    );
-
-    this.getHandler().listen(
-      this.stopButton, goog.ui.Component.EventType.ACTION, () => {
-        this.controller_.stop();
       }
     );
 

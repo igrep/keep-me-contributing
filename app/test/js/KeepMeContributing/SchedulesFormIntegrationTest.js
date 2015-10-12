@@ -34,7 +34,6 @@ describe('The form to input schedules', function(){
     this.view = new kmc.SchedulesView(
       controller, this.store, this.notificationStatusStore, {
         update: new goog.ui.Button(),
-        stop: new goog.ui.Button(),
         add: new goog.ui.Button()
       }
     );
@@ -53,7 +52,6 @@ describe('The form to input schedules', function(){
     this.render = () => {
       this.notificationStatusViewModel.decorate(domHelper.getElementByClass('toggleCheckbox', root));
       this.view.updateButton.decorate(domHelper.getElementByClass('updateButton', root));
-      this.view.stopButton.decorate(domHelper.getElementByClass('stopButton', root));
       this.view.addButton.decorate(domHelper.getElementByClass('addButton', root));
       this.view.render(domHelper.getElementByClass('schedulesView', root));
     };
@@ -151,15 +149,6 @@ describe('The form to input schedules', function(){
           });
         });
 
-      });
-    });
-
-    context('by clicking the stop button', function(){
-      beforeEach(function(){
-        this.view.stopButton.getElement().click();
-      });
-      it('terminates the worker', function(){
-        sinon.assert.calledOnce(this.terminateSpy);
       });
     });
 

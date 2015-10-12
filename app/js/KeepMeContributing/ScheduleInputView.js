@@ -80,11 +80,13 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Component {
         this.comboBox.getInputElement().value
       );
 
-    goog.dom.classlist.enable(
-      this.getElement(),
-      'ScheduleInputView-invalid',
-      maybeTime === null
-    );
+    let /** boolean */ invalid = maybeTime === null;
+    goog.dom.classlist.enable(this.getElement(), 'ScheduleInputView-invalid', invalid);
+    if (invalid){
+      this.getElement().title = 'Enter an HH:MM format time (e.g. "12:34").';
+    } else {
+      this.getElement().title = '';
+    }
     return maybeTime;
   }
 

@@ -19,9 +19,12 @@ describe('The form to input schedules', function(){
 
     let controller = new kmc.SchedulesController();
 
-    this.store = new kmc.SchedulesStore('KeepMeContributing::SchedulesFormIntegrationTest', controller);
-    this.notificationStatusStore =
-      new kmc.NotificationStatusStore('KeepMeContributing::SchedulesFormIntegrationTest', controller);
+    this.store = new kmc.SchedulesStore(
+      'KeepMeContributing::SchedulesFormIntegrationTest::SchedulesStore', controller
+    );
+    this.notificationStatusStore = new kmc.NotificationStatusStore(
+      'KeepMeContributing::SchedulesFormIntegrationTest::NotificationStatusStore', controller
+    );
 
     this.worker = new Worker('/test/js/KeepMeContributing/Worker/dummy.js');
     this.postMessageSpy = sinon.spy(this.worker, 'postMessage');
@@ -191,51 +194,108 @@ describe('The form to input schedules', function(){
         new KeepMeContributing.Worker.TimeOfDay(22, 33)
       ];
       this.store.save(this.savedTimes);
-
-      this.render();
     });
 
-    it('renders saved times on each input, with an empty input to create new one.', function(){
-      let renderedStrings = goog.array.map(this.collectInputs(), (input) => input.value);
-      expect(renderedStrings).to.eql(
-        goog.array.map(this.savedTimes, (time) => time.toHHMM()).concat([''])
-      );
-    });
-
-    it('the worker has received all the saved schedules.', function(){
-      sinon.assert.calledOnce(this.postMessageSpy);
-      sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.savedTimes));
-    });
-
-    context('then, clicking the close button', function(){
-      beforeEach(function(){
-        this.indexToDelete = 1;
-        this.view.getChildAt(this.indexToDelete).closeButton.getElement().click();
-      });
-
-      it('there is no such schedule rendered.', function(){
+    let itRendersSavedTimes = () => {
+      it('renders saved times on each input, with an empty input to create new one.', function(){
         let renderedStrings = goog.array.map(this.collectInputs(), (input) => input.value);
-
-        let withoutClosed = goog.array.map(this.savedTimes, (time) => time.toHHMM());
-        withoutClosed.splice(this.indexToDelete, 1);
-        withoutClosed.push(''); // contains the initial empty input
-
-        expect(renderedStrings).to.eql(withoutClosed);
+        expect(renderedStrings).to.eql(
+          goog.array.map(this.savedTimes, (time) => time.toHHMM()).concat([''])
+        );
       });
+    };
 
-      context('and by clicking the update button', function(){
+    let itPassesSavedTimes = () => {
+      it('the worker has received all the saved schedules.', function(){
+        sinon.assert.calledOnce(this.postMessageSpy);
+        sinon.assert.calledWith(this.postMessageSpy, sinon.match(this.savedTimes));
+      });
+    };
+
+    let itDeletesTheScheduleInputByCloseButton = () => {
+      context('then, clicking the close button', function(){
         beforeEach(function(){
-          this.view.updateButton.getElement().click();
+          this.indexToDelete = 1;
+          this.view.getChildAt(this.indexToDelete).closeButton.getElement().click();
         });
 
-        it('the schedules store can reload all the input schedules except the closed schedule.', function(){
-          let reloadedSchedules = this.store.load();
-          this.savedTimes.splice(this.indexToDelete, 1);
-          expect(reloadedSchedules).to.be.eql(this.savedTimes);
+        it('there is no such schedule rendered.', function(){
+          let renderedStrings = goog.array.map(this.collectInputs(), (input) => input.value);
+
+          let withoutClosed = goog.array.map(this.savedTimes, (time) => time.toHHMM());
+          withoutClosed.splice(this.indexToDelete, 1);
+          withoutClosed.push(''); // contains the initial empty input
+
+          expect(renderedStrings).to.eql(withoutClosed);
+        });
+
+        context('and by clicking the update button', function(){
+          beforeEach(function(){
+            this.view.updateButton.getElement().click();
+          });
+
+          it('the schedules store can reload all the input schedules except the closed schedule.', function(){
+            let reloadedSchedules = this.store.load();
+            this.savedTimes.splice(this.indexToDelete, 1);
+            expect(reloadedSchedules).to.be.eql(this.savedTimes);
+          });
+        });
+
+      });
+    };
+
+    context('without notification status saved', function(){
+      beforeEach(function(){
+        this.render();
+      });
+
+      itRendersSavedTimes();
+      itPassesSavedTimes();
+      itDeletesTheScheduleInputByCloseButton();
+    });
+
+    context('with notification status saved as "enabled"', function(){
+      beforeEach(function(){
+        this.notificationStatusStore.save(true);
+        this.render();
+      });
+
+      itRendersSavedTimes();
+      itPassesSavedTimes();
+      itDeletesTheScheduleInputByCloseButton();
+    });
+
+    context('with notification status saved as "disabled"', function(){
+      beforeEach(function(){
+        this.notificationStatusStore.save(false);
+        this.render();
+      });
+
+      itRendersSavedTimes();
+
+      it('the worker has never called.', function(){
+        sinon.assert.notCalled(this.postMessageSpy);
+      });
+
+      it('disables the all input elements', function(){
+        goog.array.forEach(this.collectInputs(), (input) => {
+          expect(input.disabled).to.be(true);
         });
       });
 
+      context('by clicking the close button of an input', function(){
+        //TODO
+      });
+
+      context('by clicking the add button', function(){
+        //TODO
+      });
+
+      context('by clicking the toggle checkbox to check', function(){
+        //TODO
+      });
     });
+
 
   });
 

@@ -170,8 +170,11 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
       (/** goog.events.Event */ event) => {
         let /** {schedules: !Array<KeepMeContributing.Worker.TimeOfDay>} */ eventWithSchedules =
           /** @type {{schedules: !Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
+
         this.replaceWith(eventWithSchedules.schedules);
-        this.controller_.finishLoading(eventWithSchedules.schedules);
+        if (this.notificationStatusStore_.isEnabled()){
+          this.controller_.finishLoading(eventWithSchedules.schedules);
+        }
       }
     );
 
@@ -181,6 +184,9 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
       (/** goog.events.Event */ event) => {
         let /** {enabled: boolean} */ eventWithStatus = /** @type {{enabled: boolean}} */ (event);
         this.toggleCheckbox.setChecked(eventWithStatus.enabled);
+        this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
+          input.setEnabled(eventWithStatus.enabled);
+        });
       }
     );
 

@@ -178,6 +178,10 @@ describe('The form to input schedules', function(){
         });
       });
 
+      it('disables the add button', function(){
+        expect(this.view.addButton.getElement().disabled).to.be(true);
+      });
+
       it('saves info that notification is disabled', function(){
         expect(this.notificationStatusStore.isEnabled()).to.be(false);
       });
@@ -283,12 +287,28 @@ describe('The form to input schedules', function(){
         });
       });
 
-      context('by clicking the close button of an input', function(){
-        //TODO
+      context('even by clicking the close button of an input', function(){
+        beforeEach(function(){
+          this.originalInputsCount = this.collectInputs().length;
+          this.view.getChildAt(0).closeButton.getElement().click();
+        });
+
+        it('does not delete any schedule input', function(){
+          expect(this.collectInputs().length).to.be(this.originalInputsCount);
+        });
+
       });
 
-      context('by clicking the add button', function(){
-        //TODO
+      context('even by clicking the add button', function(){
+        beforeEach(function(){
+          this.originalInputsCount = this.collectInputs().length;
+          this.view.addButton.getElement().click();
+        });
+
+        it('does not add a new schedule input', function(){
+          expect(this.collectInputs().length).to.be(this.originalInputsCount);
+        });
+
       });
 
       context('by clicking the toggle checkbox to check', function(){

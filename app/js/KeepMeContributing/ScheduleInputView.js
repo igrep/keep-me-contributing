@@ -65,6 +65,7 @@ KeepMeContributing.ScheduleInputView = class extends goog.ui.Control {
    * @param {boolean} enabled
    */
   setEnabled(enabled){
+    this.closeButton.setEnabled(enabled);
     this.comboBox.setEnabled(enabled);
   }
 

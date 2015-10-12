@@ -122,6 +122,8 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
         this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
           input.setEnabled(checked);
         });
+        this.addButton.setEnabled(checked);
+
         this.notificationStatusStore_.save(checked);
 
         this.controller_.stop();
@@ -182,11 +184,12 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
       this.notificationStatusStore_,
       KeepMeContributing.NotificationStatusStore.Events.LOADED,
       (/** goog.events.Event */ event) => {
-        let /** {enabled: boolean} */ eventWithStatus = /** @type {{enabled: boolean}} */ (event);
-        this.toggleCheckbox.setChecked(eventWithStatus.enabled);
+        let /** boolean */ enabled = /** @type {{enabled: boolean}} */ (event).enabled;
+        this.toggleCheckbox.setChecked(enabled);
         this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
-          input.setEnabled(eventWithStatus.enabled);
+          input.setEnabled(enabled);
         });
+        this.addButton.setEnabled(enabled);
       }
     );
 

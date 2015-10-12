@@ -37,10 +37,24 @@ npm run build
     ```bash
     npm run server
     ```
+3. Access to http://localhost:9876/
 
 ## Run tests
 
-TODO
+### Client-side (JavaScript) test on Google Chrome
+
+Access to these URLs after running `npm run server`.
+
+- http://localhost:9876/test/index.html
+- http://localhost:9876/test/WorkerTest.html
+- http://localhost:9876/test/ServerTest.html
+- http://localhost:9876/test/ServerAndNotifierTest.html
+
+### Server-side (Java) test on JUnit
+
+```bash
+$ mvn clean install compile test
+```
 
 ## Deploy
 

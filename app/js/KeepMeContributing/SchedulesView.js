@@ -126,33 +126,17 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
 
         this.notificationStatusStore_.save(checked);
 
-        this.controller_.stop();
+        if (checked){
+          this.sendInputSchedulesIfValid_();
+        } else {
+          this.controller_.stop();
+        }
       }
     );
 
     this.getHandler().listen(
       this.updateButton, goog.ui.Component.EventType.ACTION, () => {
-
-        let /** boolean */ valid = true;
-        let /** !Array<!KeepMeContributing.Worker.TimeOfDay> */ schedules = [];
-        this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
-          if (input.hasNoInput()){
-            return;
-          }
-
-          let /** ?KeepMeContributing.Worker.TimeOfDay */ maybeTime = input.parseInputTimeOfDay();
-          if (valid && maybeTime){
-            schedules.push(maybeTime);
-          } else {
-            valid = false;
-          }
-        });
-
-        if (!(valid)){
-          return;
-        }
-
-        this.controller_.update(schedules);
+        this.sendInputSchedulesIfValid_();
       }
     );
 
@@ -201,6 +185,32 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    */
   addNewInput(){
     this.addChild(new KeepMeContributing.ScheduleInputView(), true);
+  }
+
+  /**
+   * @private
+   */
+  sendInputSchedulesIfValid_(){
+    let /** boolean */ valid = true;
+    let /** !Array<!KeepMeContributing.Worker.TimeOfDay> */ schedules = [];
+    this.forEachChild((/** KeepMeContributing.ScheduleInputView */ input) => {
+      if (input.hasNoInput()){
+        return;
+      }
+
+      let /** ?KeepMeContributing.Worker.TimeOfDay */ maybeTime = input.parseInputTimeOfDay();
+      if (valid && maybeTime){
+        schedules.push(maybeTime);
+      } else {
+        valid = false;
+      }
+    });
+
+    if (!(valid)){
+      return;
+    }
+
+    this.controller_.update(schedules);
   }
 
 };

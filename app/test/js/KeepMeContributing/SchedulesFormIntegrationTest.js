@@ -312,7 +312,11 @@ describe('The form to input schedules', function(){
       });
 
       context('by clicking the toggle checkbox to check', function(){
-        //TODO
+        beforeEach(function(){
+          this.view.toggleCheckbox.getElement().click();
+        });
+
+        itPassesSavedTimes();
       });
     });
 

@@ -6,6 +6,7 @@
  * the schedule of worker input by the user.
  */
 
+goog.require('goog.ui.Checkbox');
 goog.require('goog.ui.Button');
 goog.require('goog.dom');
 
@@ -19,6 +20,8 @@ describe('The form to input schedules', function(){
     let controller = new kmc.SchedulesController();
 
     this.store = new kmc.SchedulesStore('KeepMeContributing::SchedulesFormIntegrationTest', controller);
+    this.notificationStatusStore =
+      new kmc.NotificationStatusStore('KeepMeContributing::SchedulesFormIntegrationTest', controller);
 
     this.worker = new Worker('/test/js/KeepMeContributing/Worker/dummy.js');
     this.postMessageSpy = sinon.spy(this.worker, 'postMessage');
@@ -26,19 +29,22 @@ describe('The form to input schedules', function(){
     this.workerHandler = new kmc.WorkerHandler(this.worker, controller);
 
     this.view = new kmc.SchedulesView(
-      controller, this.store, {
+      controller, this.store, this.notificationStatusStore, {
+        toggle: new goog.ui.Checkbox(),
         update: new goog.ui.Button(),
         stop: new goog.ui.Button(),
         add: new goog.ui.Button()
       }
     );
 
+    this.view.toggleCheckbox.decorate(domHelper.getElementByClass('toggleCheckbox', root));
     this.view.updateButton.decorate(domHelper.getElementByClass('updateButton', root));
     this.view.stopButton.decorate(domHelper.getElementByClass('stopButton', root));
     this.view.addButton.decorate(domHelper.getElementByClass('addButton', root));
   });
   afterEach(function(){
     this.workerHandler.stop();
+    this.notificationStatusStore.clear();
     this.store.clear();
     this.view.dispose();
   });
@@ -53,15 +59,20 @@ describe('The form to input schedules', function(){
       this.view.getContentElement().querySelectorAll("input[type='text']");
   });
 
-  context('without any times saved in advance', function(){
+  context('without any saved information', function(){
     beforeEach(function(){
       this.render();
     });
 
-    it('has one empty input element', function(){
+    it('has one empty enabled input element', function(){
       let inputs = this.collectInputs();
       expect(inputs.length).to.be(1);
       expect(inputs[0].value).to.be.empty();
+      expect(inputs[0].disabled).to.be(false);
+    });
+
+    it('has the toggle checkbox checked', function(){
+      expect(this.view.toggleCheckbox.getChecked()).to.be(true);
     });
 
     context('by clicking the add button', function(){

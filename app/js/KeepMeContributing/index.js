@@ -12,6 +12,7 @@ goog.require('KeepMeContributing.GithubProfileLinkedTextView');
 
 // Manage the form to controll the worker to notify contribution status.
 goog.require('KeepMeContributing.SchedulesController');
+goog.require('KeepMeContributing.NotificationStatusStore');
 goog.require('KeepMeContributing.SchedulesStore');
 goog.require('KeepMeContributing.WorkerHandler');
 goog.require('KeepMeContributing.NotificationScheduler');

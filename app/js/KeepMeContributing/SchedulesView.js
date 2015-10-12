@@ -27,10 +27,11 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    * @override
    * @param {KeepMeContributing.SchedulesController} controller
    * @param {KeepMeContributing.SchedulesStore} store
-   * @param {{update: goog.ui.Button, stop: goog.ui.Button, add: goog.ui.Button}} buttons
+   * @param {KeepMeContributing.NotificationStatusStore} notificationStatusStore
+   * @param {{toggle: goog.ui.Checkbox, update: goog.ui.Button, stop: goog.ui.Button, add: goog.ui.Button}} controls
    * @param {goog.dom.DomHelper=} domHelper
    */
-  constructor(controller, store, buttons, domHelper = undefined){
+  constructor(controller, store, notificationStatusStore, controls, domHelper = undefined){
     super(domHelper);
 
     /**
@@ -48,24 +49,38 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
     this.registerDisposable(this.store_);
 
     /**
+     * @type {KeepMeContributing.NotificationStatusStore}
+     * @private
+     */
+    this.notificationStatusStore_ = notificationStatusStore;
+    this.registerDisposable(this.notificationStatusStore_);
+
+    /**
+     * @public for testing use only.
+     * @type {goog.ui.Checkbox}
+     */
+    this.toggleCheckbox = controls.toggle;
+    this.registerDisposable(this.toggleCheckbox);
+
+    /**
      * @public for testing use only.
      * @type {goog.ui.Button}
      */
-    this.updateButton = buttons.update;
+    this.updateButton = controls.update;
     this.registerDisposable(this.updateButton);
 
     /**
      * @public for testing use only.
      * @type {goog.ui.Button}
      */
-    this.stopButton = buttons.stop;
+    this.stopButton = controls.stop;
     this.registerDisposable(this.stopButton);
 
     /**
      * @public for testing use only.
      * @type {goog.ui.Button}
      */
-    this.addButton = buttons.add;
+    this.addButton = controls.add;
     this.registerDisposable(this.addButton);
 
   }
@@ -100,6 +115,12 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
    */
   enterDocument(){
     super();
+
+    this.getHandler().listen(
+      this.toggleCheckbox, goog.ui.Component.EventType.CHANGE, (/** goog.events.Event */ event) => {
+        // TODO
+      }
+    );
 
     this.getHandler().listen(
       this.updateButton, goog.ui.Component.EventType.ACTION, () => {
@@ -145,6 +166,15 @@ KeepMeContributing.SchedulesView = class extends goog.ui.Component {
           /** @type {{schedules: !Array<KeepMeContributing.Worker.TimeOfDay>}} */ (event);
         this.replaceWith(eventWithSchedules.schedules);
         this.controller_.finishLoading(eventWithSchedules.schedules);
+      }
+    );
+
+    this.getHandler().listen(
+      this.notificationStatusStore_,
+      KeepMeContributing.NotificationStatusStore.Events.LOADED,
+      (/** goog.events.Event */ event) => {
+        let /** {enabled: boolean} */ eventWithStatus = /** @type {{enabled: boolean}} */ (event);
+        this.toggleCheckbox.setChecked(eventWithStatus.enabled);
       }
     );
 

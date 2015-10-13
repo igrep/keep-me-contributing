@@ -2,11 +2,14 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
+
   /**
    * Process grunt.option-s and argv
    */
+
   /* Build target of closure compiler. See the ClosureCompilerRule class for details. */
   var targetName = grunt.option('target') || 'frontend';
+
   /*
    * Run on an connected Android device after building by cordova.
    * NOTE: only valid when building by cordova.
@@ -16,17 +19,17 @@ module.exports = function (grunt) {
   /*
    * Build Rule class
    */
-  ClosureCompilerRule = function(outName, entryPoint, opt_cordovaMode){
+  ClosureCompilerRule = function(outName, entryPoint, cordovaMode){
     this.outName = outName;
     this.entryPoint = entryPoint;
-    this.outRoot = opt_cordovaMode ? 'www' : 'app';
-    this.cordova = opt_cordovaMode || false;
+    this.outRoot = cordovaMode ? 'www' : 'app';
+    this.cordova = cordovaMode;
   };
-  ClosureCompilerRule.ruleFor = function(name){
+  ClosureCompilerRule.ruleFor = function(name, cordovaMode){
     var rules = {
-      frontend:      new this('app',             'KeepMeContributing'),
-      worker:        new this('worker',          'KeepMeContributing.Worker.Main'),
-      workerTestLib: new this('worker-test-lib', 'KeepMeContributing.Worker'),
+      frontend:      new this('app',             'KeepMeContributing',             cordovaMode),
+      worker:        new this('worker',          'KeepMeContributing.Worker.Main', cordovaMode),
+      workerTestLib: new this('worker-test-lib', 'KeepMeContributing.Worker',      cordovaMode),
     };
     if (name in rules){
       return rules[name];
@@ -76,8 +79,6 @@ module.exports = function (grunt) {
     return new this.constructor(this.outName, this.entryPoint, true);
   };
 
-  var closureCompilerRule = ClosureCompilerRule.ruleFor(targetName);
-
   grunt.initConfig({
     bower: { install: { options: { targetDir: 'app/lib', verbose: true } } },
     copy: {
@@ -105,14 +106,10 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      // FIXME: Can't build all client js file at once!
       buildClient: {
-        command: function(cordova){
-          if (cordova === 'cordova'){
-            return closureCompilerRule.cordovaMode().compilerCommand();
-          } else {
-            return closureCompilerRule.compilerCommand();
-          }
+        command: function(cordova, targetArgument){
+          var target = targetArgument || targetName;
+          return ClosureCompilerRule.ruleFor(target, cordova === 'cordova').compilerCommand();
         }
       },
       cordova: {
@@ -168,8 +165,8 @@ module.exports = function (grunt) {
     notify: {
       buildClient: {
         options: {
-          title: 'buildClient: ' + targetName,
-          message: 'Finished to build js/' + closureCompilerRule.outName + '.js\nCheck the terminal to check for warnings.'
+          title: 'buildClient',
+          message: 'Finished to build.\nCheck the terminal to check for warnings.'
         }
       },
       cordova: {
@@ -199,16 +196,24 @@ module.exports = function (grunt) {
     'copy:closureLibrary'
   ]);
 
-  // FIXME: build all client file at once!
+  grunt.registerTask('buildBrowserApp', [
+    'shell:buildClient:browser:frontend',
+    'shell:buildClient:browser:worker',
+    'shell:buildClient:browser:workerTestLib'
+  ]);
+
+  grunt.registerTask('buildCordovaApp', [
+    'shell:buildClient:cordova:frontend'
+  ]);
+
   grunt.registerTask('default', [
     'shell:lint',
-    'shell:buildClient',
-    'shell:buildClient:cordova',
+    'buildBrowserApp',
     'shell:buildServer'
   ]);
 
   grunt.registerTask('cordova', [
-    'shell:buildClient:cordova',
+    'buildCordovaApp',
     'copy:cordova',
     'shell:cordova'
   ]);

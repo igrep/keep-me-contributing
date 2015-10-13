@@ -6,7 +6,7 @@ Web page to check if I did something that greens the contribution map on https:/
 
 # Motivation and Details of Development
 
-[See here (in Japanese).](/これも読んでください.ja.md)
+[See here (in Japanese).](/README-ALSO.ja.md)
 
 # Building and Deployment
 

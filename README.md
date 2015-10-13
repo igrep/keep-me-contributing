@@ -12,11 +12,19 @@ Web page to check if I did something that greens the contribution map on https:/
 
 ## Prerequisites
 
+For JavaScript package and clsure compileer installation:
+
 - [npm](https://www.npmjs.com/)
+
+For building and deployment of server application:
+
 - [JDK (8 or later)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven](https://maven.apache.org/)
 - [foreman](https://rubygems.org/gems/foreman)
 - [Heroku Toolbelt](https://rubygems.org/gems/foreman)
+
+For deployment on Android:
+
 - [Apache Cordova](http://cordova.apache.org/)
 
 ## Build

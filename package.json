@@ -10,6 +10,8 @@
   "main": "",
   "scripts": {
     "build": "grunt default",
+    "buildCordova": "grunt cordova",
+    "runCordova": "grunt cordova --run",
     "server": "grunt shell:testServer",
     "lint": "grunt shell:lint",
     "install": "grunt install",

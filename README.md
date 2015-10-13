@@ -25,19 +25,28 @@ Web page to check if I did something that greens the contribution map on https:/
 # Install development dependencies
 npm install
 
-# Build (currently in debug mode)
+# Build server (Java) and browser app (JavaScript)
 npm run build
+
+# Install dependencies for the app on cordova
+cordova platform add android
+cordova plugin add de.appplant.cordova.plugin.local-notification@0.8.1
+
+# Build and run cordova app on the connected Android device (JavaScript)
+npm run runCordova
+
+# Or only build
+npm run cordova
 ```
 
 ## Run locally
 
-1. Copy [`.env.sample`](/.env.sample) into `.env` and edit it.
-2. Then run:
+1. Then run:
 
     ```bash
     npm run server
     ```
-3. Access to http://localhost:9876/
+2. Access to http://localhost:9876/
 
 ## Run tests
 

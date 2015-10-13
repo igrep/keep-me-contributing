@@ -45,9 +45,6 @@ bower_components
 /.idea/uiDesigner.xml
 *.iws
 
-# Procfile environment variables
-.env
-
 # Cordova
 /platforms
 /plugins

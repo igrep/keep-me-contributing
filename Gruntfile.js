@@ -212,6 +212,11 @@ module.exports = function (grunt) {
     'shell:buildServer'
   ]);
 
+  grunt.registerTask('test', [
+    'shell:buildServerTest'
+    // TODO: run test with mochify?
+  ]);
+
   grunt.registerTask('cordova', [
     'buildCordovaApp',
     'copy:cordova',

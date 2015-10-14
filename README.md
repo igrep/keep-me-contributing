@@ -44,7 +44,7 @@ cordova plugin add de.appplant.cordova.plugin.local-notification@0.8.1
 npm run runCordova
 
 # Or only build
-npm run cordova
+npm run buildCordova
 ```
 
 ## Run locally

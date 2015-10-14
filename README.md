@@ -38,7 +38,7 @@ npm run build
 
 # Install dependencies for the app on cordova
 cordova platform add android
-cordova plugin add de.appplant.cordova.plugin.local-notification@0.8.1
+cordova plugin add https://github.com/katzer/cordova-plugin-local-notifications
 
 # Build and run cordova app on the connected Android device (JavaScript)
 npm run runCordova

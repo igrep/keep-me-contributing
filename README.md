@@ -1,7 +1,11 @@
-[![Stories in Ready](https://badge.waffle.io/igrep/keep-me-contributing.png?label=ready&title=Ready)](https://waffle.io/igrep/keep-me-contributing)
 # keep-me-contributing
 
-https://keep-me-contributing.herokuapp.com/
+[![Heroku](https://heroku-badge.herokuapp.com/?app=keep-me-contributing)](https://keep-me-contributing.herokuapp.com/) https://keep-me-contributing.herokuapp.com/
+
+[![Stories in Ready](https://badge.waffle.io/igrep/keep-me-contributing.png?label=ready&title=Ready)](https://waffle.io/igrep/keep-me-contributing)
+[![Stories in Progress](https://badge.waffle.io/igrep/keep-me-contributing.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/igrep/keep-me-contributing)
+
+[![CircleCI](https://circleci.com/gh/igrep/keep-me-contributing.png?circle-token=ec8e6e39ec1343e375519aaca0651ed4f1a981c9)](https://circleci.com/gh/igrep/keep-me-contributing)
 
 Web page to check if I did something that greens the contribution map on https://github.com/igrep.
 

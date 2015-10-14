@@ -40,9 +40,14 @@
 説明している通り、現状のService Workerでは実装できないことに気づいたため、
 Apache Cordovaを代わりに使用することとしました。  
 本来Web Workerを使わなくてもよいのにWeb Workerを使ったのは、そのためです。  
-あとでまたService Workerで書き換えたいという希望的観測があるため、敢えてそのままにしています。
+あとでまたService Workerで書き換えたいというささやかな希望的観測があるため、敢えてそのままにしています。
 
-# その他特記事項
+# その他特記事項、ここまで作った反省点など
 
 - リポジトリは https://github.com/igrep/keep-me-contributing にあります。
 - GitHubが公開していないAPI endpointを使用しているため、念の為あまり多くの人がアクセスしたくならないよう、自分専用としています。
+- JavaScriptのテストをNode.jsではなくChrome上で実行しているのは、下記の理由による成り行きです。
+    - 最初に作っていた、github.comからcontributionsの情報を取り出す処理が、jsdomでうまくテスト出来なかったため。
+    - CommonJS向けにmoduleを別途ビルドしなければならず、Closure Compilerでビルドするものをあまり増やしたくなかったため。
+        - browserifyなどを使えばよかった？
+    - Workerが絡む部分も結合してテストしたいなぁ、という淡い希望があったため。

@@ -11,6 +11,7 @@
   "scripts": {
     "build": "grunt default",
     "buildCordova": "grunt cordova",
+    "test": "grunt test",
     "runCordova": "grunt cordova --run",
     "server": "grunt shell:testServer",
     "lint": "grunt shell:lint",

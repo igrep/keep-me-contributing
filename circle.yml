@@ -4,4 +4,4 @@ machine:
 test:
   override:
     - npm run build
-    # TODO: run test with mochify?
+    - npm run test

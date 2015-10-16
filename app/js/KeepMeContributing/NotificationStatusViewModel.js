@@ -1,5 +1,3 @@
-/*global goog:false KeepMeContributing:false*/
-
 /**
  * @fileoverview
  * Represents checkbox to enable / disable notifications
@@ -33,7 +31,7 @@ KeepMeContributing.NotificationStatusViewModel = class extends goog.ui.Checkbox 
    * @param {goog.ui.CheckboxRenderer=} renderer
    */
   constructor(notificationStatusStore, checked = undefined, domHelper = undefined, renderer = undefined){
-    super(checked = undefined, domHelper = undefined, renderer = undefined);
+    super(checked, domHelper, renderer);
 
     /**
      * While a SchedulesView emit UI changes via its SchedulesController,

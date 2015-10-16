@@ -1,5 +1,3 @@
-/*global goog:false KeepMeContributing:false*/
-
 /**
  * @fileoverview Wrapper of github.js or implements some API endpoints
  * which are not supported by github.js.

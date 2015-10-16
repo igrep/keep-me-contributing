@@ -1,5 +1,3 @@
-/*global goog:false KeepMeContributing:false*/
-
 /**
  * @fileoverview
  * Add text with link to a user's GitHub profile page.

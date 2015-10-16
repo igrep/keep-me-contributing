@@ -1,4 +1,3 @@
-/*global goog:false*/
 'use strict';
 
 goog.provide('KeepMeContributing.WorkerHandler');

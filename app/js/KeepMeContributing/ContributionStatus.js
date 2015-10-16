@@ -1,5 +1,3 @@
-/*global goog:false KeepMeContributing:false*/
-
 /**
  * @fileoverview
  * Represents the latest contribution status (e.g. when a user push commit recently)

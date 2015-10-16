@@ -1,5 +1,3 @@
-/*global goog:false, KeepMeContributing:false*/
-
 goog.provide('KeepMeContributing');
 
 goog.require('KeepMeContributing.Defines');

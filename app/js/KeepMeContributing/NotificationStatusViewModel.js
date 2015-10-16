@@ -1,5 +1,3 @@
-/*global goog:false KeepMeContributing:false*/
-
 /**
  * @fileoverview
  * Represents checkbox to enable / disable notifications

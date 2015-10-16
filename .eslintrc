@@ -1,13 +1,66 @@
 # vim: filetype=yaml :
 rules:
+  # Possible Errors
+  no-cond-assign: [2, except-parens]
+  no-constant-condition: 2
+  no-control-regex: 2
+  no-debugger: 2
+  no-dupe-args: 2
+  no-dupe-keys: 2
+  no-duplicate-case: 2
+  no-empty-character-class: 2
+  no-empty-character-class: 2
+  no-ex-assign: 2
+  no-extra-boolean-cast: 2
+  no-extra-parens: 0 # used in cast in closure compiler
+  no-extra-semi: 2
+  no-func-assign: 2
+  no-inner-declarations: 2
+  no-invalid-regexp: 2
+  no-irregular-whitespace: 2
+  no-negated-in-lhs: 2
+  no-obj-calls: 2
+  no-regex-spaces: 2
+  no-sparse-arrays: 2
+  no-unreachable: 2
+  use-isnan: 2
+  valid-jsdoc: 0 # this is done by closure compiler.
+  valid-typeof: 2
+  no-unexpected-multiline: 2
+  # Best practices (Only I think necessary to check)
+  consistent-return: 2
+  curly: 2
+  default-case: 2
+  dot-notation: 2
+  dot-location: [2, property]
+  eqeqeq: 2
+  no-fallthrough: 2
+  # This invalidates this in a static method.
+  # Ref: https://github.com/eslint/eslint/issues/3600#issuecomment-148680178
+  # no-invalid-this: 2
+  no-labels: 2
+  no-lone-blocks: 2
+  no-loop-func: 2
+  no-native-reassign: 2
+  no-octal: 2
+  no-param-reassign: 2
+  no-redeclare: 2
+  no-return-assign: 2
+  no-self-compare: 2
+  no-sequences: 2
+  no-throw-literal: 2
+  no-useless-call: 2
+  no-useless-concat: 2
   no-unused-vars: [2, { vars: all, args: none }]
-  no-multi-spaces: 0
-  no-unused-expressions: 0
-  no-underscore-dangle: 0
+  radix: 2
+  no-unused-expressions: 0 # used in closure compiler's typedef.
+  # Other style rules
+  no-underscore-dangle: 0  # my preference
   indent: [2, 2]
   quotes: [2, single, avoid-escape]
   linebreak-style: [2, unix]
   semi: [2, always]
+  max-len: [2, 120, 4, { ignoreComments: true, ignoreUrls: true }]
 env:
   es6: true
   mocha: true

@@ -36,11 +36,9 @@ KeepMeContributing.start = () => {
 
   let /** KeepMeContributing.ContributionStatus? */ contributionStatus =
     new kmc.ContributionStatus(new kmc.Github({ username: username, format: format, apiUrl: apiUrl }));
-  let /** ContributionStatusView */ statusView = new kmc.ContributionStatusView(
+  new kmc.ContributionStatusView(
     username, contributionStatus
-  );
-
-  statusView.render(goog.dom.getElement('contributionStatus'));
+  ).render(goog.dom.getElement('contributionStatus'));
   contributionStatus.startPolling(5 * 60 * 1000);
 
   new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details.")

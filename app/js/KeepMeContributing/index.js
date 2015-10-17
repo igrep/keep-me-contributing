@@ -2,6 +2,8 @@ goog.provide('KeepMeContributing');
 
 goog.require('KeepMeContributing.Defines');
 
+goog.require('KeepMeContributing.FaviconView');
+
 // Manage the panel showing current contribution status.
 goog.require('KeepMeContributing.ContributionStatus');
 goog.require('KeepMeContributing.Github');
@@ -39,6 +41,10 @@ KeepMeContributing.start = () => {
   new kmc.ContributionStatusView(
     username, contributionStatus
   ).render(goog.dom.getElement('contributionStatus'));
+  let /** NodeList */ faviconElemements = document.querySelectorAll('link[type="image/vnd.microsoft.icon"]');
+  new kmc.FaviconView(contributionStatus).decorate(faviconElemements[0]);
+  new kmc.FaviconView(contributionStatus).decorate(faviconElemements[1]);
+
   contributionStatus.startPolling(5 * 60 * 1000);
 
   new kmc.GithubProfileLinkedTextView('See ', username, "'s GitHub profile page for details.")

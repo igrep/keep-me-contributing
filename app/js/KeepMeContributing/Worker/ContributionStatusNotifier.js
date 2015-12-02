@@ -66,7 +66,8 @@ KeepMeContributing.Worker.ContributionStatusNotifier = class {
             }
           );
         }
-      }, (error) => {
+      },
+      (error) => {
         let /** string */ message = error.toString();
         console.error(message);
         this.notify(

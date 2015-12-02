@@ -16,7 +16,7 @@ Web page to check if I did something that greens the contribution map on https:/
 
 ## Prerequisites
 
-For JavaScript package and clsure compileer installation:
+For JavaScript package and closure compiler installation:
 
 - [npm](https://www.npmjs.com/)
 
@@ -53,7 +53,7 @@ npm run buildCordova
 
 ## Run locally
 
-1. Then run:
+1. Run:
 
     ```bash
     npm run server
